@@ -32,7 +32,7 @@ import structure_svg as S
 from structure_draw import U, STROKE, DBL, ARIAL, FONT_NAME, _BASE_H, _txt_w
 from PIL import Image, ImageDraw, ImageFont
 
-FS = S.FS            # 34 — main glyph, matches molecule labels
+FS = S.FS            # 34: main glyph, matches molecule labels
 RXN_FS = 26          # reagent / conditions text above & below the arrow
 LINE_H = int(RXN_FS * 1.38)
 PAD = 14             # outer canvas padding

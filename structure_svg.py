@@ -1,4 +1,4 @@
-"""SVG (vector) output for structure_draw — sharp at any zoom, for embedding in Word."""
+"""SVG (vector) output for structure_draw: sharp at any zoom, for embedding in Word."""
 import math, collections
 import structure_draw as J
 from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,

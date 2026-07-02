@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ARIAL = "/System/Library/Fonts/Supplemental/Arial.ttf"
 CALIBRI = "/Applications/Microsoft Word.app/Contents/Resources/DFonts/Calibri.ttf"
-FONT_PATH = ARIAL              # label font — Arial for clean, even structure labels
+FONT_PATH = ARIAL              # label font: Arial for clean, even structure labels
 FONT_NAME = "Arial"            # font-family used in SVG output
 U = 46; STROKE = 3; GAP = 15; DBL = 6; TRP = 7
 HEAVY_LEN = 1.95; H_LEN = 1.0
