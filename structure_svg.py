@@ -1,0 +1,104 @@
+"""SVG (vector) output for structure_draw — sharp at any zoom, for embedding in Word."""
+import math, collections
+import structure_draw as J
+from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,
+                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME, layout)
+
+FS = 34        # main glyph px (Arial)
+SUBFS = 23     # subscript px
+BASE = FS * 0.35
+SUB_DROP = 9
+SUP_RISE = 11  # superscript (charge) rise above the baseline
+
+def _esc(s):
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+def _geom_and_elems(atoms, bonds, circles, reversible, font):
+    circles = circles or []; reversible = reversible or set()
+    nbx = collections.defaultdict(list)
+    for i, j, o in bonds:
+        nbx[i].append(atoms[j][1] - atoms[i][1]); nbx[j].append(atoms[i][1] - atoms[j][1])
+    parsed, side, ext = {}, {}, {}
+    for i, (label, x, y) in atoms.items():
+        if not label:
+            continue
+        a, s = _parse_label(label); parsed[i] = (a, s)
+        has_r = any(dx > 0.3 for dx in nbx[i]); has_l = any(dx < -0.3 for dx in nbx[i])
+        sd = 'left' if (i in reversible and has_r and not has_l) else 'right'
+        side[i] = sd
+        aw = _txt_w(a, FONT); sw = _suffix_w(s)
+        ext[i] = (aw / 2 + (sw if sd == 'left' else 0),
+                  aw / 2 + (sw if sd == 'right' else 0), _BASE_H / 2)
+
+    def exu(i, k): return (ext[i][k] / U + 0.05) if i in ext else 0
+    minx = min(x - exu(i, 0) for i, (l, x, y) in atoms.items())
+    maxx = max(x + exu(i, 1) for i, (l, x, y) in atoms.items())
+    miny = min(y - exu(i, 2) for i, (l, x, y) in atoms.items())
+    maxy = max(y + exu(i, 2) for i, (l, x, y) in atoms.items())
+    M = 40
+    W = int((maxx - minx) * U + 2 * M); H = int((maxy - miny) * U + 2 * M)
+
+    def px(i):
+        _, x, y = atoms[i]; return ((x - minx) * U + M, (maxy - y) * U + M)
+    def pxc(x, y): return ((x - minx) * U + M, (maxy - y) * U + M)
+    def gap(i, ux, uy):
+        if i not in ext: return 0
+        hx = ext[i][1] if ux > 0 else ext[i][0]
+        return abs(ux) * hx + abs(uy) * ext[i][2] + 4
+
+    out = []
+    for i, j, order in bonds:
+        p = px(i); q = px(j); dx = q[0] - p[0]; dy = q[1] - p[1]; L = math.hypot(dx, dy) or 1
+        ux, uy = dx / L, dy / L
+        p = (p[0] + ux * gap(i, ux, uy), p[1] + uy * gap(i, ux, uy))
+        q = (q[0] - ux * gap(j, -ux, -uy), q[1] - uy * gap(j, -ux, -uy))
+        ox, oy = -uy, ux
+        for s in {1: [0], 2: [-DBL, DBL], 3: [-TRP, 0, TRP]}[order]:
+            out.append(f'<line x1="{p[0]+ox*s:.1f}" y1="{p[1]+oy*s:.1f}" '
+                       f'x2="{q[0]+ox*s:.1f}" y2="{q[1]+oy*s:.1f}" '
+                       f'stroke="black" stroke-width="{STROKE}" stroke-linecap="round"/>')
+    for cx, cy, r in circles:
+        c = pxc(cx, cy)
+        out.append(f'<circle cx="{c[0]:.1f}" cy="{c[1]:.1f}" r="{r*U:.1f}" '
+                   f'fill="none" stroke="black" stroke-width="{STROKE}"/>')
+    for i in parsed:
+        cx, cy = px(i); anchor, suffix = parsed[i]; sd = side[i]
+        by = cy + BASE
+        out.append(f'<text x="{cx:.1f}" y="{by:.1f}" font-family="{font}" font-size="{FS}" '
+                   f'text-anchor="middle">{_esc(anchor)}</text>')
+        if suffix:
+            aw = _txt_w(anchor, FONT)
+            x = cx + aw / 2 if sd == 'right' else cx - aw / 2 - _suffix_w(suffix)
+            for s, kind in _label_runs(suffix):
+                if kind == 'sub':
+                    out.append(f'<text x="{x:.1f}" y="{by+SUB_DROP:.1f}" font-family="{font}" '
+                               f'font-size="{SUBFS}" text-anchor="start">{_esc(s)}</text>')
+                    x += _txt_w(s, SUBFONT)
+                elif kind == 'sup':
+                    out.append(f'<text x="{x:.1f}" y="{by-SUP_RISE:.1f}" font-family="{font}" '
+                               f'font-size="{SUBFS}" text-anchor="start">{_esc(s)}</text>')
+                    x += _txt_w(s, SUBFONT)
+                else:
+                    out.append(f'<text x="{x:.1f}" y="{by:.1f}" font-family="{font}" '
+                               f'font-size="{FS}" text-anchor="start">{_esc(s)}</text>')
+                    x += _txt_w(s, FONT)
+    return out, W, H, pxc
+
+def draw_svg(atoms, bonds, circles=None, reversible=None, font=FONT_NAME):
+    elems, W, H, _ = _geom_and_elems(atoms, bonds, circles, reversible, font)
+    body = f'<rect width="{W}" height="{H}" fill="white"/>' + ''.join(elems)
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
+            f'viewBox="0 0 {W} {H}">{body}</svg>'), W, H
+
+def draw_svg_inner(atoms, bonds, circles=None, reversible=None, font=FONT_NAME):
+    """Return (inner_svg_elements, W, H, px_func) for composing into a larger SVG."""
+    elems, W, H, px = _geom_and_elems(atoms, bonds, circles, reversible, font)
+    return ''.join(elems), W, H, px
+
+def render_svg(smiles, font=FONT_NAME):
+    a, b, c, rev = layout(smiles)
+    return draw_svg(a, b, c, rev, font)
+
+def render_svg_inner(smiles, font=FONT_NAME):
+    a, b, c, rev = layout(smiles)
+    return draw_svg_inner(a, b, c, rev, font)

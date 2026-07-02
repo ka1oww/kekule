@@ -1,0 +1,4 @@
+rdkit>=2023.3
+pillow>=9.0
+# Optional: only needed for the Word (.docx) export in embed_docx.py
+python-docx>=0.8.11
