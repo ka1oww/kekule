@@ -1,0 +1,1937 @@
+{
+ "compounds": 100,
+ "verdicts": {
+  "match": 50,
+  "close": 40,
+  "wrong": 8,
+  "not_found_in_source": 2
+ },
+ "avg_score": 77.6,
+ "results": [
+  {
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "results": [
+    {
+     "name": "Urea",
+     "smiles": "NC(N)=O",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Left amino group labelled 'NH2-' so the bond meets the subscript; source (p1) writes 'H2N-' so the bond meets the N. Carbonyl C=O points up correctly in all three forms, matching source.",
+       "severity": "minor",
+       "fix": "Mirror the left-hand amino label to H2N- so the bond joins the nitrogen."
+      }
+     ]
+    },
+    {
+     "name": "Cyanate ion (in ammonium cyanate)",
+     "smiles": "N#C[O-]",
+     "verdict": "close",
+     "score": 78,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Negative charge placed on the oxygen (⁻O-C≡N); the source (p1) draws it O-C≡N⁻ with the − on the nitrogen end. Connectivity and the triple bond are otherwise correct.",
+       "severity": "major",
+       "fix": "Move the − charge to the N terminus to reproduce the notes' O-C≡N⁻."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Rendered diagonally rotated; the notes always draw the linear ion horizontal.",
+       "severity": "minor",
+       "fix": "Keep the skeletal form horizontal like the displayed form."
+      }
+     ]
+    },
+    {
+     "name": "Paracetamol",
+     "smiles": "CC(=O)Nc1ccc(O)cc1",
+     "verdict": "close",
+     "score": 68,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Whole acetamido group collapsed to the inline text 'NHC(=O)CH3'; the source (p1) draws the amide expanded with the carbonyl C=O pointing UP, CH3 branching to the right and an explicit N-H. A displayed formula must show all atoms/bonds.",
+       "severity": "major",
+       "fix": "Expand to ring-N(H)-C(=O up)-CH3 with the carbonyl vertical."
+      },
+      {
+       "form": "structural",
+       "aspect": "Carbonyl shown as inline '(=O)' rather than drawn pointing up as in the notes; violates the house C=O-up convention.",
+       "severity": "major",
+       "fix": "Draw the C=O vertical (up) with CH3 as a separate branch."
+      },
+      {
+       "form": "displayed",
+       "aspect": "All three forms render identically (ring hexagon+circle + condensed amide), so displayed adds nothing over structural. Ring+inscribed-circle, HO on left and para arrangement all match the source correctly.",
+       "severity": "minor",
+       "fix": "Differentiate the displayed form."
+      }
+     ]
+    },
+    {
+     "name": "Ethane (saturated example)",
+     "smiles": "CC",
+     "verdict": "match",
+     "score": 95,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Orthogonal 'comb' H-C-C-H with H up/down on each carbon and terminal H left/right reproduces the source (p3/p4) saturated illustration exactly. Structural CH3-CH3 and single-line skeletal also correct.",
+       "severity": "minor",
+       "fix": "None needed."
+      }
+     ]
+    },
+    {
+     "name": "Ethene (unsaturated example)",
+     "smiles": "C=C",
+     "verdict": "match",
+     "score": 92,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "H-C=C-H with C=C as two parallel horizontal lines and the four H (two up, two terminal) matches the source page-4 unsaturated drawing. Terminal H are up+horizontal rather than splayed down, but that is exactly how this source draws it.",
+       "severity": "minor",
+       "fix": "Optional: splay terminal H toward ~120° for the alternate house style."
+      }
+     ]
+    },
+    {
+     "name": "Benzene",
+     "smiles": "c1ccccc1",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Rendered as a bare hexagon + inscribed circle (identical to skeletal); the source's Structural/displayed formula (p6 table) is the Kekulé ring with three alternating C=C and every C-H drawn. A circle shows no atoms/bonds so it is not a displayed formula.",
+       "severity": "major",
+       "fix": "For displayed/structural draw Kekulé + all H; reserve the inscribed circle for skeletal."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Hexagon is flat-top (vertices at 3 and 9 o'clock). Matches the p4 arene box, but the house default and the p6 skeletal cell are pointy-top (vertex up).",
+       "severity": "minor",
+       "fix": "Rotate 30° to pointy-top for consistency with the dominant convention."
+      }
+     ]
+    },
+    {
+     "name": "Cyclohexane",
+     "smiles": "C1CCCCC1",
+     "verdict": "match",
+     "score": 86,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Plain hexagon with NO inscribed circle correctly distinguishes it from benzene and matches the p4 skeletal reference (flat-top, same as source p4).",
+       "severity": "minor",
+       "fix": "None; optional pointy-top to match p6."
+      },
+      {
+       "form": "structural",
+       "aspect": "Structural and displayed reuse the plain hexagon; the source p6 structural cell draws the all-H hexagon (every CH2 shown).",
+       "severity": "minor",
+       "fix": "Draw the all-H hexagon for structural/displayed."
+      }
+     ]
+    },
+    {
+     "name": "Lactic acid - condensed form",
+     "smiles": "CC(O)C(=O)O",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Zig-zag with carbonyl C=O up, the middle C-OH pointing down and the carboxyl -OH to the right faithfully reproduces the source p4 skeletal. Carboxyl labelled -OH/COOH whereas the source condensed column uses CO2H.",
+       "severity": "minor",
+       "fix": "Optional: use CO2H to match the notes' condensed spelling."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Middle C-OH drawn pointing up (H down); source draws the OH pointing down (H up). Cosmetic mirror only; C=O up is correct.",
+       "severity": "minor",
+       "fix": "Flip the middle CH substituents to match."
+      }
+     ]
+    },
+    {
+     "name": "Lactic acid - stereochemical form (optical isomers)",
+     "smiles": "C[C@@H](O)C(=O)O",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "stereo",
+       "aspect": "Source (p4) draws CH3 up (plain), H left (plain), OH on a dashed wedge (into plane) and CO2H on a BOLD wedge (out of plane). Our render puts only H on a dashed bond with the other three groups plain (no complementary bold wedge) and COOH at top - a valid but weaker 3D depiction with a different layout.",
+       "severity": "minor",
+       "fix": "Add a bold wedge complement (e.g. OH out / H in) and match the CH3-up / CO2H-down arrangement."
+      },
+      {
+       "form": "stereo",
+       "aspect": "Shows a genuine non-superimposable enantiomer pair with a labelled mirror plane; correct chemistry and clearer than the source, but not the source's exact figure.",
+       "severity": "minor",
+       "fix": "None required; acceptable pedagogically."
+      }
+     ]
+    },
+    {
+     "name": "2-bromobutan-1-ol",
+     "smiles": "CC(Br)CCO",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Br drawn UP off the second carbon and OH at the right chain terminus reproduces the source p5 skeletal; condensed CH3CH(Br)CH2CH2OH also matches. Stereo pair is chemically valid (CHBr is a true stereocentre).",
+       "severity": "minor",
+       "fix": "None needed for the drawing."
+      },
+      {
+       "form": "structural",
+       "aspect": "Manifest NAME '2-bromobutan-1-ol' is wrong for the drawn structure CH3CH(Br)CH2CH2OH, which is 3-bromobutan-1-ol (OH carbon = C1, Br = C3). Not a render fault.",
+       "severity": "minor",
+       "fix": "Rename to 3-bromobutan-1-ol."
+      }
+     ]
+    },
+    {
+     "name": "Buta-1,3-diene",
+     "smiles": "C=CC=C",
+     "verdict": "match",
+     "score": 92,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Zig-zag with the two C=C drawn as the second line on alternate edges reproduces the source p5 skeletal exactly. Displayed (H-C=C-C=C-H, six H) and condensed CH2=CHCH=CH2 are also correct.",
+       "severity": "minor",
+       "fix": "None needed."
+      }
+     ]
+    },
+    {
+     "name": "Phenol functional-group template",
+     "smiles": "Oc1ccccc1",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Hexagon + inscribed circle with an -OH label on a ring vertex matches the source p6 phenol template (hydroxy-compounds box). Our OH sits on the 3-o'clock vertex; the source places it on the top/upper-right vertex.",
+       "severity": "minor",
+       "fix": "Move OH to the top vertex to mirror the notes."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Ring drawn flat-top; house default for arenes is pointy-top. All three forms are identical, which is acceptable here since the source's structural phenol is itself the hexagon+circle.",
+       "severity": "minor",
+       "fix": "Optional pointy-top orientation."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "results": [
+    {
+     "name": "Phenylamine functional-group template",
+     "smiles": "Nc1ccccc1",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Benzene drawn as hexagon+inscribed circle with -NH2 label, exactly the source (p7 Nitrogen Compounds box) house style. Only cosmetic difference: our NH2 sits on the right vertex horizontally, source drew it off the top-right vertex.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "2-bromopropanoic acid",
+     "smiles": "CC(Br)C(=O)O",
+     "verdict": "close",
+     "score": 85,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Br is drawn UP on the middle C (H down); the source (p7) draws Br DOWN with H up. Chemically identical, but not the house layout.",
+       "severity": "minor",
+       "fix": "Flip the C2 substituents so Br points down and H up."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Our CH3 is fully displayed (H-C(H)(H)); source drew CH3 and OH condensed (semi-displayed). C=O up and COOH at the right end are correct.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Cyclopentane",
+     "smiles": "C1CCCC1",
+     "verdict": "match",
+     "score": 92,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Skeletal (the compared form) is a plain pentagon with a vertex at top, reproducing p7 exactly. The structural and displayed panels are the SAME bare pentagon (no CH2/H shown), so they are not truly differentiated forms.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "4-bromo-2,5-dimethylheptanoic acid",
+     "smiles": "CCC(C)C(Br)CC(C)C(=O)O",
+     "verdict": "close",
+     "score": 80,
+     "discrepancies": [
+      {
+       "form": "stereo",
+       "aspect": "Stereo pair is illegible: the condensed chain label 'CH(Br)CH2CH(CH3)C(=O)OH' collides with the wedge/hash and with 'CH2CH3'/'H3C'/'CH3' on the mirror image (bonds cross through atom labels). It also depicts a single-stereocentre enantiomer pair although the molecule has three stereocentres, which is misleading.",
+       "severity": "major",
+       "fix": "Draw the stereo pair with explicit skeletal bonds (not a condensed string) and invert all stereocentres for the true enantiomer."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Fully-displayed 7-C chain is correct (horizontal, C=O up, COOH right, both methyls up) but Br is drawn UP; the source worked example (p10) draws Br DOWN.",
+       "severity": "minor",
+       "fix": "Point Br down to match the source."
+      }
+     ]
+    },
+    {
+     "name": "3-chlorocyclohexanol",
+     "smiles": "OC1CCC(Cl)CC1",
+     "verdict": "wrong",
+     "score": 25,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "WRONG ISOMER. Our ring draws Cl and OH 1,4 (para, directly across) = 4-chlorocyclohexan-1-ol. The source (p11 Worked Example 1) and the name are 1,3 (meta): OH at C1 upper-right, Cl at C3 upper-left with C2 between them. Root cause: the manifest SMILES OC1CCC(Cl)CC1 encodes 4-chloro (RDKit: OH-C..Cl-C = 3 bonds = para).",
+       "severity": "critical",
+       "fix": "Use OC1CC(Cl)CCC1 (2 bonds = meta) for 3-chlorocyclohexanol."
+      },
+      {
+       "form": "stereo",
+       "aspect": "Stereo pair is illegible (condensed 'CH2CH2CH(Cl)CH2CH2' labels overlap 'HO','C','H' and the wedge crosses the text). Also, for the para isomer actually drawn, the OH carbon is not a stereocentre, so an enantiomer pair is chemically inappropriate.",
+       "severity": "major"
+      },
+      {
+       "form": "skeletal",
+       "aspect": "No ring position numbering; source labels C1-C6.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "2,2-dimethylbutanal",
+     "smiles": "CCC(C)(C)C=O",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Skeletal (the compared form) matches the source (p11): ethyl on one side, gem-dimethyl on C2, and the carbonyl =O drawn to the SIDE (not up), exactly as the notes drew it.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "2-aminopropanoic acid (alanine)",
+     "smiles": "CC(N)C(=O)O",
+     "verdict": "close",
+     "score": 85,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Correct essentials: C=O points UP, OH lower-right, drawn neutral (not zwitterion). But NH2 is drawn hanging DOWN with CH3 to the upper-left, whereas the source (p11) writes H2N- on the LEFT and puts CH3 DOWN. Layout swapped.",
+       "severity": "minor",
+       "fix": "Place the amino group on the left (H2N-) and the methyl pointing down to match the source."
+      }
+     ]
+    },
+    {
+     "name": "Methane (3-D)",
+     "smiles": "C",
+     "verdict": "close",
+     "score": 68,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Drawn as a flat 2-D H-C-H cross with four plain bonds. It does NOT reproduce the 3-D tetrahedral depiction the '(3-D)' compound and the primary source (p16) require (two plain bonds + one bold wedge H + one hashed/dash H). It does match the alternate flat-cross source (Ch21&22 p3).",
+       "severity": "major",
+       "fix": "Render one C-H as a bold wedge and one as a hashed dash to show the tetrahedron."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Skeletal panel is blank/empty (methane has no skeletal form); reads as a rendering gap.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Ethyne",
+     "smiles": "C#C",
+     "verdict": "match",
+     "score": 93,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "H-C(triple)C-H drawn linear with three parallel lines - matches the source (p16) exactly. Skeletal panel is just the floating triple bond, which is acceptable but bare.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Ethanoic acid (labelled)",
+     "smiles": "CC(=O)O",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Backbone horizontal, C=O up, acid at right, all methyl H shown - reproduces the source (p17 Checkpoint) well. Source additionally labels the two carbons C1/C2; ours is unlabelled (annotation only, not a structural difference).",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Ethanoate ion (resonance pair)",
+     "smiles": "CC(=O)[O-]",
+     "verdict": "close",
+     "score": 55,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Renderer draws only ONE localized acetate structure per form. The source (p18) and the compound's own name require a RESONANCE PAIR: two structures (C=O up in one, down in the other) joined by a double-headed straight arrow. The defining feature is absent.",
+       "severity": "major",
+       "fix": "Emit two resonance contributors linked by a double-headed arrow."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Negative charge shown as a plain superscript minus (O-); the source uses a circled minus (encircled - superscript).",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Bromoethane (ethene + HBr addition)",
+     "smiles": "CCBr",
+     "verdict": "match",
+     "score": 92,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "H-C(H)(H)-C(H)(H)-Br, horizontal backbone with all H shown and Br as the right-hand terminal label - matches the source addition product (p22) and Alcohol.pdf p4.",
+       "severity": "minor"
+      }
+     ]
+    }
+   ],
+   "source": "10 Introduction to Organic Chemistry.pdf"
+  },
+  {
+   "results": [
+    {
+     "name": "2-hydroxypropanenitrile (ethanal + HCN)",
+     "smiles": "CC(O)C#N",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Source (p24 Addition row) draws the addition product semi-condensed as HO-C(CH3)(H)-CN with the nitrile shown as -CN and OH on the left; our displayed shows every H plus an explicit C≡N triple bond. This is chemically more complete/correct, just more expanded than the source's own condensed drawing.",
+       "severity": "minor",
+       "fix": "Acceptable as-is; optionally offer a condensed HO-C(CH3)(H)-CN variant to sit closer to the source look."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Minor layout difference: source keeps OH to the left of the chiral C; our skeletal puts OH pointing down and C≡N up. Both are valid skeletal conventions.",
+       "severity": "minor",
+       "fix": "No change needed."
+      }
+     ]
+    },
+    {
+     "name": "Methylbenzene (benzene + CH3Cl substitution)",
+     "smiles": "Cc1ccccc1",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "The 'displayed' render is identical to the structural/skeletal (hexagon + inscribed circle + condensed CH3); it is not a true fully-displayed formula (no Kekulé bonds, no explicit C-H). This matches the source's own circle convention, so it reads authentically, but the three forms are not differentiated.",
+       "severity": "minor",
+       "fix": "For a genuine displayed formula draw the Kekulé ring with explicit H and CH3 as H-C-H; otherwise leave as-is since the source (p24) also uses the circle."
+      },
+      {
+       "form": "structural",
+       "aspect": "Primary source (this PDF p24) draws CH3 to the side (horizontal), which our render reproduces exactly. (Secondary Arene refs place CH3 at the top vertex, but the primary source form matches.)",
+       "severity": "minor",
+       "fix": "No change needed for this source."
+      }
+     ]
+    },
+    {
+     "name": "Bromobenzene (benzene + Br2)",
+     "smiles": "Brc1ccccc1",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "The 'displayed' render equals the skeletal/structural (hexagon + inscribed circle + upright Br); not a true displayed formula, but it matches the source's circle convention on p25 (Checkpoint 5 Q2), where Br is likewise drawn to the side in upright roman.",
+       "severity": "minor",
+       "fix": "No change needed; Br to the side and upright roman both match the primary source."
+      }
+     ]
+    },
+    {
+     "name": "1-chloro-4-methylcyclohexane",
+     "smiles": "CC1CCC(Cl)CC1",
+     "verdict": "close",
+     "score": 50,
+     "discrepancies": [
+      {
+       "form": "stereo",
+       "aspect": "1-chloro-4-methylcyclohexane is ACHIRAL. Its only stereoisomers are cis/trans diastereomers, and both are superimposable on their own mirror images (RDKit-confirmed: 2 stereoisomers, each achiral). The render marks it chiral and labels the pair 'enantiomers / non-superimposable mirror images', which is chemically false.",
+       "severity": "critical",
+       "fix": "Suppress enantiomer generation when every stereoisomer of a symmetric 1,4-disubstituted ring is achiral; if configuration must be shown, draw cis vs trans on the ring, not enantiomers."
+      },
+      {
+       "form": "stereo",
+       "aspect": "The stereo panel is visually broken: the right-hand enantiomer has a long bond slashing through the 'CH2CH2CH(Cl)CH2CH2' label and 'CH3' overprinting the ring chain, making it unreadable. The ring is drawn as two duplicated open condensed chains, so it reads as an acyclic di-chloro species rather than one ring bearing a single Cl.",
+       "severity": "critical",
+       "fix": "Render cyclic stereocentres on an actual ring skeleton using wedge/dash to the substituents; never open the ring into duplicated condensed chains, and resolve the label/bond collisions."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Skeletal/structural/displayed correctly reproduce the source p27 Q1(c): plain hexagon (no circle), Cl on the left and CH3 on the right in a 1,4 (para) arrangement. Only nit: Cl is upright roman, whereas the NJC source italicises the l (Cl).",
+       "severity": "minor",
+       "fix": "Italicise the halogen letter to match house style; the ring/substitution pattern is correct."
+      }
+     ]
+    },
+    {
+     "name": "1-(cyclohexa-2,4-dien-1-yl)ethanone",
+     "smiles": "CC(=O)C1C=CC=CC1",
+     "verdict": "close",
+     "score": 55,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Source p28 Q4(e) draws the acetyl group with an explicit carbonyl C=O pointing UP (ring-C(=O)-CH3). Our skeletal (and structural/displayed) condense it to a '-COCH3' label with no drawn C=O, failing both the source drawing and the house 'C=O points up' convention.",
+       "severity": "major",
+       "fix": "Draw the ketone carbonyl explicitly as a ring-attached vertex with a double bond to O pointing up, then CH3, instead of the condensed COCH3 label."
+      },
+      {
+       "form": "stereo",
+       "aspect": "Chirality classification is correct here (C1 is a genuine stereocentre), but the stereo panel is visually broken: the right enantiomer's bond slashes through the 'CH2CH=CHCH=CH' and 'COCH3' labels which overprint one another. The ring is opened into two duplicated condensed diene chains, reading as an acyclic species rather than a cyclohexa-2,4-diene ring.",
+       "severity": "major",
+       "fix": "Draw the stereocentre on the real cyclohexadiene ring with wedge/dash to H and the acetyl group; keep the C=O explicit and fix label/bond overlaps."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Ring connectivity (two conjugated ring C=C, sp3 substituted carbon) matches the source; only the carbonyl depiction is the issue.",
+       "severity": "minor",
+       "fix": "No change needed for the ring itself."
+      }
+     ]
+    },
+    {
+     "name": "Chlorocyclohexane -> cyclohexene (elimination)",
+     "smiles": "ClC1CCCCC1",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Matches source p28 Q4(f): plain hexagon (no circle) with -Cl on the right vertex; our render reproduces this in all three forms. Only nit: source italicises the l (Cl); our Cl is upright roman.",
+       "severity": "minor",
+       "fix": "Italicise the halogen letter to match house style."
+      }
+     ]
+    }
+   ],
+   "source": "10 Introduction to Organic Chemistry.pdf"
+  },
+  {
+   "source": "13 Alkene 2022.pdf",
+   "results": [
+    {
+     "name": "cis-1,2-dichloroethene",
+     "smiles": "Cl/C=C\\Cl",
+     "verdict": "close",
+     "score": 66,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "cis geometry only loosely conveyed: our render lays both Cl collinear with the C=C axis (Cl-C=C-Cl flat) and both H straight up, so bond angles are ~90 degrees rather than trigonal and the geometry is ambiguous. NJC (p2) draws both Cl on ~120-degree splayed bonds at the TOP (same side) with both H at the bottom.",
+       "severity": "major",
+       "fix": "Place the two like-substituents (Cl) on 120-degree splayed bonds on the SAME side (both up), H both down, instead of collinear with the double bond."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Cl set with an upright 'l'; NJC house style typesets it with an italic lowercase l (C + italic l).",
+       "severity": "minor",
+       "fix": "Use italic lowercase l in the Cl label."
+      }
+     ]
+    },
+    {
+     "name": "trans-1,2-dichloroethene",
+     "smiles": "Cl/C=C/Cl",
+     "verdict": "wrong",
+     "score": 44,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Does NOT show trans. The displayed pane is geometrically identical to our cis-1,2-dichloroethene render (Cl-C=C-Cl flat, both H up), so it reads as cis and a viewer cannot tell the two isomers apart. NJC (p2) draws Cl up-left and Cl down-right (opposite corners).",
+       "severity": "critical",
+       "fix": "Honour the E/Z of the SMILES (Cl/C=C/Cl) in the displayed layout: put the two Cl on OPPOSITE sides of the C=C (one up, one down). The skeletal pane already does this correctly and can be used as the geometry reference."
+      }
+     ]
+    },
+    {
+     "name": "cis-but-2-ene",
+     "smiles": "C/C=C\\C",
+     "verdict": "close",
+     "score": 62,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "cis geometry only loosely conveyed and wrong convention: our render fully displays both methyls (H-C with all H) and flattens the C=C (both vinyl H up, methyls collinear/horizontal). NJC combustion figure (p4) uses condensed H3C / CH3 labels on splayed sp2 bonds with both methyls on the SAME side (both down).",
+       "severity": "major",
+       "fix": "Condense the methyls to H3C / CH3 and place both on the same side on 120-degree bonds; do not lay them collinear with C=C."
+      }
+     ]
+    },
+    {
+     "name": "trans-but-2-ene",
+     "smiles": "C/C=C/C",
+     "verdict": "wrong",
+     "score": 46,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Does NOT show trans. The displayed pane is identical to our cis-but-2-ene render (flat CH3-CH=CH-CH3, both vinyl H up), so it reads as cis. NJC (p4) draws H3C and CH3 on OPPOSITE sides of the C=C.",
+       "severity": "critical",
+       "fix": "Respect the E/Z (C/C=C/C): put the two methyls on opposite sides of the double bond in the displayed layout (skeletal pane already shows the correct trans zig-zag)."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Convention: source uses condensed H3C / CH3 labels; ours fully displays every methyl H.",
+       "severity": "minor",
+       "fix": "Condense the methyls to match the NJC figure."
+      }
+     ]
+    },
+    {
+     "name": "1,2-dibromoethane",
+     "smiles": "BrCCBr",
+     "verdict": "match",
+     "score": 91,
+     "discrepancies": []
+    },
+    {
+     "name": "2-bromoethyl carbocation (reactive intermediate)",
+     "smiles": "[CH2+]CBr",
+     "verdict": "close",
+     "score": 78,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "The '+' charge is omitted in the skeletal pane (plain 2-carbon line to Br), so it reads as neutral bromoethane rather than a carbocation.",
+       "severity": "major",
+       "fix": "Render the '+' at the cationic (CH2+) terminus in the skeletal form."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Displayed cation is correct (+CH2-CH2Br, positive charge on the carbon not bearing Br). Source additionally draws the bromide ion :Br- with a lone pair as part of the 'slow' step; our single-species render omits it (acceptable).",
+       "severity": "minor",
+       "fix": "None required; optionally draw the counter-ion when rendering the mechanism step."
+      }
+     ]
+    },
+    {
+     "name": "2-bromoethanol (major product, bromine water)",
+     "smiles": "OCCBr",
+     "verdict": "match",
+     "score": 89,
+     "discrepancies": []
+    },
+    {
+     "name": "But-1-ene (asymmetrical alkene)",
+     "smiles": "C=CCC",
+     "verdict": "close",
+     "score": 80,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Convention differs from NJC p11: the source draws the reacting C=C as a splayed trigonal group with a CONDENSED CH2CH3 substituent (mixed displayed/condensed); our render fully displays the whole chain and draws the C=C flat and in-line. Molecule and connectivity are correct; terminal C=C is a terminal alkene so no cis/trans issue.",
+       "severity": "minor",
+       "fix": "Optionally condense the inert ethyl to CH2CH3 and splay the C=C at ~120 degrees to match the house figure. (Our skeletal pane already matches the pure-skeletal ref well.)"
+      }
+     ]
+    },
+    {
+     "name": "2-bromobutane (Markovnikov major)",
+     "smiles": "CCC(C)Br",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Source (p11) draws it with a condensed CH2CH3 tail (mixed displayed/condensed); ours fully displays all four carbons. Correct 2-bromobutane, different convention only.",
+       "severity": "minor",
+       "fix": "Condense the terminal ethyl to CH2CH3 to match NJC. Stereo/enantiomer pane is correct."
+      }
+     ]
+    },
+    {
+     "name": "1-bromobutane (Markovnikov minor)",
+     "smiles": "CCCCBr",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Source (p11) uses a condensed CH2CH3 tail; ours fully displays every carbon and H. Correct 1-bromobutane (Br on terminal carbon), different convention only.",
+       "severity": "minor",
+       "fix": "Condense the ethyl tail to match the NJC figure style."
+      }
+     ]
+    },
+    {
+     "name": "Secondary (2 degree) carbocation",
+     "smiles": "C[CH+]CC",
+     "verdict": "close",
+     "score": 76,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "No '+' charge shown; the skeletal pane is a plain butane zig-zag and reads as neutral butane, not a secondary carbocation.",
+       "severity": "major",
+       "fix": "Mark the cationic (secondary) carbon with '+' in the skeletal render."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Displayed pane correctly shows the 2-degree cation (CH+ with two alkyl groups and one H). Source (p11/p12) condenses the ethyl to CH2CH3 and places '+' beside C; ours fully displays and uses a superscript C+.",
+       "severity": "minor",
+       "fix": "Optionally condense the ethyl and place '+' beside C to match house style."
+      }
+     ]
+    },
+    {
+     "name": "2-bromobutane enantiomers (racemic pair)",
+     "smiles": "CC[C@@H](C)Br",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "stereo",
+       "aspect": "Wedge/hash assignments are swapped relative to NJC p12 (source: Br hashed/back, H bold-wedge/forward; ours: Br bold-wedge/forward, H hashed/back). Because this is a racemic PAIR of mirror images, the pair as a whole is chemically identical, so this is not an error. The mirror-plane dashed line, ethyl-up layout, one-wedge-one-hash per centre, and 'enantiomers' label all faithfully reproduce the source.",
+       "severity": "minor",
+       "fix": "None required; optionally match NJC's Br-back / H-forward assignment for visual parity."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "source": "13 Alkene 2022.pdf",
+   "results": [
+    {
+     "name": "1-methylcyclohex-1-ene",
+     "smiles": "CC1=CCCCC1",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Orientation differs: source draws a pointy-top hexagon with the methyl pointing straight UP from the apex and the C=C on the upper-right edge; our render is a flat-top hexagon with the methyl pointing horizontally right and the C=C on the lower-right edge. Connectivity is identical (methyl on the sp2 alkene carbon, C=C adjacent).",
+       "severity": "minor",
+       "fix": "Optional: rotate so the methyl points up to mirror the source; both are valid A-level skeletal forms."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Our 'displayed' and 'structural' panels are identical to the skeletal drawing (no C-H bonds shown). Source only used the skeletal form here, so not critical, but the displayed form is not truly displayed.",
+       "severity": "minor",
+       "fix": "For a genuine displayed form, expand ring CH2/CH groups to show all C-H bonds."
+      }
+     ]
+    },
+    {
+     "name": "2-methylpent-2-ene",
+     "smiles": "CCC=C(C)C",
+     "verdict": "close",
+     "score": 82,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Chemically correct but different layout from source. Source draws a 2D-splayed structure: (CH3)(CH3)C=C(CH2CH3)(H) with the two methyls, the ethyl and the H on splayed bonds around a displayed C=C. Our render is a linear condensed formula CH3-C(=CH-CH2-CH3) with the 2-methyl written above C2.",
+       "severity": "minor",
+       "fix": "To reproduce the source look, splay the four substituents around the C=C rather than writing a single horizontal condensed chain; both are valid."
+      }
+     ]
+    },
+    {
+     "name": "Ethane-1,2-diol (mild-oxidation product)",
+     "smiles": "OCCO",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Both are correct displayed forms but oriented differently. Source draws a horizontal C-C backbone with two H on each carbon (one up, one to the side) and 'OH' written as a group pointing DOWN from each carbon. Our render puts the two OH at the horizontal chain ends with explicit O-H bonds (H-O-CH2-CH2-O-H), H atoms up/down on the carbons.",
+       "severity": "minor",
+       "fix": "Match the source by drawing the C-C backbone horizontal with OH groups depending below each carbon; chemically equivalent either way."
+      }
+     ]
+    },
+    {
+     "name": "Ethanedioic (oxalic) acid",
+     "smiles": "O=C(O)C(=O)O",
+     "verdict": "close",
+     "score": 85,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "C=O-pointing-up convention is satisfied in both (good). Source draws both OH groups pointing DOWN (below the two carbons), matching the classic HOOC-COOH layout; our render places the two OH horizontally at the chain ends (HO-C(=O)-C(=O)-OH). Chemically identical.",
+       "severity": "minor",
+       "fix": "Optional: point the OH groups downward to mirror the source picture. Note the skeletal panel draws the two carboxyls anti (one C=O up, one down), which is also acceptable."
+      }
+     ]
+    },
+    {
+     "name": "1-methylcyclopenta-2,4-diene",
+     "smiles": "CC1C=CC=C1",
+     "verdict": "wrong",
+     "score": 52,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Constitutional-isomer mismatch. The source draws the methyl on an sp2 (double-bond) carbon (a 1-methylcyclopenta-1,3-diene): the ring's sp3 CH2 is the apex and the methyl-bearing carbon is part of a C=C. This is confirmed by the drawn cold-KMnO4 tetraol product, whose methyl-bearing carbon carries an OH. Our SMILES CC1C=CC=C1 places the methyl on the sp3 CH carbon with both C=C on the far edges, so the render depicts a different isomer than the notes.",
+       "severity": "major",
+       "fix": "Use a SMILES with the methyl on a double-bond carbon, e.g. CC1=CC=CC1 (1-methylcyclopenta-1,3-diene), to match the source substrate."
+      },
+      {
+       "form": "displayed",
+       "aspect": "displayed/structural panels are identical to the skeletal (ring H atoms not shown), and carry the same isomer error.",
+       "severity": "minor",
+       "fix": "After fixing the SMILES, optionally expand C-H bonds for a true displayed form."
+      }
+     ]
+    },
+    {
+     "name": "(cyclohex-1-en-1-yl)acetic acid (compound R)",
+     "smiles": "O=C(O)CC1=CCCCC1",
+     "verdict": "match",
+     "score": 87,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Connectivity matches source (cyclohexene C=C on the substituent-bearing edge, CH2-COOH chain off C1). Notation differs slightly: source writes the side chain as 'CH2COOH'; our render writes 'CH2C(=O)OH' (carbonyl made explicit).",
+       "severity": "minor",
+       "fix": "Optionally write the acid as COOH to match the source; both are acceptable A-level condensed labels."
+      },
+      {
+       "form": "displayed",
+       "aspect": "structural/displayed panels are identical to the skeletal (ring C-H bonds not shown). Source used skeletal only, so not critical.",
+       "severity": "minor",
+       "fix": "For a true displayed form, expand the ring CH/CH2 groups."
+      }
+     ]
+    },
+    {
+     "name": "Iodolactone (compound S)",
+     "smiles": "O=C1CC2(I)CCCCC2O1",
+     "verdict": "wrong",
+     "score": 15,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Structure is broken: the fused bicyclic gamma-lactone is NOT drawn. Our render shows a plain cyclohexane with a dangling condensed 'CH2C(=O)O' group off one carbon and a separate '-O' off the adjacent carbon; the 5-membered lactone ring is never closed. The iodine (I) is missing entirely, even though this is an iodolactone. The 'CH2' label is also clipped at the top. Source draws a clean cyclohexane fused to a 5-membered lactone with I on the angular ring-junction carbon (pointing up), the C=O external (right) and the ring O at the bottom.",
+       "severity": "critical",
+       "fix": "Render the fused bicyclic ring system (close the lactone ring joining C=O-CH2-C(I)...-CH-O) and place the I substituent on the ring-junction carbon; do not fall back to open-chain condensed labels."
+      },
+      {
+       "form": "stereo",
+       "aspect": "The stereo pair is garbled and illegible: two overlapping condensed strings (CH2C(=O)OCHCH2CH2CH2CH2 / CH(OC(=O)CH2)CH2CH2CH2CH2CHOC(=O)CH2) with scattered stray wedge/dash marks and a floating I. It does not depict the iodolactone or a valid enantiomer pair.",
+       "severity": "critical",
+       "fix": "Draw the ring skeleton once, then show the single stereocentre with one wedge/dash bond and its mirror image; do not emit overlapping ring-opened condensed text."
+      },
+      {
+       "form": "structural",
+       "aspect": "Same open-chain, ring-not-closed, iodine-missing errors as the skeletal form.",
+       "severity": "critical",
+       "fix": "Fix the ring-closure/iodine handling as above."
+      }
+     ]
+    },
+    {
+     "name": "Pent-2-ene (cis and trans)",
+     "smiles": "C/C=C/CC",
+     "verdict": "not_found_in_source",
+     "score": 30,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Pent-2-ene is not drawn at the cited reference. The referenced Q7b is a distinguishing-test question showing two DIFFERENT 4-carbon alkenes to be told apart, not cis/trans of one compound. Exact vector coordinates confirm each drawn chain has only 4 carbons: the left structure is but-1-ene (terminal C=C, CH2=CH-CH2-CH3) and the right is trans-but-2-ene (internal C=C, CH3-CH=CH-CH3). Our render draws pent-2-ene (5 carbons), which is correct for the given name/SMILES but does not appear in the source. The manifest ref/notes misidentify these Q7b structures.",
+       "severity": "major",
+       "fix": "Re-map this compound: the source location depicts but-1-ene and but-2-ene, not pent-2-ene; either correct the reference or drop this compound from the alkene set."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "results": [
+    {
+     "name": "Ethanol (elimination substrate / hydration product)",
+     "smiles": "CCO",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Terminal hydroxyl drawn as an explicit O-H bond (H-C-C-O-H) whereas Ch23 p1 draws it as a grouped 'OH' (H-C-C-OH). Chemically equivalent and the explicit O-H matches the p5 mechanism drawing, so acceptable; for an exact p1 match, render the terminal as a single '-OH' group.",
+       "severity": "minor",
+       "fix": "Optionally condense the terminal O-H to a grouped '-OH' label to mirror Ch23 page 1 exactly."
+      },
+      {
+       "form": "structural",
+       "aspect": "Condensed CH3-CH2-OH is correct A-level structural notation but is not the form the source used (source used the displayed comb layout); no error, just noting the source drew displayed.",
+       "severity": "minor",
+       "fix": "None needed; structural render is correct."
+      }
+     ]
+    }
+   ],
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf"
+  },
+  {
+   "source": "14 Arene 2022.pdf",
+   "results": [
+    {
+     "name": "Benzoic acid",
+     "smiles": "O=C(O)c1ccccc1",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Source (p2) writes 'COOH' as a condensed label above the top vertex of a hexagon+circle; our render is faithful in ring type and label spelling (COOH matches p2, not CO2H). Only difference is the substituent sits to the right instead of on top.",
+       "severity": "minor",
+       "fix": "Optionally place COOH on the top vertex to match the house top-substituent layout."
+      },
+      {
+       "form": "displayed",
+       "aspect": "All three columns are identical text-label renders; the displayed column keeps 'COOH' rather than breaking out the carbonyl. Acceptable since p2 also uses the condensed label, but it is not a true displayed carboxyl.",
+       "severity": "minor",
+       "fix": "For a genuine displayed form draw O=C(-OH) with C=O pointing up, as the notes do for the Birch reactant (7 Arenes p9)."
+      }
+     ]
+    },
+    {
+     "name": "Benzaldehyde",
+     "smiles": "O=Cc1ccccc1",
+     "verdict": "close",
+     "score": 70,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Rendered as condensed text 'CHO'. The primary source (14 Arene p2 and p3) NEVER writes 'CHO' as text in a structure; it always draws the aldehyde displayed as an O=C-H cluster with the C=O double bond pointing up/away from the ring and H to the right.",
+       "severity": "major",
+       "fix": "For the displayed form draw the O=C-H cluster (carbonyl up, H on the right, single bond down to the ring vertex) instead of the 'CHO' label."
+      },
+      {
+       "form": "structural",
+       "aspect": "Substituent placed to the right vs source's top-vertex placement; all three columns are identical. Condensed 'CHO' is a valid depiction (matches the secondary 7 Arenes convention) but not the primary source's look.",
+       "severity": "minor",
+       "fix": "Reserve 'CHO' for the condensed/skeletal columns only."
+      }
+     ]
+    },
+    {
+     "name": "Nitrobenzene",
+     "smiles": "O=[N+]([O-])c1ccccc1",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Faithful: hexagon+circle with condensed 'NO2' (subscript 2), charges not drawn, matching p2/memory-sheet convention. Substituent is to the right rather than on the top vertex.",
+       "severity": "minor",
+       "fix": "Optionally place NO2 on the top vertex to match house layout."
+      }
+     ]
+    },
+    {
+     "name": "2-phenylpropane (isopropylbenzene)",
+     "smiles": "CC(C)c1ccccc1",
+     "verdict": "match",
+     "score": 82,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Isopropyl rendered as a single-line 'CH(CH3)2'. Source p2 draws it as 'CH3' stacked over 'CHCH3'; p22 draws it displayed as H-C(-CH3)-CH3. Chemically equivalent but the exact house layout is not reproduced.",
+       "severity": "minor",
+       "fix": "Match p2 by stacking CH3 over CHCH3, or break out H-C(CH3)-CH3 for the displayed column."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Displayed column is identical to structural (not broken out into H-C(CH3)-CH3 as on p22).",
+       "severity": "minor",
+       "fix": "Differentiate the displayed column with explicit central-C bonds."
+      }
+     ]
+    },
+    {
+     "name": "Phenylethene (styrene)",
+     "smiles": "C=Cc1ccccc1",
+     "verdict": "close",
+     "score": 72,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Rendered as condensed text 'CH=CH2'. Source p2 draws the vinyl group DISPLAYED as an H2C=CH cluster with explicit 'C=C' letters, two parallel double-bond lines and H atoms.",
+       "severity": "major",
+       "fix": "For the displayed form draw the explicit H2C=CH cluster (C=C as two parallel lines, H atoms shown) as on p2; keep 'CH=CH2' only for condensed/skeletal."
+      },
+      {
+       "form": "structural",
+       "aspect": "Substituent to the right vs source top-vertex; all three columns identical.",
+       "severity": "minor",
+       "fix": "Reserve condensed 'CH=CH2' for condensed forms."
+      }
+     ]
+    },
+    {
+     "name": "1,2-dimethylbenzene",
+     "smiles": "Cc1ccccc1C",
+     "verdict": "match",
+     "score": 86,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Correct ortho pattern: CH3 on top vertex and CH3 on the adjacent upper-right vertex, hexagon+circle. Source p3 adds small position numbers 1,2 beside the vertices which our render omits.",
+       "severity": "minor",
+       "fix": "Optionally add the 1,2 locant digits to match the nomenclature figure."
+      }
+     ]
+    },
+    {
+     "name": "1-bromo-2-chlorobenzene",
+     "smiles": "Clc1ccccc1Br",
+     "verdict": "match",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Correct ortho pattern (Br pos 1, Cl pos 2). But 'Cl' is typeset with an upright lowercase l; the house convention on p3 typesets chlorine with an ITALIC lowercase l (C​l).",
+       "severity": "minor",
+       "fix": "Render the l in Cl italic to match the source's chlorine typography."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Position locants 1,2 shown in source are omitted; columns identical.",
+       "severity": "minor",
+       "fix": "Add locant digits if reproducing the naming figure."
+      }
+     ]
+    },
+    {
+     "name": "1-chloro-4-nitrobenzene",
+     "smiles": "O=[N+]([O-])c1ccc(Cl)cc1",
+     "verdict": "match",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Correct para pattern (Cl and NO2 on directly opposite vertices). Our layout is horizontal (Cl left, NO2 right); source p3 draws it vertically (Cl top pos 1, NO2 bottom pos 4). Para relationship preserved.",
+       "severity": "minor",
+       "fix": "Optionally orient Cl-top / NO2-bottom to match the source figure."
+      },
+      {
+       "form": "structural",
+       "aspect": "'Cl' uses an upright l; house convention uses an italic lowercase l.",
+       "severity": "minor",
+       "fix": "Italicise the l in Cl."
+      }
+     ]
+    },
+    {
+     "name": "3-nitrobenzoic acid",
+     "smiles": "O=C(O)c1cccc([N+](=O)[O-])c1",
+     "verdict": "close",
+     "score": 80,
+     "discrepancies": [
+      {
+       "form": "mixed",
+       "aspect": "Carboxyl written 'COOH'; the source figure for THIS exact compound (p3) spells it 'CO2H'. Meta (1,3) relationship and hexagon+circle are correct. Nitro drawn 'O2N' (reversed) is fine for a left-emerging bond.",
+       "severity": "minor",
+       "fix": "Use 'CO2H' to match the p3 drawing (the document uses both spellings, but this specific figure uses CO2H)."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Displayed column keeps carboxyl as a text label rather than the displayed O=C-OH cluster used for oxidation products on p17.",
+       "severity": "minor",
+       "fix": "Break out O=C-OH (C=O up) for the displayed column."
+      }
+     ]
+    },
+    {
+     "name": "Cyclohexene",
+     "smiles": "C1=CCCCC1",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Faithful: plain hexagon (correctly NO inscribed circle, distinguishing it from aromatic benzene) with one internal double-bond line. Source p7 places the inner line on the right edge; ours is on the lower-right edge, a trivial difference.",
+       "severity": "minor",
+       "fix": "None needed; optionally match the exact edge used in Table 1."
+      }
+     ]
+    },
+    {
+     "name": "Acyl chloride reagent (ethanoyl chloride, generic RCOCl)",
+     "smiles": "CC(=O)Cl",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Correct: fully displayed R-C(-Cl)=O with the C=O pointing straight UP, R (as CH3) on the left, Cl on the right, matching the primary source p8 acylation figure (the secondary carboxylic-acid source draws C=O down; primary is up, which we match).",
+       "severity": "minor",
+       "fix": "None on geometry."
+      },
+      {
+       "form": "structural",
+       "aspect": "'Cl' uses upright l (source uses italic l); the condensed 'CH3-CCl' cluster is slightly cramped where the carbonyl C and Cl abut.",
+       "severity": "minor",
+       "fix": "Italicise the l in Cl and add a little spacing so C-Cl reads clearly."
+      }
+     ]
+    },
+    {
+     "name": "(Chloromethyl)benzene",
+     "smiles": "ClCc1ccccc1",
+     "verdict": "match",
+     "score": 86,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Faithful: hexagon+circle with condensed 'CH2Cl' side chain, written left-to-right (not folded), matching p17. Source places CH2Cl on the top vertex; ours is to the right.",
+       "severity": "minor",
+       "fix": "Optionally place CH2Cl on the top vertex to match the free-radical-substitution figure."
+      },
+      {
+       "form": "structural",
+       "aspect": "'Cl' uses upright l; house convention (p17) uses an italic lowercase l.",
+       "severity": "minor",
+       "fix": "Italicise the l in Cl."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "source": "14 Arene 2022.pdf",
+   "results": [
+    {
+     "name": "1-methyl-4-nitrobenzene (para nitration product)",
+     "smiles": "Cc1ccc([N+](=O)[O-])cc1",
+     "verdict": "match",
+     "score": 87,
+     "discrepancies": [
+      {
+       "form": "condensed",
+       "aspect": "Orientation differs from source: notes (p16) draw the para isomer vertically with CH3 on the top vertex and NO2 on the bottom vertex; our render is horizontal (O2N on left, CH3 on right). Nitro is also written reversed as 'O2N' rather than the source's 'NO2'. Connectivity (para), hexagon+inscribed-circle convention and labels are all correct.",
+       "severity": "minor",
+       "fix": "Rotate to CH3-top / NO2-bottom vertical layout to match the notes; keep the standard reading direction of the NO2 label."
+      }
+     ]
+    },
+    {
+     "name": "1-methyl-2-nitrobenzene (ortho nitration product)",
+     "smiles": "Cc1ccccc1[N+](=O)[O-]",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "condensed",
+       "aspect": "Mirror/orientation difference: source (p16) puts CH3 on the top vertex with NO2 on the adjacent upper-right vertex; our render has NO2 on top and CH3 on the upper-right. Ortho relationship, hexagon+circle and NO2/CH3 labels are all correct.",
+       "severity": "minor",
+       "fix": "Swap so CH3 sits on the top vertex and NO2 on the adjacent vertex to mirror the notes drawing."
+      }
+     ]
+    },
+    {
+     "name": "Benzoate ion",
+     "smiles": "O=C([O-])c1ccccc1",
+     "verdict": "match",
+     "score": 93,
+     "discrepancies": []
+    },
+    {
+     "name": "4-nitrophenol",
+     "smiles": "O=[N+]([O-])c1ccc(O)cc1",
+     "verdict": "match",
+     "score": 87,
+     "discrepancies": [
+      {
+       "form": "condensed",
+       "aspect": "Orientation differs: the checkpoint reactant on p14 is drawn vertically (NO2 on the top vertex, OH on the bottom vertex); our render is horizontal (HO left, NO2 right). Para connectivity, hexagon+inscribed-circle convention and labels are correct (we write 'HO' vs source 'OH', both acceptable).",
+       "severity": "minor",
+       "fix": "Draw vertically with NO2 top / OH bottom to match the notes layout."
+      }
+     ]
+    },
+    {
+     "name": "Vanillin (4-hydroxy-3-methoxybenzaldehyde)",
+     "smiles": "COc1cc(C=O)ccc1O",
+     "verdict": "wrong",
+     "score": 30,
+     "discrepancies": [
+      {
+       "form": "condensed",
+       "aspect": "Methoxy group is rendered as a bare '-O' with the methyl dropped; the source (p20) clearly shows 'O-CH3'. As drawn our substituent is an incomplete/incorrect group (dangling oxygen).",
+       "severity": "critical",
+       "fix": "Render the methoxy fully as O-CH3 (or OCH3); do not collapse the methyl."
+      },
+      {
+       "form": "condensed",
+       "aspect": "Aldehyde is rendered as ambiguous 'HOC' with the atoms mis-ordered and no C=O double bond shown, which reads as a hydroxyl-bearing carbon (HO-C) rather than an aldehyde. Source draws it displayed as an O=C-H cluster.",
+       "severity": "major",
+       "fix": "Render the aldehyde as -CHO / OHC- with an explicit C=O (or as the displayed O=C-H cluster used in the notes)."
+      },
+      {
+       "form": "mixed",
+       "aspect": "All three form panels are identical and use a hexagon+inscribed circle; the real-life-context source draws the ring skeletally (no inscribed circle) with a displayed carbonyl. No genuinely distinct displayed/skeletal variant is produced.",
+       "severity": "minor",
+       "fix": "Differentiate the forms and, for this figure, match the notes' skeletal ring + displayed CHO style."
+      }
+     ]
+    },
+    {
+     "name": "3-phenylpropanoyl chloride (tutorial cpd A)",
+     "smiles": "O=C(Cl)CCc1ccccc1",
+     "verdict": "close",
+     "score": 74,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Source (p24, cpd A) draws a fully skeletal side chain: a zig-zag -CH2-CH2- backbone ending in a DISPLAYED carbonyl (C=O pointing down) with Cl. Our 'skeletal' panel instead keeps a condensed text chain 'CH2CH2C(=O)Cl' and does not show the C=O geometry. Connectivity is correct and the hexagon+inscribed-circle ring actually matches the source ring.",
+       "severity": "major",
+       "fix": "For the skeletal form, draw the -CH2-CH2- as bond vertices and a displayed C(=O)Cl with the O pointing down, as in the tutorial."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "The structural, displayed and skeletal panels are identical (all condensed) - no true skeletal or fully displayed rendering is generated.",
+       "severity": "minor",
+       "fix": "Produce distinct renderings per form."
+      }
+     ]
+    },
+    {
+     "name": "Indan-1-one (tutorial cpd B)",
+     "smiles": "O=C1CCc2ccccc21",
+     "verdict": "wrong",
+     "score": 15,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "The fused five-membered ring is not closed. The renderer split the ring-closure and drew two separate dangling chains on an ortho-disubstituted benzene ('CH2CH2C=O' and 'COCH2CH2'), which has unfilled valences and does not represent indan-1-one. Source (p24, cpd B) shows benzene fused to a closed cyclopentan-1-one with the ketone C=O pointing down.",
+       "severity": "critical",
+       "fix": "Handle fused ring systems: render benzene fused (sharing an edge) to a closed 5-membered ketone ring rather than opening the bond into two pendant chains."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Because the ring is not fused, the benzene is shown as an isolated hexagon+circle with pendant substituents instead of sharing an edge with the aliphatic ring.",
+       "severity": "major",
+       "fix": "Draw the shared fusion bond so the two rings are ortho-fused."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "source": "Alcohol.pdf",
+   "results": [
+    {
+     "name": "Primary (1) alcohol general template R-CH2-OH",
+     "smiles": "*CO",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Substituent layout differs from the NJC template: notes draw R left, OH right (horizontal R-C-OH) with the two H's vertical (top and bottom); our render rotates R to the top and puts an H on the left. Chemistry is correct (1 R + 2 H + OH = primary), only the arrangement differs.",
+       "severity": "minor",
+       "fix": "Place R horizontally to the left of the central C and OH to the right, with both H atoms vertical (up and down)."
+      },
+      {
+       "form": "displayed",
+       "aspect": "We expand the alcohol to C-O-H, but the source's displayed template writes the group condensed as 'OH' (C-OH).",
+       "severity": "minor",
+       "fix": "Optionally keep -OH as a condensed group to match the notes' house style."
+      }
+     ]
+    },
+    {
+     "name": "Secondary (2) alcohol general template R-CH(OH)-R'",
+     "smiles": "*C(*)O",
+     "verdict": "close",
+     "score": 82,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Both alkyl groups are labelled 'R'; the notes distinguish them as R and R' (primed) to signal they may differ.",
+       "severity": "minor",
+       "fix": "Prime the second wildcard so it renders as R'."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Layout differs from the NJC template (notes: H top, R left, OH right, R' bottom); our render puts R top, H left, R bottom, O-H right. Correct as a secondary carbon (one H shown), just rearranged, and second group unprimed.",
+       "severity": "minor",
+       "fix": "Match the notes' arrangement (H up, R left, OH right, R' down) and prime the second group."
+      }
+     ]
+    },
+    {
+     "name": "Tertiary (3) alcohol general template R-C(OH)(R')(R'')",
+     "smiles": "*C(*)(*)O",
+     "verdict": "close",
+     "score": 82,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "All three alkyl groups are labelled 'R'; the notes use R, R' and R'' to distinguish them.",
+       "severity": "minor",
+       "fix": "Prime the second and third wildcards (R', R'')."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Layout differs from the NJC template (notes: R'' top, R left, OH right, R' bottom); our render puts R top/left/bottom with O-H right. Correctly shows NO H on the central C (tertiary), only rearranged and unprimed.",
+       "severity": "minor",
+       "fix": "Match notes arrangement and add primes."
+      }
+     ]
+    },
+    {
+     "name": "Propan-1-ol",
+     "smiles": "CCCO",
+     "verdict": "match",
+     "score": 92,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "We draw bond dashes between the condensed groups (CH3-CH2-CH2-OH); the source (Checkpoint 1) writes it fully condensed on one line as CH3CH2CH2OH with no bonds.",
+       "severity": "minor",
+       "fix": "Offer a fully-condensed variant without inter-group bonds to match the notes."
+      }
+     ]
+    },
+    {
+     "name": "1-Cyclohexylethanol",
+     "smiles": "CC(O)C1CCCCC1",
+     "verdict": "close",
+     "score": 72,
+     "discrepancies": [
+      {
+       "form": "stereo",
+       "aspect": "The cyclohexyl ring is flattened into the nonsensical condensed label 'CH(CH2CH2CH2CH2CH2)2', which reads as a C11 acyclic group rather than a 6-membered ring; the ring is not drawn at all in the stereo pair.",
+       "severity": "major",
+       "fix": "Keep the ring as a hexagon in the stereo depiction; only the stereocentre substituents (H, OH, CH3) should carry wedge/dash, with the ring drawn normally."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Source (Checkpoint 1) draws the ring skeletal (hexagon) with the side-chain carbon DISPLAYED (C with H up, CH3 right, OH down); our render condenses the side chain to 'CH(OH)CH3'. Correct chemistry, less faithful to the notes' mixed skeletal+displayed style.",
+       "severity": "minor",
+       "fix": "Draw the stereocentre carbon out (H, CH3, OH at right angles) attached to a skeletal hexagon."
+      },
+      {
+       "form": "displayed",
+       "aspect": "The 'displayed' render is identical to the structural render (ring not expanded to show all H), so it does not read as a distinct displayed formula.",
+       "severity": "minor",
+       "fix": "Differentiate the displayed form or drop it for ring systems."
+      }
+     ]
+    },
+    {
+     "name": "Cyclopentylmethanol",
+     "smiles": "OCC1CCCC1",
+     "verdict": "close",
+     "score": 85,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Source draws the external CH2 as a bare skeletal vertex with only 'OH' at the terminus (pentagon-/\\-OH); our skeletal writes the group out as 'CH2OH'.",
+       "severity": "minor",
+       "fix": "In skeletal mode render the CH2 as a vertex and label only the terminal OH."
+      },
+      {
+       "form": "displayed",
+       "aspect": "All three forms (structural/displayed/skeletal) are identical; the displayed form does not show the ring H atoms, so it is not a true displayed formula.",
+       "severity": "minor",
+       "fix": "Make the displayed form distinct or omit it for ring systems."
+      }
+     ]
+    },
+    {
+     "name": "Decahydronaphthalen-4a-ol (fused bicyclic 3 alcohol)",
+     "smiles": "OC12CCCCC1CCCC2",
+     "verdict": "wrong",
+     "score": 15,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "The fused bicyclic (decalin) is NOT rendered. Only ONE hexagon is drawn; the second fused ring is opened into two dangling saturated chains (CH2CH2CH2CH2) and the OH is embedded in a chain ('OH2CH2CH2CH2') instead of sitting on the ring-fusion (4a) carbon. Wrong connectivity and wrong molecular formula. Source draws two hexagons sharing an edge with OH at the fusion carbon.",
+       "severity": "critical",
+       "fix": "Fix ring-closure handling for fused systems: decalin must render as two hexagons sharing an edge with -OH on the shared (4a) carbon."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Same failure: single hexagon + two pendant CH2 chains instead of fused decalin.",
+       "severity": "critical",
+       "fix": "Render both ring closures; do not linearise the second ring."
+      },
+      {
+       "form": "stereo",
+       "aspect": "Garbled: overlapping condensed chains with wedge/dash bonds crossing through text; ring destroyed and unreadable.",
+       "severity": "critical",
+       "fix": "Draw the fused-ring skeleton with a single wedge/dash at the stereocentre; do not overlap labels."
+      }
+     ]
+    },
+    {
+     "name": "Propane-1,3-diol",
+     "smiles": "OCCCO",
+     "verdict": "close",
+     "score": 85,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Our displayed formula is chemically correct and fully shows all bonds, but it is laid out linearly (H-O-CH2...CH2-O-H across the page). The source (Checkpoint 2a, blue) draws the backbone H-C-C-C-H horizontal with BOTH OH groups pointing DOWN from the terminal carbons.",
+       "severity": "minor",
+       "fix": "Draw the two OH substituents pendant (below) on C1 and C3 with an H-C-C-C-H horizontal backbone to match the notes' fill-in layout."
+      }
+     ]
+    },
+    {
+     "name": "2-Ethylcyclohexanol",
+     "smiles": "CCC1CCCCC1O",
+     "verdict": "close",
+     "score": 78,
+     "discrepancies": [
+      {
+       "form": "stereo",
+       "aspect": "The cyclohexane ring is flattened/opened into two condensed chains ('CH2CH2CH2CH2CHOH' and 'CH(OH)CH2CH2CH2CH2'); labels overlap and a bond line slashes through the text. Ring destroyed and unreadable.",
+       "severity": "major",
+       "fix": "Keep the hexagon intact in the stereo pair; place wedge/dash only on the stereocentre substituents."
+      },
+      {
+       "form": "mixed",
+       "aspect": "The source-used mixed form (hexagon with condensed OH on C1 and CH2CH3 on the adjacent C2) is reproduced well by our structural/displayed/skeletal renders; no issue there.",
+       "severity": "minor",
+       "fix": "None needed for the mixed form; only the stereo form needs fixing."
+      }
+     ]
+    },
+    {
+     "name": "Aldehyde general R-CHO",
+     "smiles": "*C=O",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "The C=O is drawn pointing up-LEFT (O diagonal) rather than straight up as the source draws it; still an acceptable 'up' orientation with the aldehyde H correctly implicit.",
+       "severity": "minor",
+       "fix": "Orient the C=O vertically (O directly above C) to match the notes exactly."
+      },
+      {
+       "form": "displayed",
+       "aspect": "H and R are on the opposite sides versus the source (source: R lower-left, H lower-right; ours mirrors them). Trivial mirror image.",
+       "severity": "minor",
+       "fix": "Match the source sides (R left, H right)."
+      }
+     ]
+    },
+    {
+     "name": "Ketone general R-CO-R'",
+     "smiles": "*C(*)=O",
+     "verdict": "match",
+     "score": 87,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Both alkyl groups are labelled 'R'; the source uses R and R' to indicate they may differ. C=O correctly points up, R lower-left / R' lower-right layout otherwise matches.",
+       "severity": "minor",
+       "fix": "Prime the second wildcard so it renders as R'."
+      }
+     ]
+    },
+    {
+     "name": "Carboxylic acid general R-COOH",
+     "smiles": "*C(=O)O",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Our displayed form expands the acid to H-O-C-R and mirrors the sides (R on the right). Source draws R lower-left, OH lower-right with C=O up. Structural and skeletal forms match the source arrangement closely; only the displayed is mirrored/expanded.",
+       "severity": "minor",
+       "fix": "Keep R lower-left and OH lower-right to mirror the notes."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "source": "Alcohol.pdf",
+   "results": [
+    {
+     "name": "2-Methylprop-1-ene (isobutylene)",
+     "smiles": "C=C(C)C",
+     "verdict": "not_found_in_source",
+     "score": 30,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Molecule mismatch: page 4 Checkpoint-3 electrophilic-addition reactant is 2-methylbut-2-ene (CH3-CH=C(CH3)2), which hydrates to the 2-methylbutan-2-ol product shown alongside. Our render depicts isobutylene (C4) - a different carbon skeleton (C5 vs C4). Isobutylene is not actually drawn anywhere in the source.",
+       "severity": "critical",
+       "fix": "Remap this manifest entry to 2-methylbut-2-ene, or render CH3CH=C(CH3)2 to match the page-4 reactant."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Style: source draws one methyl as a condensed 'CH3' label attached to an otherwise skeletal structure; our skeletal draws both methyls as bare skeletal line-ends with no label.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "But-2-ene (major) and but-1-ene",
+     "smiles": "CC=CC",
+     "verdict": "match",
+     "score": 82,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Our but-2-ene skeletal (internal C=C, two parallel lines, trans zig-zag) faithfully reproduces the source's red 'Major' product box on page 10.",
+       "severity": "minor"
+      },
+      {
+       "form": "skeletal",
+       "aspect": "The named compound also includes but-1-ene, which the source draws alongside (in the second box), but our render (SMILES CC=CC) shows only but-2-ene; the second isomer is not rendered.",
+       "severity": "minor",
+       "fix": "Render the but-1-ene isomer (C=CCC) as a companion structure to match the full source figure."
+      }
+     ]
+    },
+    {
+     "name": "Butan-2-ol",
+     "smiles": "CCC(C)O",
+     "verdict": "match",
+     "score": 87,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Our skeletal is drawn completely flat (no wedge/dash) matching the source's Checkpoint-6 reactant, which deliberately draws this chiral alcohol flat - correct choice (separate stereo form provided but not used, as the source doesn't use it).",
+       "severity": "minor"
+      },
+      {
+       "form": "skeletal",
+       "aspect": "OH points downward from the internal vertex in our render vs upward in the source; both are acceptable flat depictions.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Ester general R1CH2-O-CO-R2 (18-O labelled)",
+     "smiles": "*COC(*)=O",
+     "verdict": "close",
+     "score": 84,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Our skeletal (R-CH2-O-C(=O)-R, carbonyl explicit with C=O up, one CH2 between R and O) faithfully reproduces the source's expanded ester linkage and chain length on page 9.",
+       "severity": "minor"
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Source retains the 18-O isotope superscript on the ester oxygen (the whole pedagogical point of the figure - tracing the alcohol O into the C-O bond); our render shows a plain O (not derivable from the generic SMILES).",
+       "severity": "minor",
+       "fix": "For this specific mechanism figure, allow an isotope-labelled oxygen (18O) on the ester bridging oxygen."
+      }
+     ]
+    },
+    {
+     "name": "Propyl benzoate",
+     "smiles": "CCCOC(=O)c1ccccc1",
+     "verdict": "close",
+     "score": 65,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Source (page 10 'Ester prepared') draws the ester linkage EXPANDED as CH3CH2CH2-O-C(=O)-Ph with the carbonyl C=O pointing UP (key A-level convention shown in the notes); our render collapses it to condensed 'COOCH2CH2CH3', hiding the carbonyl.",
+       "severity": "major",
+       "fix": "Draw the ester group expanded as -O-C(=O)- with C=O up rather than condensed 'COO'."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Our 'displayed' form is identical to the structural form (condensed COOCH2CH2CH3) - it is not actually displayed.",
+       "severity": "major",
+       "fix": "Distinguish displayed from structural by expanding the ester carbonyl and O bridge."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Benzene correctly drawn as hexagon + inscribed circle, matching source; mirrored orientation (ring left vs right) is acceptable.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Acyl chloride general R'-CO-Cl",
+     "smiles": "*C(=O)Cl",
+     "verdict": "close",
+     "score": 82,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Our displayed form (Cl-C(=O)-R, C=O up, Cl and R on the two lower bonds) reproduces the source's trigonal carbonyl layout (page 9) well.",
+       "severity": "minor"
+      },
+      {
+       "form": "displayed",
+       "aspect": "Source draws Cl on a down-left diagonal bond and sets chlorine with an italic lower-case l ('Cl') to distinguish from iodine; our render uses a horizontal Cl in normal font.",
+       "severity": "minor",
+       "fix": "Use italic lower-case l for chlorine to match house convention; optionally angle Cl down-left."
+      },
+      {
+       "form": "structural",
+       "aspect": "Our structural form renders 'R-CCl' with the C and Cl run together ('CCl'), which is cramped and ambiguous.",
+       "severity": "minor",
+       "fix": "Insert a bond/space so the carbonyl C and Cl read separately (R-C(=O)-Cl)."
+      }
+     ]
+    },
+    {
+     "name": "Methyl carbinol fragment CH3-CH(OH)-R",
+     "smiles": "*C(C)O",
+     "verdict": "close",
+     "score": 80,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Our displayed form shows the correct central carbon bonded to OH, CH3, H and R, but the orientation differs from the source (page 16 dashed box: OH up, CH3 right, H down, R left; ours: R up, OH right, H down, CH3 left) - chemically equivalent, rotated/mirrored.",
+       "severity": "minor",
+       "fix": "Orient with OH up, CH3 right, H down, R left to mirror the notes' methyl-carbinol motif."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Source flags the fragment inside a dashed box (reactive substructure for the iodoform test); our render has no box (context annotation only).",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Methyl carbonyl fragment CH3-CO-R",
+     "smiles": "*C(C)=O",
+     "verdict": "close",
+     "score": 80,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "C=O correctly drawn up. Source (page 16/17 dashed box) keeps CH3 as a condensed label with R on the LEFT and CH3 lower-right; our displayed expands CH3 to H-C-H and places CH3 left / R right (mirror). Our own structural form actually matches the source's condensed look more closely.",
+       "severity": "minor",
+       "fix": "Orient R left, CH3 lower-right to mirror the notes' methyl-carbonyl motif."
+      },
+      {
+       "form": "displayed",
+       "aspect": "No dashed box flagging the reactive substructure (context annotation).",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Carboxylate ion / salt R-COO(-)",
+     "smiles": "*C(=O)[O-]",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Our skeletal (R lower-left, C=O up, O(-) lower-right with superscript minus) reproduces the source's iodoform-product carboxylate (pages 16-17) essentially exactly.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Triiodomethyl ketone intermediate R-CO-CI3",
+     "smiles": "*C(=O)C(I)(I)I",
+     "verdict": "close",
+     "score": 64,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "The triiodomethyl carbon is condensed as 'Cl3', which reads as a chloride (Cl with subscript 3), NOT the intended 'CI3' (carbon bonded to three iodines). This is exactly the C-I vs italic-l ambiguity the source avoids by writing iodine with a capital I; the renderer has dropped the carbon and drawn iodine as lower-case l.",
+       "severity": "critical",
+       "fix": "Render the triiodomethyl carbon as explicit C with three capital-I iodines, or as 'CI3' with a clear capital I - never 'Cl3'."
+      },
+      {
+       "form": "displayed",
+       "aspect": "Displayed and skeletal forms correctly show C=O up with three explicit capital-I iodines, matching the source's mechanism (page 17) convention.",
+       "severity": "minor"
+      }
+     ]
+    },
+    {
+     "name": "Phenylmethanol (benzyl alcohol)",
+     "smiles": "OCc1ccccc1",
+     "verdict": "close",
+     "score": 63,
+     "discrepancies": [
+      {
+       "form": "displayed",
+       "aspect": "Source (page 14, MCQ option A) draws the benzylic carbon DISPLAYED as -C(H)(H)-OH with both H's explicit (H up, H down) and OH to the right; our 'displayed' form writes the condensed 'CH2OH' and is identical to the structural form.",
+       "severity": "major",
+       "fix": "Expand the CH2 in the displayed form to show the two explicit C-H bonds (H up, H down) with OH to the right."
+      },
+      {
+       "form": "structural",
+       "aspect": "Benzene correctly drawn as hexagon + inscribed circle and molecule/connectivity correct across all forms.",
+       "severity": "minor"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "results": [
+    {
+     "name": "Propanone",
+     "smiles": "CC(C)=O",
+     "verdict": "match",
+     "score": 92,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Notes (p6) draw the carbonyl reactant as R-C-R with the two alkyls horizontal (T-shape) and O straight up; our render angles one methyl downward into a trigonal layout. Both keep C=O pointing UP with condensed CH3 labels, so it reads authentically. (p7 also shows an alternative horizontal C=O; ours matches the p6 C=O-up convention.)",
+       "severity": "minor",
+       "fix": "Optional: place both CH3 groups horizontally either side of the central C to mirror the notes' R-C-R layout."
+      }
+     ]
+    },
+    {
+     "name": "Halogenobenzene (chloro/bromobenzene)",
+     "smiles": "Clc1ccccc1",
+     "verdict": "match",
+     "score": 88,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Notes attach the substituent to the TOP vertex with a vertical bond; our render attaches Cl to a side vertex with a horizontal bond. Ring is a correct hexagon + inscribed circle and it is the same monosubstituted benzene.",
+       "severity": "minor",
+       "fix": "Rotate the ring so the substituent sits on the top vertex to match the vertex-up house style."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "Source uses a generic 'X' label; ours shows the specific 'Cl'. Acceptable instantiation of chloro/bromobenzene, just not the generic scheme label.",
+       "severity": "minor",
+       "fix": "None required; optionally label 'X' to match the generic reaction scheme."
+      }
+     ]
+    },
+    {
+     "name": "2-halotoluene (ortho product)",
+     "smiles": "Cc1ccccc1Cl",
+     "verdict": "match",
+     "score": 87,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Notes draw a vertex-up ring with CH3 on the top vertex and X on the adjacent (ortho) vertex; our render places Cl on the top vertex and CH3 on the ortho vertex. The 1,2 (ortho) relationship and hexagon+circle are correct.",
+       "severity": "minor",
+       "fix": "Put CH3 on the top vertex and the halogen on the ortho vertex to match the notes' orientation."
+      }
+     ]
+    },
+    {
+     "name": "4-halotoluene (para product)",
+     "smiles": "Cc1ccc(Cl)cc1",
+     "verdict": "match",
+     "score": 86,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Notes draw para vertically (vertex-up ring, CH3 on top vertex, X on bottom vertex); our render draws it horizontally (Cl left vertex, CH3 right vertex). The 1,4 (para) relationship and hexagon+circle are correct.",
+       "severity": "minor",
+       "fix": "Rotate to a vertical vertex-up layout with CH3 on top and X on the bottom vertex."
+      }
+     ]
+    },
+    {
+     "name": "2,4,6-tribromophenol",
+     "smiles": "Oc1c(Br)cc(Br)cc1Br",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "Notes orient OH on the top vertex with Br on the two upper (2,6) vertices and the bottom (4) vertex; our render rotates the ring ~90 deg so OH sits on the right vertex. The 2,4,6-tribromo pattern and hexagon+inscribed circle are correct, and ours correctly uses Br rather than generic X.",
+       "severity": "minor",
+       "fix": "Rotate so OH sits on the top vertex to match the notes' vertex-up orientation."
+      }
+     ]
+    },
+    {
+     "name": "2-halophenol / 4-halophenol pair",
+     "smiles": "Oc1ccccc1Cl",
+     "verdict": "close",
+     "score": 62,
+     "discrepancies": [
+      {
+       "form": "skeletal",
+       "aspect": "The source item is a PAIR: the ortho product (OH top, X ortho) AND the para product (OH top, X bottom) drawn side by side joined with '&'. Our render shows only the ortho isomer; the para isomer and the '&' pairing are absent, so it does not reproduce the notes' two-structure entry.",
+       "severity": "major",
+       "fix": "Render both the 2-halophenol and 4-halophenol joined by '&' as the notes do; the single SMILES only encodes the ortho product, so a second molecule/SMILES is needed."
+      },
+      {
+       "form": "skeletal",
+       "aspect": "The drawn ortho structure itself (OH and Cl ortho, hexagon+inscribed circle) is correct, but uses specific 'Cl' where the notes use generic 'X'.",
+       "severity": "minor",
+       "fix": "None needed for the ortho structure; optionally use 'X' to match the generic scheme."
+      }
+     ]
+    },
+    {
+     "name": "Cyanohydrin (2-hydroxynitrile)",
+     "smiles": "CC(C)(O)C#N",
+     "verdict": "match",
+     "score": 90,
+     "discrepancies": [
+      {
+       "form": "structural",
+       "aspect": "Notes (p6) draw the product with the OH branch UP and the R branch DOWN on the central C; our render puts OH down and the two methyls up. Because both R = CH3 this is equivalent. Central quaternary C, OH branch, methyls, and the C≡N triple bond (three parallel lines) are all drawn correctly.",
+       "severity": "minor",
+       "fix": "Optional: draw the OH branch pointing up to mirror the notes' branch orientation."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "synth": {
+  "total_compared": 100,
+  "verdict_counts": {
+   "match": 50,
+   "close": 40,
+   "wrong": 8,
+   "not_found": 2
+  },
+  "per_form_quality": [
+   {
+    "form": "structural",
+    "assessment": "Generally faithful for connectivity and condensed labels (matches source in the majority of arenes and chains). Chief weakness is that it is rarely a genuinely distinct form: it usually clones the skeletal render (hexagon + inscribed circle), and it occasionally garbles condensed groups (triiodomethyl 'CI3' printed as 'Cl3', cramped 'C-Cl'). Reliable for connectivity, weak as an independent representation."
+   },
+   {
+    "form": "displayed",
+    "assessment": "Conceptually the weakest 2-D form and the highest-impact target. Frequently NOT truly displayed: collapses carbonyls/esters/vinyl/CHO to condensed text, reuses the skeletal hexagon+circle, and critically fails E/Z so cis and trans look identical. When it does draw every atom (ethane, ethene, ethyne, bromoethane, ethanoic acid) it matches the notes well."
+   },
+   {
+    "form": "skeletal",
+    "assessment": "The strongest and most dependable form. Zig-zags, C=C placement, and the plain-hexagon (aliphatic) vs hexagon+circle (aromatic) distinction are consistently correct, and it correctly encodes E/Z where the displayed form does not. Weaknesses: omits '+' charges on carbocations (reads as neutral), fails to close fused rings, and differs in flat-top vs pointy-top orientation."
+   },
+   {
+    "form": "stereo",
+    "assessment": "The most broken form. Works for simple acyclic single-stereocentre cases (lactic acid, 2-bromobutane, alanine), but for rings and multi-stereocentre molecules it opens rings into overlapping condensed chains, lets wedge/dash bonds slash through atom labels (illegible), and emits enantiomer pairs even for achiral molecules or with the wrong stereocentre count. Needs the most engineering."
+   }
+  ],
+  "systematic_issues": [
+   {
+    "issue": "Displayed form collapses functional groups/carbonyls to inline condensed text instead of drawing explicit atoms and bonds, so a 'displayed formula' hides the very atoms it should show (amide, ester, aldehyde CHO, vinyl, acetyl COCH3); in the worst case a triiodomethyl carbon collapses to a chloride-like 'Cl3' and vanillin's methoxy drops its methyl to a dangling '-O'.",
+    "forms": "displayed, structural",
+    "frequency": 9,
+    "priority": "high",
+    "fix": "In displayed mode expand every functional group to explicit atoms/bonds: draw C=O as a vertical (up) double bond, aldehyde as O=C-H, ester as -O-C(=O)-, vinyl as H2C=CH; render the triiodomethyl carbon as an explicit C bonded to three capital-I iodines (never 'Cl3'), and never drop a substituent atom (methoxy = O-CH3)."
+   },
+   {
+    "issue": "Fused and substituted rings are not closed: the engine opens the ring into duplicated dangling condensed chains and drops substituents, so decalin, indan-1-one and the iodolactone render as an open hexagon with pendant CH2 strings (iodine missing entirely).",
+    "forms": "skeletal, structural, stereo",
+    "frequency": 8,
+    "priority": "high",
+    "fix": "Implement proper ring perception and closure so all rings, including fused/bridged bicyclics, render as closed polygons sharing the fusion edge with substituents kept on the correct ring carbon; never linearise a ring into condensed text as a fallback."
+   },
+   {
+    "issue": "Stereo/enantiomer panels are illegible and sometimes chemically false: condensed labels overlap, wedge/dash bonds slash through atom text, and enantiomer pairs are generated even for achiral molecules (1-chloro-4-methylcyclohexane) or where the drawn atom is not a stereocentre / the stereocentre count is misrepresented.",
+    "forms": "stereo",
+    "frequency": 8,
+    "priority": "high",
+    "fix": "In stereo mode draw the parent skeleton exactly once, place a single wedge+dash pair only on genuine stereocentres, run an RDKit chirality/symmetry check to suppress enantiomer pairs when every stereoisomer is achiral (draw cis/trans instead) or the stereocentre count is wrong, and add collision avoidance so bonds never cross atom labels."
+   },
+   {
+    "issue": "Manifest data errors upstream of the renderer: a SMILES encodes the wrong constitutional isomer (3-chlorocyclohexanol drawn as the 4-chloro/para isomer; cyclopentadiene methyl on the wrong carbon), a name disagrees with its structure (2-bromobutan-1-ol is really 3-bromo), or the compound is absent from the cited source (pent-2-ene, 2-methylprop-1-ene).",
+    "forms": "skeletal",
+    "frequency": 5,
+    "priority": "high",
+    "fix": "Add a pre-render validation step reconciling each manifest SMILES with its IUPAC name and the cited source figure (RDKit canonicalisation + locant check): correct 3-chlorocyclohexanol to OC1CC(Cl)CCC1, fix the cyclopentadiene methyl position, rename 2-bromobutan-1-ol, and drop or remap compounds not actually drawn in the source."
+   },
+   {
+    "issue": "E/Z geometry is lost in the displayed form: cis and trans isomers render identically (both Cl or both CH3 laid collinear with the C=C), so a viewer cannot tell the two isomers apart.",
+    "forms": "displayed",
+    "frequency": 4,
+    "priority": "high",
+    "fix": "Honour the SMILES double-bond stereo in the displayed layout by placing like substituents on the same side (cis) or opposite sides (trans) on ~120-degree trigonal bonds; the skeletal pane already encodes E/Z correctly and can be used as the geometry reference."
+   },
+   {
+    "issue": "The three forms are not differentiated: displayed and structural panels are byte-identical to the skeletal render (typically a bare hexagon + inscribed circle or bare pentagon), so the 'displayed' form shows no explicit atoms or bonds and a circle is not a valid displayed formula.",
+    "forms": "displayed, structural",
+    "frequency": 16,
+    "priority": "med",
+    "fix": "Generate a genuinely distinct displayed formula (Kekule ring with every C-H for arenes, expanded CH2/CH for saturated rings) rather than cloning the skeletal drawing; reserve the inscribed circle for the aromatic skeletal form only."
+   },
+   {
+    "issue": "Formal charges are omitted or misplaced, especially in the skeletal pane: carbocations lose the '+' and read as neutral alkanes, and the cyanate '-' sits on the wrong terminal atom.",
+    "forms": "skeletal, displayed",
+    "frequency": 4,
+    "priority": "med",
+    "fix": "Propagate formal charges to every form so carbocations show '+' in skeletal, place the cyanate '-' on the correct terminal atom, and render the anionic minus as the notes' circled minus."
+   },
+   {
+    "issue": "Resonance sets and side-by-side paired figures render as a single structure: the ethanoate resonance pair, the ortho/para '&' halophenol pair, and the but-2-ene/but-1-ene pair each lose their second structure.",
+    "forms": "displayed, skeletal",
+    "frequency": 3,
+    "priority": "med",
+    "fix": "When a manifest entry denotes a resonance set or a paired figure, emit all contributors linked by a double-headed arrow (ethanoate) or both molecules joined by '&' (2-/4-halophenol), and render companion isomers alongside (but-1-ene with but-2-ene)."
+   },
+   {
+    "issue": "Benzene-ring orientation differs from the notes: the principal substituent sits on a side vertex rather than the top vertex, para/ortho pairs are drawn horizontally instead of vertically, and hexagons are flat-top where the house default is pointy-top.",
+    "forms": "skeletal, structural",
+    "frequency": 18,
+    "priority": "low",
+    "fix": "Default arene rings to pointy-top (vertex-up) with the principal substituent on the top vertex and para/ortho pairs oriented vertically, to match the house layout."
+   },
+   {
+    "issue": "Chlorine's 'l' is typeset as an upright roman letter instead of the house italic lowercase l.",
+    "forms": "structural, displayed, skeletal",
+    "frequency": 8,
+    "priority": "low",
+    "fix": "Typeset the halogen letter in Cl with an italic lowercase l to match NJC house typography."
+   },
+   {
+    "issue": "Carboxyl spelling does not track the specific source figure: 'COOH' is used where that exact figure writes 'CO2H' (and vice versa).",
+    "forms": "structural, displayed",
+    "frequency": 3,
+    "priority": "low",
+    "fix": "Carry the exact acid spelling (COOH vs CO2H) from the source figure per compound rather than applying a single global default."
+   }
+  ]
+ }
+}

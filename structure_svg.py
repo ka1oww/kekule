@@ -95,10 +95,10 @@ def draw_svg_inner(atoms, bonds, circles=None, reversible=None, font=FONT_NAME):
     elems, W, H, px = _geom_and_elems(atoms, bonds, circles, reversible, font)
     return ''.join(elems), W, H, px
 
-def render_svg(smiles, font=FONT_NAME):
-    a, b, c, rev = layout(smiles)
+def render_svg(smiles, font=FONT_NAME, form='structural', angles='comb'):
+    a, b, c, rev = layout(smiles, form, angles)
     return draw_svg(a, b, c, rev, font)
 
-def render_svg_inner(smiles, font=FONT_NAME):
-    a, b, c, rev = layout(smiles)
+def render_svg_inner(smiles, font=FONT_NAME, form='structural', angles='comb'):
+    a, b, c, rev = layout(smiles, form, angles)
     return draw_svg_inner(a, b, c, rev, font)

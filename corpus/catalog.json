@@ -1,0 +1,2165 @@
+{
+ "count": 270,
+ "structures": [
+  {
+   "name": "Urea",
+   "smiles": "NC(=O)N",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 1,
+   "notes": "Wohler-synthesis product. Drawn H2N-C(=O)-NH2 horizontal; carbonyl C=O points straight UP (two parallel vertical lines). Heteroatom H shown (NH2)."
+  },
+  {
+   "name": "Cyanate ion (in ammonium cyanate)",
+   "smiles": "[O-]C#N",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 1,
+   "notes": "O-C(triple)N drawn with three parallel lines for the triple bond; charges as superscript +/- (NH4+ , cyanate -)."
+  },
+  {
+   "name": "Paracetamol",
+   "smiles": "CC(=O)Nc1ccc(O)cc1",
+   "form": "mixed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 1,
+   "notes": "Real drug example. Benzene = hexagon with inscribed CIRCLE, para substituents drawn horizontally (HO- on left, amide on right). Amide C=O points UP; N-H shown. Mix of ring-skeletal + condensed group labels."
+  },
+  {
+   "name": "DDT (dichlorodiphenyltrichloroethane)",
+   "smiles": "ClC(Cl)(Cl)C(c1ccc(Cl)cc1)c1ccc(Cl)cc1",
+   "form": "mixed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 1,
+   "notes": "Two benzene rings each hexagon+inscribed circle; CCl3 drawn out with three C-Cl; chlorine written with ITALIC lowercase l (Cl)."
+  },
+  {
+   "name": "Ethane (saturated example)",
+   "smiles": "CC",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 4,
+   "notes": "Textbook 'saturated' illustration: H-C-C-H with all four peripheral H shown on right-angle (orthogonal) bonds, not zig-zag."
+  },
+  {
+   "name": "Ethene (unsaturated example)",
+   "smiles": "C=C",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 4,
+   "notes": "'Unsaturated' illustration: H2C=CH2, C=C as two parallel lines, all H shown."
+  },
+  {
+   "name": "Benzene",
+   "smiles": "c1ccccc1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 4,
+   "notes": "Working symbol throughout = hexagon with inscribed CIRCLE (delocalised). Also shown as e.g. under 'Aromatic compounds/Arenes' and the Arene functional group (p7)."
+  },
+  {
+   "name": "Cyclohexane",
+   "smiles": "C1CCCCC1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 4,
+   "notes": "Plain hexagon, NO circle (distinguishes it from benzene). Vertex-up (pointy-top) orientation."
+  },
+  {
+   "name": "Lactic acid - condensed form",
+   "smiles": "CC(O)C(=O)O",
+   "form": "condensed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 5,
+   "notes": "Written CH3CH(OH)CO2H. Acid group spelled CO2H (not COOH) in the condensed column. One of four side-by-side forms of the same molecule."
+  },
+  {
+   "name": "Lactic acid - displayed/full structural form",
+   "smiles": "CC(O)C(=O)O",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 5,
+   "notes": "Every atom and bond drawn: backbone H-C-C-C horizontal, all C-H and O-H shown, carbonyl C=O up."
+  },
+  {
+   "name": "Lactic acid - skeletal form",
+   "smiles": "CC(O)C(=O)O",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 5,
+   "notes": "Zig-zag; line termini = C; no C-H shown; carbonyl C=O points UP; two OH labels shown (heteroatom H kept)."
+  },
+  {
+   "name": "Lactic acid - stereochemical form (optical isomers)",
+   "smiles": "C[C@@H](O)C(=O)O",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 5,
+   "notes": "Drawn twice as a mirror-image pair. CH3 up (plain bond), H to left (plain), OH on hashed/dashed bond (into plane) and CO2H; wedge=out of plane, dash=into plane."
+  },
+  {
+   "name": "2-bromobutan-1-ol",
+   "smiles": "OCCC(Br)C",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 6,
+   "notes": "Condensed CH3CH(Br)CH2CH2OH. Skeletal: Br substituent drawn UP off the chain, OH label at the right chain terminus."
+  },
+  {
+   "name": "Buta-1,3-diene",
+   "smiles": "C=CC=C",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 6,
+   "notes": "Condensed CH2=CHCH=CH2. Two C=C drawn as the second line on alternate zig-zag edges."
+  },
+  {
+   "name": "Benzene - Kekule structural formula",
+   "smiles": "C1=CC=CC=C1",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 6,
+   "notes": "In the ring-representation table benzene 'Structural Formula' = hexagon with three ALTERNATING C=C double bonds and every C-H drawn; its 'Skeletal Formula' = hexagon + inscribed circle. Cyclohexane shown analogously (all-H hexagon vs plain hexagon)."
+  },
+  {
+   "name": "Capsaicin",
+   "smiles": "COc1cc(CNC(=O)CCCC/C=C/C(C)C)ccc1O",
+   "form": "mixed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Skeletal real molecule with functional groups boxed and labelled: phenol (HO on ring), ether (O-CH3), amide (N-H, C=O), alcohol (OH), alkene (C=C). Ring = hexagon + circle."
+  },
+  {
+   "name": "Carboxylic acid functional-group template",
+   "smiles": "",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Drawn -C(=O)-OH with C=O UP; labelled 'Carboxylic acid', suffix -oic acid (p10). So displayed form uses -C(=O)-OH though condensed uses CO2H/COOH."
+  },
+  {
+   "name": "Ester functional-group template",
+   "smiles": "",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Drawn -C(=O)-O-CH3 (explicit carbonyl, i.e. -COO-); suffix (alk)yl ...-oate. Condensed elsewhere as -COOCH2CH3 / -OCOCH2CH3."
+  },
+  {
+   "name": "Acyl chloride functional-group template",
+   "smiles": "",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Drawn -C(=O)-Cl with C=O UP; labelled 'Acyl chloride' (p7) / 'acyl halide' -oyl halide (p10). Cl italic."
+  },
+  {
+   "name": "Amide functional-group template",
+   "smiles": "",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Drawn -C(=O)-N(-H)- with C=O UP and N-H shown below; suffix -amide."
+  },
+  {
+   "name": "Nitrile functional-group template",
+   "smiles": "",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Drawn -C(triple)N (three parallel lines); condensed -CN; prefix cyano-, suffix -nitrile."
+  },
+  {
+   "name": "Phenol functional-group template",
+   "smiles": "Oc1ccccc1",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Benzene hexagon+circle with -OH attached; labelled Phenol."
+  },
+  {
+   "name": "Phenylamine functional-group template",
+   "smiles": "Nc1ccccc1",
+   "form": "structural",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 7,
+   "notes": "Benzene hexagon+circle with -NH2 attached; labelled Phenylamine (aryl amine)."
+  },
+  {
+   "name": "2-bromopropanoic acid",
+   "smiles": "CC(Br)C(=O)O",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 8,
+   "notes": "Backbone horizontal CH3-C-C-OH; principal group (COOH) at RIGHT end; carbonyl C=O up; Br substituent drawn DOWN; H drawn up on the middle C."
+  },
+  {
+   "name": "Cyclopentane",
+   "smiles": "C1CCCC1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 8,
+   "notes": "Plain pentagon, vertex/point at top."
+  },
+  {
+   "name": "4-bromo-2,5-dimethylheptanoic acid",
+   "smiles": "CCC(C)C(Br)CC(C)C(=O)O",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 12,
+   "notes": "Worked naming example. Horizontal 7-C chain, COOH condensed at RIGHT terminus, methyls drawn UP, Br/H drawn DOWN, chain numbered from the acid end."
+  },
+  {
+   "name": "3-chlorocyclohexanol",
+   "smiles": "OC1CCC(Cl)CC1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 13,
+   "notes": "Skeletal hexagon, ring positions numbered 1-6; OH at C1 (upper right), Cl at C3 (upper left). Cl italic."
+  },
+  {
+   "name": "2,2-dimethylbutanal",
+   "smiles": "CCC(C)(C)C=O",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 13,
+   "notes": "Skeletal aldehyde: here the carbonyl =O is drawn to the SIDE (horizontal double bond at chain terminus) rather than up; gem-dimethyl on C2."
+  },
+  {
+   "name": "2-aminopropanoic acid (alanine)",
+   "smiles": "CC(N)C(=O)O",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 13,
+   "notes": "Skeletal: carbonyl C=O points UP, OH lower-right, H2N- written on the LEFT, CH3 down. Drawn NEUTRAL (not as a zwitterion)."
+  },
+  {
+   "name": "Methane (3-D)",
+   "smiles": "C",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 18,
+   "notes": "Tetrahedral 3-D depiction: two plain C-H bonds plus one bold WEDGE H (out of plane) and one hashed/DASH H (into plane)."
+  },
+  {
+   "name": "Ethyne",
+   "smiles": "C#C",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 18,
+   "notes": "H-C(triple)C-H drawn linear with three parallel lines for the triple bond."
+  },
+  {
+   "name": "Ethanoic acid (labelled)",
+   "smiles": "CC(=O)O",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 19,
+   "notes": "H-C(H)(H)-C(=O)-O-H, backbone horizontal, C1/C2 labelled; carbonyl C=O up, acid at RIGHT."
+  },
+  {
+   "name": "Ethanoate ion (resonance pair)",
+   "smiles": "CC(=O)[O-]",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 20,
+   "notes": "Two resonance structures joined by a double-headed straight arrow; negative charge shown as a CIRCLED minus (superscript) on O; C=O drawn up in one form, down in the other."
+  },
+  {
+   "name": "Benzene resonance hybrid",
+   "smiles": "c1ccccc1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 20,
+   "notes": "Two Kekule skeletal hexagons (I, II) in [ ] with double-headed arrow, equated to resonance hybrid = hexagon with a DASHED inscribed circle labelled 'delocalized pi-electron'."
+  },
+  {
+   "name": "Chlorine homolysis (Cl2 -> 2 Cl radical)",
+   "smiles": "",
+   "form": "mechanism",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 22,
+   "notes": "Cl-Cl with two half-headed (fishhook) curly arrows -> Cl(dot) + (dot)Cl. Free radical = bold DOT on the atom. Curly arrows in red."
+  },
+  {
+   "name": "Carbocation formation (C-Cl heterolysis)",
+   "smiles": "",
+   "form": "mechanism",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 22,
+   "notes": "-C-Cl with one full curly arrow -> -C(+) + :Cl(-) (chloride shown with lone-pair dots and superscript minus). Cation = superscript +."
+  },
+  {
+   "name": "Bromoethane (ethene + HBr addition)",
+   "smiles": "CCBr",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 24,
+   "notes": "Addition example: displayed ethene + HBr -> H-C-C-Br displayed."
+  },
+  {
+   "name": "2-hydroxypropanenitrile (ethanal + HCN)",
+   "smiles": "CC(O)C#N",
+   "form": "displayed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 24,
+   "notes": "Ethanal drawn O=C with the =O to the LEFT, CH3 up, H down; product HO-C(CH3)(H)-CN. Shows nitrile as -CN."
+  },
+  {
+   "name": "Methylbenzene (benzene + CH3Cl substitution)",
+   "smiles": "Cc1ccccc1",
+   "form": "mixed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 24,
+   "notes": "Benzene hexagon+circle with single -CH3 substituent drawn to the side; + HCl (Cl italic)."
+  },
+  {
+   "name": "Bromobenzene (benzene + Br2)",
+   "smiles": "Brc1ccccc1",
+   "form": "mixed",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 25,
+   "notes": "Checkpoint substitution: hexagon+circle with -Br."
+  },
+  {
+   "name": "1-chloro-4-methylcyclohexane",
+   "smiles": "ClC1CCC(C)CC1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 27,
+   "notes": "Tutorial Q: plain hexagon (cyclohexane, no circle) with Cl on left and CH3 on right drawn horizontally (para). Cl italic."
+  },
+  {
+   "name": "1-(cyclohexa-2,4-dien-1-yl)ethanone",
+   "smiles": "CC(=O)C1CC=CC=C1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 28,
+   "notes": "Skeletal ring with two ring C=C and an acetyl substituent whose carbonyl C=O points UP."
+  },
+  {
+   "name": "Chlorocyclohexane -> cyclohexene (elimination)",
+   "smiles": "ClC1CCCCC1",
+   "form": "skeletal",
+   "source": "10 Introduction to Organic Chemistry.pdf",
+   "page": 28,
+   "notes": "Plain hexagon-Cl -> hexagon with one C=C edge (cyclohexene) + HCl."
+  },
+  {
+   "name": "Ethene (C2H4)",
+   "smiles": "C=C",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 1,
+   "notes": "Canonical house drawing of an alkene: C=C horizontal, the two C labels side by side with the double bond as two parallel horizontal lines between them; the four H on outward-splayed ~120 degree trigonal bonds (two up, two down). Reused unchanged on p5,6,7,8,9,10,14."
+  },
+  {
+   "name": "Ethane (C2H6)",
+   "smiles": "CC",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 1,
+   "notes": "Saturated displayed drawn as an orthogonal 'comb', NOT a tetrahedral zig-zag: horizontal H-C-C-H backbone with vertical C-H bonds up and down on each carbon. Labelled 'all C-C single bonds - saturated'."
+  },
+  {
+   "name": "cis-1,2-dichloroethene",
+   "smiles": "Cl/C=C\\Cl",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 2,
+   "notes": "cis geometry shown by placing both Cl on the SAME side (both up-left/up-right) of the horizontal C=C; two H below. Cl typeset with an italic lowercase l."
+  },
+  {
+   "name": "trans-1,2-dichloroethene",
+   "smiles": "Cl/C=C/Cl",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 2,
+   "notes": "trans geometry: Cl up-left and Cl down-right (opposite sides) across the horizontal C=C; H fill the other two positions."
+  },
+  {
+   "name": "cis-but-2-ene",
+   "smiles": "C/C=C\\C",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 4,
+   "notes": "Combustion-energy figure: the two CH3 (written H3C / CH3) on the same side of C=C; used as a cis/trans stability comparison alongside but-1-ene and trans-but-2-ene."
+  },
+  {
+   "name": "trans-but-2-ene",
+   "smiles": "C/C=C/C",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 4,
+   "notes": "H3C and CH3 on opposite sides of the horizontal C=C; drawn with condensed methyl labels on splayed sp2 bonds."
+  },
+  {
+   "name": "Ethanol (elimination substrate / hydration product)",
+   "smiles": "CCO",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 3,
+   "notes": "Displayed comb layout H-C-C-H with H and OH on the second carbon; the leaving H and OH are boxed in RED dashed rectangles to flag the eliminated atoms (one of the few uses of colour)."
+  },
+  {
+   "name": "1,2-dibromoethane",
+   "smiles": "BrCCBr",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 7,
+   "notes": "Electrophilic addition product; displayed comb with Br labels replacing an H on each carbon (Br-C-C-Br backbone drawn horizontally)."
+  },
+  {
+   "name": "2-bromoethyl carbocation (reactive intermediate)",
+   "smiles": "[CH2+]CBr",
+   "form": "mechanism",
+   "source": "13 Alkene 2022.pdf",
+   "page": 7,
+   "notes": "Carbocation drawn in displayed form with a '+' placed directly after the C label (C+); accompanied by bromide ion written as :Br- with an explicit lone-pair dot pair. Step labelled 'slow'."
+  },
+  {
+   "name": "2-bromoethanol (major product, bromine water)",
+   "smiles": "OCCBr",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 8,
+   "notes": "Major product of Br2(aq) addition, displayed with Br and OH on adjacent carbons; drawn beside the minor 1,2-dibromoethane and labelled (major)/(minor)."
+  },
+  {
+   "name": "But-1-ene (asymmetrical alkene)",
+   "smiles": "C=CCC",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 11,
+   "notes": "C=C drawn trigonal with H on left carbon and a CONDENSED CH2CH3 label as the right substituent - a mixed displayed/condensed convention: reacting group fully displayed, inert chain condensed."
+  },
+  {
+   "name": "2-bromobutane (Markovnikov major)",
+   "smiles": "CC(Br)CC",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 11,
+   "notes": "Major HBr-addition product; Br on the more substituted (secondary) carbon, chain ends written as condensed CH2CH3."
+  },
+  {
+   "name": "1-bromobutane (Markovnikov minor)",
+   "smiles": "BrCCCC",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 11,
+   "notes": "Minor product with Br on the terminal carbon; drawn to contrast carbocation stability."
+  },
+  {
+   "name": "Secondary (2 degree) carbocation",
+   "smiles": "CC[CH+]C",
+   "form": "mechanism",
+   "source": "13 Alkene 2022.pdf",
+   "page": 12,
+   "notes": "Cationic carbon shown as C with '+' beneath/after it; compared against a 1 degree carbocation. Stability order drawn generically as R-C+ with degree symbols: tertiary(3o) > secondary(2o) > primary(1o) > methyl."
+  },
+  {
+   "name": "2-bromobutane enantiomers (racemic pair)",
+   "smiles": "C[C@@H](Br)CC",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 12,
+   "notes": "Stereochemistry: a chiral centre drawn in 3D with a BOLD WEDGE (Br forward) and a HASHED/dashed bond; the two mirror-image structures placed either side of a vertical dashed line labelled 'mirror plane', tagged 'enantiomers'."
+  },
+  {
+   "name": "1-methylcyclohex-1-ene",
+   "smiles": "CC1=CCCCC1",
+   "form": "skeletal",
+   "source": "13 Alkene 2022.pdf",
+   "page": 13,
+   "notes": "First skeletal drawing: regular hexagon, C=C shown as a second parallel line inside one ring edge, methyl as a short external line (Checkpoint 4 substrate for HBr)."
+  },
+  {
+   "name": "2-methylpent-2-ene",
+   "smiles": "CC(C)=CCC",
+   "form": "structural",
+   "source": "13 Alkene 2022.pdf",
+   "page": 13,
+   "notes": "Condensed structural: (CH3)2C=CH-CH2CH3 drawn with CH3, CH3, CH2CH3 and H labels on splayed bonds around a displayed C=C."
+  },
+  {
+   "name": "Ethane-1,2-diol (mild-oxidation product)",
+   "smiles": "OCCO",
+   "form": "displayed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 14,
+   "notes": "Cold alkaline KMnO4 diol product; displayed comb with 'OH OH' on adjacent carbons (heteroatom H shown, carbon H implicit within the two CH labels)."
+  },
+  {
+   "name": "Ethanedioic (oxalic) acid",
+   "smiles": "OC(=O)C(=O)O",
+   "form": "mixed",
+   "source": "13 Alkene 2022.pdf",
+   "page": 15,
+   "notes": "Drawn HOOC-COOH with each C=O pointing UP (O on top, vertical double bond) and each OH written below. Carboxyl written as -C(=O)-OH in the picture but as CO2H / COOH in text."
+  },
+  {
+   "name": "1-methylcyclopenta-2,4-diene",
+   "smiles": "CC1C=CC=C1",
+   "form": "skeletal",
+   "source": "13 Alkene 2022.pdf",
+   "page": 16,
+   "notes": "Skeletal pentagon with two internal double bonds and a methyl stub; Worked Example substrate. Its cold-KMnO4 product is drawn as a skeletal cyclopentane ring bearing HO/OH/OH/CH3 labels."
+  },
+  {
+   "name": "(cyclohex-1-en-1-yl)acetic acid (compound R)",
+   "smiles": "OC(=O)CC1=CCCCC1",
+   "form": "skeletal",
+   "source": "13 Alkene 2022.pdf",
+   "page": 20,
+   "notes": "Skeletal cyclohexene ring with a CH2COOH side chain written as a condensed label at the chain end (tutorial Q5)."
+  },
+  {
+   "name": "Iodolactone (compound S)",
+   "smiles": "O=C1CC2(I)CCCCC2O1",
+   "form": "skeletal",
+   "source": "13 Alkene 2022.pdf",
+   "page": 20,
+   "notes": "Fused bicyclic skeletal: cyclohexane fused to a 5-membered lactone drawn with ring O and an external C=O (ester as ring -C(=O)-O-), plus an I label on the ring-junction carbon. SMILES approximate."
+  },
+  {
+   "name": "Buta-1,3-diene",
+   "smiles": "C=CC=C",
+   "form": "skeletal",
+   "source": "13 Alkene 2022.pdf",
+   "page": 21,
+   "notes": "Skeletal zig-zag showing two C=C as parallel-line pairs; the only place the tetrahedral zig-zag skeletal convention is used for an acyclic chain (tutorial Q9 scheme)."
+  },
+  {
+   "name": "Pent-2-ene (cis and trans)",
+   "smiles": "CC/C=C/C",
+   "form": "skeletal",
+   "source": "13 Alkene 2022.pdf",
+   "page": 20,
+   "notes": "Two skeletal zig-zags drawn side by side (Q7b) to represent cis- and trans-pent-2-ene by up/down bond geometry across the double-bond edge."
+  },
+  {
+   "name": "Benzene",
+   "smiles": "c1ccccc1",
+   "form": "skeletal",
+   "source": "14 Arene 2022.pdf",
+   "page": 1,
+   "notes": "Drawn as a pointy-top regular hexagon with an INSCRIBED CIRCLE for the delocalised pi electrons. This is the default depiction for benzene and every derivative in the notes. p6 states 'Benzene is hence commonly represented by' this hexagon+circle. Ring H atoms never drawn."
+  },
+  {
+   "name": "Methylbenzene (toluene)",
+   "smiles": "Cc1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "Hexagon+circle ring; condensed label 'CH3' (3 as subscript) sits directly above the ring on a short vertical bond from the top vertex."
+  },
+  {
+   "name": "Phenol",
+   "smiles": "Oc1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "Hexagon+circle; 'OH' label on top vertex. In resonance-effect diagram (p15) drawn as ':OH' with two lone-pair dot pairs on O."
+  },
+  {
+   "name": "Benzoic acid",
+   "smiles": "OC(=O)c1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "Carboxyl written 'COOH' in intro/reaction drawings (p1,p2,p16,p18) but 'CO2H' in the nomenclature/summary drawings (p3,p13,p21). Both spellings coexist."
+  },
+  {
+   "name": "Phenylamine (aniline)",
+   "smiles": "Nc1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "'NH2' on top vertex. In resonance-effect diagram (p15) drawn ':NH2' with a lone-pair dot pair on N."
+  },
+  {
+   "name": "Benzaldehyde",
+   "smiles": "O=Cc1ccccc1",
+   "form": "mixed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "CHO drawn as a DISPLAYED cluster 'O=C-H': O double-bonded on the upper-left, H to the right, single bond down to the ring vertex. C=O points up/away from ring. Never written as text 'CHO' in structure drawings (only in the directing-group table)."
+  },
+  {
+   "name": "Bromobenzene",
+   "smiles": "Brc1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "'Br' in upright roman on top vertex."
+  },
+  {
+   "name": "Nitrobenzene",
+   "smiles": "[O-][N+](=O)c1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "'NO2' condensed label on top vertex; N/O internal bonding not drawn out."
+  },
+  {
+   "name": "2-phenylpropane (isopropylbenzene)",
+   "smiles": "CC(C)c1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "Example of ring-as-substituent ('phenyl') when side chain is complex: side chain drawn condensed as CH3 over CHCH3 above a hexagon+circle."
+  },
+  {
+   "name": "Phenylethene (styrene)",
+   "smiles": "C=Cc1ccccc1",
+   "form": "mixed",
+   "source": "14 Arene 2022.pdf",
+   "page": 2,
+   "notes": "Vinyl group drawn displayed as H2C=CH with explicit 'C=C' letters and H atoms; double bond as two parallel lines. Ring is hexagon+circle."
+  },
+  {
+   "name": "1,2-dimethylbenzene",
+   "smiles": "Cc1ccccc1C",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 3,
+   "notes": "Ortho disubstitution: substituent 1 on top vertex, substituent 2 on adjacent upper-right vertex (label to the right). Position numbers 1,2 written as small digits beside vertices."
+  },
+  {
+   "name": "1,2,4-trinitrobenzene",
+   "smiles": "[O-][N+](=O)c1ccc([N+](=O)[O-])cc1[N+](=O)[O-]",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 3,
+   "notes": "Three NO2 labels at numbered vertices 1 (top), 2 (upper-right), 4 (bottom). Demonstrates numbering convention."
+  },
+  {
+   "name": "1-bromo-2-chlorobenzene",
+   "smiles": "Brc1ccccc1Cl",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 3,
+   "notes": "Note chlorine typeset 'Cl' with ITALIC lowercase l (house convention). Br at position 1, Cl at position 2."
+  },
+  {
+   "name": "1-chloro-4-nitrobenzene",
+   "smiles": "Clc1ccc([N+](=O)[O-])cc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 3,
+   "notes": "Para disubstitution: Cl on top vertex (pos 1), NO2 on bottom vertex (pos 4). Substituents on directly opposite vertices."
+  },
+  {
+   "name": "3-nitrobenzoic acid",
+   "smiles": "OC(=O)c1cccc([N+](=O)[O-])c1",
+   "form": "mixed",
+   "source": "14 Arene 2022.pdf",
+   "page": 3,
+   "notes": "Carboxyl spelled 'CO2H' here (contrast COOH elsewhere); NO2 at meta (3) position."
+  },
+  {
+   "name": "cyclohexa-1,3,5-triene (Kekule benzene)",
+   "smiles": "C1=CC=CC=C1",
+   "form": "skeletal",
+   "source": "14 Arene 2022.pdf",
+   "page": 4,
+   "notes": "The historical/'incorrect' Kekule structure: plain hexagon with THREE alternating C=C double bonds drawn as inner lines parallel to the ring edges. Same Kekule form used for the two resonance canonical structures flanking the double-headed resonance arrow (p6)."
+  },
+  {
+   "name": "Cyclohexene",
+   "smiles": "C1CCC=CC1",
+   "form": "skeletal",
+   "source": "14 Arene 2022.pdf",
+   "page": 7,
+   "notes": "Plain hexagon with ONE internal double-bond line. Cyclohexa-1,3-diene = two internal double bonds; cyclohexane = bare hexagon. Used in the hydrogenation energy-level diagram (p5) and the alkene-vs-benzene reactivity table (p7)."
+  },
+  {
+   "name": "Acyl chloride reagent (ethanoyl chloride, generic RCOCl)",
+   "smiles": "CC(=O)Cl",
+   "form": "displayed",
+   "source": "14 Arene 2022.pdf",
+   "page": 8,
+   "notes": "Drawn fully displayed R-C(-Cl)=O with the C=O pointing straight UP (O above carbonyl C), R on the left, Cl (italic l) on the right. Acylium electrophile drawn R-C+ with =O. Acyl product on ring drawn 'O=C-R' cluster, O upper-left."
+  },
+  {
+   "name": "Arenium (Wheland) intermediate",
+   "smiles": "",
+   "form": "mechanism",
+   "source": "14 Arene 2022.pdf",
+   "page": 10,
+   "notes": "Hexagon with a BROKEN inscribed circle (arc, open near the attack site) plus a '+' inside the ring for the delocalised positive charge; the sp3 top carbon bears the incoming E (or Br/NO2) and an explicit '-H' stub. An alternative 'for visualization only' version uses a Kekule ring with two double bonds + '+'. Curly arrows go from ring pi circle to E+, and from C-H bond back into ring to re-aromatise."
+  },
+  {
+   "name": "(Chloromethyl)benzene",
+   "smiles": "ClCc1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 17,
+   "notes": "Free-radical side-chain product: side chain label 'CH2Cl' (italic l) on hexagon+circle. In summary map drawn 'CH2Br'."
+  },
+  {
+   "name": "1-methyl-4-nitrobenzene (para nitration product)",
+   "smiles": "Cc1ccc([N+](=O)[O-])cc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 16,
+   "notes": "Methyl (2,4-directing) gives ortho + para products; para drawn with CH3 top vertex and NO2 bottom vertex."
+  },
+  {
+   "name": "1-methyl-2-nitrobenzene (ortho nitration product)",
+   "smiles": "Cc1ccccc1[N+](=O)[O-]",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 16,
+   "notes": "Ortho product: CH3 on top vertex, NO2 on adjacent upper-right vertex."
+  },
+  {
+   "name": "Benzoate ion",
+   "smiles": "[O-]C(=O)c1ccccc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 18,
+   "notes": "Anion drawn 'COO-' with superscript minus (alkaline-medium oxidation product); acidification converts it back to 'COOH'."
+  },
+  {
+   "name": "4-nitrophenol",
+   "smiles": "Oc1ccc([N+](=O)[O-])cc1",
+   "form": "condensed",
+   "source": "14 Arene 2022.pdf",
+   "page": 14,
+   "notes": "Para disubstituted: OH and NO2 on opposite (top/bottom) vertices; appears in checkpoint and tutorial."
+  },
+  {
+   "name": "Vanillin (4-hydroxy-3-methoxybenzaldehyde)",
+   "smiles": "O=Cc1ccc(O)c(OC)c1",
+   "form": "mixed",
+   "source": "14 Arene 2022.pdf",
+   "page": 20,
+   "notes": "Real-life-context drawing: ring shown skeletally (no inscribed circle); CHO as displayed O=C-H cluster, 'HO' on left, methoxy as 'O-CH3'. Different style from the main-notes circle convention."
+  },
+  {
+   "name": "Aflatoxin B1",
+   "smiles": "",
+   "form": "skeletal",
+   "source": "14 Arene 2022.pdf",
+   "page": 20,
+   "notes": "Complex fused polycyclic drawn purely skeletally (fused polygons, implicit C and H), with C=O double bonds and an 'OCH3' label. SMILES omitted (intricate fused-ring system)."
+  },
+  {
+   "name": "3-phenylpropanoyl chloride (tutorial cpd A)",
+   "smiles": "O=C(Cl)CCc1ccccc1",
+   "form": "skeletal",
+   "source": "14 Arene 2022.pdf",
+   "page": 24,
+   "notes": "Tutorial Q7 uses fully SKELETAL formulae: Kekule benzene ring (no circle) with a zig-zag side chain -CH2CH2-C(=O)-Cl; here the C=O points DOWN (O below the chain) and Cl (italic l) sits lower-left, unlike the up-pointing carbonyls in the notes body."
+  },
+  {
+   "name": "Indan-1-one (tutorial cpd B)",
+   "smiles": "O=C1CCc2ccccc21",
+   "form": "skeletal",
+   "source": "14 Arene 2022.pdf",
+   "page": 24,
+   "notes": "Fused bicyclic (Kekule benzene fused to a cyclopentanone) drawn skeletally with the ketone C=O; part of the intramolecular Friedel-Crafts acylation scheme."
+  },
+  {
+   "name": "1-methylethylbenzene (cumene, displayed side chain)",
+   "smiles": "CC(C)c1ccccc1",
+   "form": "mixed",
+   "source": "14 Arene 2022.pdf",
+   "page": 22,
+   "notes": "Side chain drawn DISPLAYED as H-C(-CH3)-CH3 (central C with explicit bonds to H, CH3, CH3) above a hexagon+circle ring; contrasts with the condensed CHCH3 depiction of the same skeleton on p2."
+  },
+  {
+   "name": "Phenol",
+   "smiles": "Oc1ccccc1",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 1,
+   "notes": "Benzene drawn as a plain hexagon with an inscribed CIRCLE (delocalised, never Kekule); single -OH label placed to the RIGHT of the ring, joined by one bond from a vertex. Defines the 'phenol' class (-OH on aromatic C)."
+  },
+  {
+   "name": "Primary (1) alcohol general template R-CH2-OH",
+   "smiles": "*CO",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 1,
+   "notes": "Central C drawn with four RIGHT-ANGLE bonds (H up, H down, R left, OH right); every H on the functional C shown explicitly. Same template repeated p2 and p18."
+  },
+  {
+   "name": "Secondary (2) alcohol general template R-CH(OH)-R'",
+   "smiles": "*C(*)O",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 1,
+   "notes": "Right-angle bonds: H up, R' down, R left, OH right. R' primed."
+  },
+  {
+   "name": "Tertiary (3) alcohol general template R-C(OH)(R')(R'')",
+   "smiles": "*C(*)(*)O",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 1,
+   "notes": "R'' up, R' down, R left, OH right. Class defined by number of alkyl groups on the C bearing -OH (p2)."
+  },
+  {
+   "name": "Propan-1-ol",
+   "smiles": "CCCO",
+   "form": "condensed",
+   "source": "Alcohol.pdf",
+   "page": 2,
+   "notes": "Written fully condensed as CH3CH2CH2OH on one line; recurs p10, p19. -OH always at the right end."
+  },
+  {
+   "name": "1-Cyclohexylethanol",
+   "smiles": "CC(O)C1CCCCC1",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 2,
+   "notes": "Cyclohexane as a hexagon; side chain drawn displayed (C with H up, CH3 right, OH down). Illustrates mixing skeletal ring with a displayed substituent carbon."
+  },
+  {
+   "name": "Cyclopentylmethanol",
+   "smiles": "OCC1CCCC1",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 2,
+   "notes": "Pentagon ring, external zig-zag bond to terminal 'OH' label (drawn lower-right)."
+  },
+  {
+   "name": "Decahydronaphthalen-4a-ol (fused bicyclic 3 alcohol)",
+   "smiles": "OC12CCCCC1CCCC2",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 2,
+   "notes": "Two fused hexagons (decalin) with OH at the ring-fusion carbon; shows polygon fusion convention."
+  },
+  {
+   "name": "Propane-1,3-diol",
+   "smiles": "OCCCO",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 3,
+   "notes": "Drawn in BLUE as a fill-in answer: H-C-C-C-H backbone with two OH labels below. Right-angle bonds, all H shown."
+  },
+  {
+   "name": "2-Ethylcyclohexanol",
+   "smiles": "CCC1CCCCC1O",
+   "form": "mixed",
+   "source": "Alcohol.pdf",
+   "page": 3,
+   "notes": "Blue. Hexagon (skeletal) carrying condensed 'OH' (top) and 'CH2CH3' (right) substituent labels."
+  },
+  {
+   "name": "Aldehyde general R-CHO",
+   "smiles": "*C=O",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 5,
+   "notes": "C=O drawn pointing UP (O above C, double bond as two parallel lines slanting up-right); R to lower-left, H to lower-right. Same orientation p4, p12, p14, p18."
+  },
+  {
+   "name": "Ketone general R-CO-R'",
+   "smiles": "*C(*)=O",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 5,
+   "notes": "C=O up; R lower-left, R' lower-right. Recurs p13 (bold sans-serif atoms), p18."
+  },
+  {
+   "name": "Carboxylic acid general R-COOH",
+   "smiles": "*C(=O)O",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 5,
+   "notes": "C=O pointing UP, R to lower-left, OH to lower-right. Identical drawing on p4, p12, p18. Label written -OH (heading elsewhere uses CO2H / COOH)."
+  },
+  {
+   "name": "2-Methylprop-1-ene (isobutylene)",
+   "smiles": "CC(C)=C",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 4,
+   "notes": "Skeletal alkene, C=C as two parallel lines; one CH3 written as a condensed label. Electrophilic-addition reactant."
+  },
+  {
+   "name": "Bromoethane",
+   "smiles": "CCBr",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 4,
+   "notes": "Displayed H-C-C-H with 'Br' as terminal label (lower-right); halogen substrate for nucleophilic substitution."
+  },
+  {
+   "name": "Ethene",
+   "smiles": "C=C",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 10,
+   "notes": "Elimination product drawn displayed: C=C (double bond = two parallel lines) with four explicit H. The leaving H and OH on the reactant are boxed with RED dashed rectangles."
+  },
+  {
+   "name": "But-2-ene (major) and but-1-ene",
+   "smiles": "CC=CC",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 10,
+   "notes": "Elimination products of butan-2-ol drawn in RED skeletal zig-zag; C=C as two parallel lines; 'Major' labelled in blue. But-1-ene = C=CCC drawn alongside."
+  },
+  {
+   "name": "Butan-2-ol",
+   "smiles": "CC(O)CC",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 10,
+   "notes": "Skeletal zig-zag with 'OH' at an internal vertex (drawn up). A chiral molecule but drawn completely FLAT - no wedge/dash stereochemistry anywhere in the source."
+  },
+  {
+   "name": "Ester general R1CH2-O-CO-R2 (18-O labelled)",
+   "smiles": "*COC(*)=O",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 9,
+   "notes": "Esterification scheme: alcohol drawn skeletal ending in '18OH'; ester linkage drawn EXPANDED as -O-C(=O)- (carbonyl explicit, C=O up), retaining the 18O superscript isotope label to trace mechanism."
+  },
+  {
+   "name": "Propyl benzoate",
+   "smiles": "O=C(OCCC)c1ccccc1",
+   "form": "mixed",
+   "source": "Alcohol.pdf",
+   "page": 10,
+   "notes": "Ester product: propyl chain condensed (CH3CH2CH2-O-), then explicit -C(=O)- (C=O up) bonded to benzene hexagon+circle. Blue answer."
+  },
+  {
+   "name": "Acyl chloride general R'-CO-Cl",
+   "smiles": "*C(=O)Cl",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 9,
+   "notes": "C=O drawn UP, Cl to lower-left, R' to right. Chlorine set as italic lower-case l ('Cl'). Text form written RCOCl."
+  },
+  {
+   "name": "Ethanoic acid",
+   "smiles": "CC(=O)O",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 6,
+   "notes": "H3C-C(=O)-OH with C=O up and OH lower-right; oxidation product of ethanol. Recurs p14."
+  },
+  {
+   "name": "Propanone",
+   "smiles": "CC(C)=O",
+   "form": "condensed",
+   "source": "Alcohol.pdf",
+   "page": 14,
+   "notes": "H3C-C(=O)-CH3 with C=O pointing up; oxidation product of propan-2-ol."
+  },
+  {
+   "name": "Methyl carbinol fragment CH3-CH(OH)-R",
+   "smiles": "*C(C)O",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 16,
+   "notes": "Drawn displayed (OH up, C centre, CH3 right, H down) inside a DASHED box to flag the reactive substructure for the tri-iodomethane test. Defined on p16/p17."
+  },
+  {
+   "name": "Methyl carbonyl fragment CH3-CO-R",
+   "smiles": "*C(C)=O",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 16,
+   "notes": "C=O up, CH3 lower-right, R left; drawn in a dashed box as the oxidised counterpart of methyl carbinol."
+  },
+  {
+   "name": "Carboxylate ion / salt R-COO(-)",
+   "smiles": "*C(=O)[O-]",
+   "form": "skeletal",
+   "source": "Alcohol.pdf",
+   "page": 16,
+   "notes": "Iodoform product: C=O up, O(-) at lower-right with superscript minus. Also written R-CO2(-)Na(+) in text."
+  },
+  {
+   "name": "Triiodomethyl ketone intermediate R-CO-CI3",
+   "smiles": "*C(=O)C(I)(I)I",
+   "form": "mechanism",
+   "source": "Alcohol.pdf",
+   "page": 17,
+   "notes": "Stepwise iodoform mechanism (CH2I -> CHI2 -> CI3) drawn with intermediates in grey; C=O up; iodine written with capital I (so 'CI3' = C with three I, distinct from italic-l chlorine)."
+  },
+  {
+   "name": "Phenylmethanol (benzyl alcohol)",
+   "smiles": "OCc1ccccc1",
+   "form": "displayed",
+   "source": "Alcohol.pdf",
+   "page": 14,
+   "notes": "MCQ option A: benzene hexagon+circle bonded to a displayed C(H)(H)-OH (H up, H down, OH right)."
+  },
+  {
+   "name": "Benzene",
+   "smiles": "c1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Hexagon with a bold inscribed CIRCLE (delocalised), never Kekule. Drawn vertex-up (pointy top). Ring H's implicit."
+  },
+  {
+   "name": "Halogenobenzene (chloro/bromobenzene)",
+   "smiles": "Clc1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Substituent label 'X' bonded to the top vertex of the hexagon+circle."
+  },
+  {
+   "name": "Methylbenzene (toluene)",
+   "smiles": "Cc1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "CH3 written as a condensed label at the top vertex; ring is skeletal hexagon+circle."
+  },
+  {
+   "name": "Nitrobenzene",
+   "smiles": "O=[N+]([O-])c1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Group written 'NO2' (subscript 2) at top vertex; charges not shown on nitro."
+  },
+  {
+   "name": "Benzoic acid (side-chain oxidation product)",
+   "smiles": "O=C(O)c1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Product of oxidising an alkyl side-chain (CHR2 -> COOH). Acid written 'COOH', not CO2H."
+  },
+  {
+   "name": "(Halomethyl)benzene / benzyl halide",
+   "smiles": "ClCc1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Free-radical substitution product; side chain written 'CH2X' at top vertex."
+  },
+  {
+   "name": "2-halotoluene (ortho product)",
+   "smiles": "Cc1ccccc1Cl",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Shown as one of two isomers with 'or'; CH3 at top vertex, X at adjacent (ortho) vertex."
+  },
+  {
+   "name": "4-halotoluene (para product)",
+   "smiles": "Cc1ccc(Cl)cc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "Para isomer: CH3 top vertex, X at the bottom vertex (confirms vertex-up orientation)."
+  },
+  {
+   "name": "4-nitrotoluene",
+   "smiles": "Cc1ccc([N+](=O)[O-])cc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 2,
+   "notes": "CH3 top vertex, NO2 bottom vertex; ortho isomer also drawn alongside with 'or'."
+  },
+  {
+   "name": "Phenol",
+   "smiles": "Oc1ccccc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 5,
+   "notes": "OH label bonded to top vertex of hexagon+circle."
+  },
+  {
+   "name": "2,4,6-tribromophenol",
+   "smiles": "Oc1c(Br)cc(Br)cc1Br",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 5,
+   "notes": "OH at top, X at the two upper-side vertices and bottom vertex (2,4,6-pattern)."
+  },
+  {
+   "name": "2-halophenol / 4-halophenol pair",
+   "smiles": "Oc1ccccc1Cl",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 5,
+   "notes": "Ortho and para monosubstituted products drawn side by side joined with '&'."
+  },
+  {
+   "name": "4-nitrophenol",
+   "smiles": "Oc1ccc([N+](=O)[O-])cc1",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 5,
+   "notes": "Drawn with 2-nitrophenol using '&'; NO2 at bottom (para) vertex."
+  },
+  {
+   "name": "2,4,6-trinitrophenol (picric acid)",
+   "smiles": "Oc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1[N+](=O)[O-]",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 5,
+   "notes": "OH top; left-hand nitro written REVERSED as 'O2N', right/bottom as 'NO2' (labels mirror to face the ring)."
+  },
+  {
+   "name": "Ketone / propanone (general R2C=O)",
+   "smiles": "CC(C)=O",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 6,
+   "notes": "Condensed-structural R-C-R with carbonyl drawn DISPLAYED pointing UP: O above C, C=O as two short vertical parallel lines."
+  },
+  {
+   "name": "Cyanohydrin (2-hydroxynitrile)",
+   "smiles": "CC(C)(O)C#N",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 6,
+   "notes": "Central C with OH branch up, R branch down (right-angle branches); nitrile C≡N drawn as triple bond (three parallel lines)."
+  },
+  {
+   "name": "2-hydroxy acid (glycolic-acid type, hydrolysis product)",
+   "smiles": "OCC(=O)O",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 6,
+   "notes": "Fully drawn-out backbone: H-C(OH)(H)-C(=O)-OH, carbonyl O on top; alternative shown as the sodium salt with '/'."
+  },
+  {
+   "name": "Sodium 2-hydroxycarboxylate (salt form)",
+   "smiles": "OCC(=O)[O-].[Na+]",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 6,
+   "notes": "Carboxylate drawn -C(=O)-O- with charges as superscripts: O^- and separate Na^+."
+  },
+  {
+   "name": "Carbonyl compound (general R2C=O, horizontal)",
+   "smiles": "CC(C)=O",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 7,
+   "notes": "Alternative carbonyl layout: two R's branch off the left carbon at ~120 degrees and C=O is drawn HORIZONTAL (O to the right)."
+  },
+  {
+   "name": "2,4-dinitrophenylhydrazone (DNPH condensation product)",
+   "smiles": "CC(C)=NNc1ccc([N+](=O)[O-])cc1[N+](=O)[O-]",
+   "form": "mixed",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 7,
+   "notes": "R2C=N-N(H)-Ar: C=N double bond, N-N single, N-H shown; dinitrophenyl ring as hexagon+circle with two NO2. Drawn in RED."
+  },
+  {
+   "name": "2,4-dinitrophenylhydrazine (2,4-DNPH reagent)",
+   "smiles": "NNc1ccc([N+](=O)[O-])cc1[N+](=O)[O-]",
+   "form": "mixed",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 7,
+   "notes": "Reagent drawn H2N-N(H)-Ar with all N-H shown; in red as part of the condensation equation."
+  },
+  {
+   "name": "Tollens'/Fehling's oxidation equations (aldehyde -> carboxylate)",
+   "smiles": "O=CC.[Ag+]",
+   "form": "mechanism",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 7,
+   "notes": "Full balanced equations in RED: H-C(=O)-R (carbonyl UP) + [Ag(NH3)2]^+ / Cu^2+ -> R-C(=O)-O^- ; complex ion in [ ] with superscript + charge."
+  },
+  {
+   "name": "Ester (R-C(=O)-O-R')",
+   "smiles": "CC(=O)OC",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 9,
+   "notes": "Ester written DISPLAYED as R-C(-O below, =O)-O-R', i.e. carbonyl C=O points DOWN here (O beneath C), NOT as -COO-."
+  },
+  {
+   "name": "Phenyl (aryl) ester",
+   "smiles": "CC(=O)Oc1ccccc1",
+   "form": "mixed",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 9,
+   "notes": "Acyl part condensed with C=O pointing down; O-linked to a small phenyl hexagon+circle drawn as substituent."
+  },
+  {
+   "name": "Secondary amine (N-methyl)",
+   "smiles": "CNC",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 10,
+   "notes": "Drawn R-N(CH3)-H: N with a CH3 branch up and H to the right; blue curly arrow annotation 'able to continue'."
+  },
+  {
+   "name": "2,4,6-tribromophenylamine (2,4,6-tribromoaniline)",
+   "smiles": "Nc1c(Br)cc(Br)cc1Br",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 10,
+   "notes": "NH2 at top vertex, Br at 2,4,6 vertices; annotated '[white ppt observed]'."
+  },
+  {
+   "name": "2-bromoaniline / 4-bromoaniline pair",
+   "smiles": "Nc1ccccc1Br",
+   "form": "skeletal",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 10,
+   "notes": "Ortho and para products drawn side by side separated by '/'; NH2 top vertex."
+  },
+  {
+   "name": "N-phenyl amide (anilide)",
+   "smiles": "CC(=O)Nc1ccccc1",
+   "form": "mixed",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 11,
+   "notes": "Amide drawn O=C(R)-N(H)-Ar: carbonyl O top-left (horizontal C=O), N-H shown, phenyl ring hexagon+circle."
+  },
+  {
+   "name": "Dipeptide (peptide bond)",
+   "smiles": "NC(C)C(=O)NC(C)C(=O)O",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 11,
+   "notes": "Fully drawn-out H2N-C(H)(R1)-C(=O)-N(H)-C(H)(R2)-C(=O)-OH; alpha C-H shown above C, R1/R2 subscripted branches below; both carbonyls point UP. Labelled 'peptide' in blue."
+  },
+  {
+   "name": "Protonated amino-acid cation (acidic hydrolysis product)",
+   "smiles": "[NH3+]C(C)C(=O)O",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 11,
+   "notes": "Amino group drawn as '+H3N-' with the + as a LEFT superscript; carboxyl kept as -C(=O)-OH (not ionised) under acidic conditions."
+  },
+  {
+   "name": "Amino-acid carboxylate (basic hydrolysis product)",
+   "smiles": "NC(C)C(=O)[O-]",
+   "form": "structural",
+   "source": "ORGANIC CHEMISTRY MEMORY SHEET 2_watermark.pdf",
+   "page": 11,
+   "notes": "Under basic conditions drawn H2N-C(H)(R)-C(=O)-O^-: amine neutral, carboxyl ionised to O^-. Charge state matches conditions rather than a neutral zwitterion."
+  },
+  {
+   "name": "Penta-1,3-diene",
+   "smiles": "C=CC=CC",
+   "form": "condensed",
+   "source": "6 Alkenes.pdf",
+   "page": 1,
+   "notes": "Condensed structural formula drawn horizontally: CH2=CH-CH=CH-CH3. C=C shown as a double line (two parallel horizontals), single C-C bonds as single short horizontal dashes that touch the group labels. Subscript digits on CH2/CH3. Carbons numbered 1-5 above the chain. Diene (functional group) at the LEFT end, CH3 at right."
+  },
+  {
+   "name": "3,6-dimethylcyclohex-1-ene (Q3 structure 1)",
+   "smiles": "CC1CCC(C)C=C1",
+   "form": "mixed",
+   "source": "6 Alkenes.pdf",
+   "page": 2,
+   "notes": "Skeletal hexagon (flat top/bottom edges, points left/right) with C=C on the top edge; the two ring methyls written as CONDENSED labels. Left methyl written H3C- (H first, so C faces the bond); right methyl written -CH3 (C first). Ring vertices carry implicit H."
+  },
+  {
+   "name": "4,5-dimethylcyclohex-1-ene (Q3 structure 2)",
+   "smiles": "CC1CCC=CC1C",
+   "form": "mixed",
+   "source": "6 Alkenes.pdf",
+   "page": 2,
+   "notes": "Same skeletal hexagon, C=C top edge, both methyls on the two bottom vertices, again labelled H3C (left) and CH3 (right). Shows H3C/CH3 mirror-ordering convention by side."
+  },
+  {
+   "name": "Pentane-2,3-dione (Q4 option A)",
+   "smiles": "CCC(=O)C(=O)C",
+   "form": "condensed",
+   "source": "6 Alkenes.pdf",
+   "page": 2,
+   "notes": "Written as condensed text CH3CH2COCOCH3 - ketone carbonyls written as 'CO' inline, no drawn C=O."
+  },
+  {
+   "name": "Pentane-2,3-diol (Q4 option C)",
+   "smiles": "CCC(O)C(O)C",
+   "form": "condensed",
+   "source": "6 Alkenes.pdf",
+   "page": 2,
+   "notes": "Condensed text CH3CH2CH(OH)CH(OH)CH3 - alcohol shown as (OH) in brackets inline. Q4 option D uses CH3CH2COOH: carboxylic acid spelled COOH (not CO2H)."
+  },
+  {
+   "name": "But-1-ene (Q5 structure 1)",
+   "smiles": "CCC=C",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 3,
+   "notes": "Pure skeletal zig-zag, terminal C=C at the right-hand end drawn as two parallel lines. ~120 degree tetrahedral zig-zag angles, no atom labels, no H shown."
+  },
+  {
+   "name": "But-2-ene (Q5 structure 2)",
+   "smiles": "CC=CC",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 3,
+   "notes": "Skeletal zig-zag with the C=C in the middle (internal), drawn trans/zig-zag. No cis/trans geometry label given."
+  },
+  {
+   "name": "Cyclohexene (Q5 structure 3)",
+   "smiles": "C1CCCC=C1",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 3,
+   "notes": "Skeletal hexagon drawn with a vertex at top; C=C on an upper edge, second line drawn short and inside the ring."
+  },
+  {
+   "name": "Styrene (phenylethene)",
+   "smiles": "C=Cc1ccccc1",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 3,
+   "notes": "Benzene drawn as a hexagon with an INSCRIBED CIRCLE (aromatic, not Kekule). Vinyl group drawn skeletal off a ring vertex. 'n' placed to the left of the monomer to denote polymerisation."
+  },
+  {
+   "name": "Polystyrene (repeat unit)",
+   "smiles": "*CC(*)c1ccccc1",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 3,
+   "notes": "Repeat unit skeletal, benzene = hexagon + inscribed circle hanging below the backbone C. Enclosed in square brackets with continuation bonds crossing the brackets and subscript 'n' at bottom-right."
+  },
+  {
+   "name": "Limonene",
+   "smiles": "CC(=C)C1CCC(C)=CC1",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 4,
+   "notes": "Skeletal cyclohexene: ring methyl drawn as a plain line at top, endocyclic C=C as an inner second line, exocyclic isopropenyl group C(=CH2)CH3 at the bottom with its C=C drawn as two parallel lines. Part of an equilibrium scheme joined by hollow open-outline double-headed (reversible) arrows labelled 'catalytic process'."
+  },
+  {
+   "name": "p-menth-1-ene",
+   "smiles": "CC1=CCC(CC1)C(C)C",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 4,
+   "notes": "Skeletal cyclohexene, methyl (line) at top, isopropyl drawn skeletal (Y-shape) at bottom, endocyclic double bond upper-right."
+  },
+  {
+   "name": "p-menthane",
+   "smiles": "CC1CCC(CC1)C(C)C",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 4,
+   "notes": "Skeletal cyclohexane (saturated, NO double bond) - same hexagon as the alkene series but with all single ring bonds."
+  },
+  {
+   "name": "p-cymene (1-methyl-4-isopropylbenzene)",
+   "smiles": "Cc1ccc(cc1)C(C)C",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 4,
+   "notes": "Benzene as hexagon + inscribed CIRCLE; para substituents placed at opposite vertices (methyl line at top, isopropyl at bottom). Reached from p-menthane by a reversible 'aromatisation process' open double arrow."
+  },
+  {
+   "name": "1-bromo-2-iodopropane (Q9 option A)",
+   "smiles": "CC(I)CBr",
+   "form": "displayed",
+   "source": "6 Alkenes.pdf",
+   "page": 5,
+   "notes": "FULLY DISPLAYED formula: horizontal C-C-C backbone, every atom lettered (C, H), all bonds drawn as lines at RIGHT ANGLES (90 deg, not zig-zag) - vertical bonds up/down to H and substituents, horizontal bonds along the backbone and to terminal H. Bond lines stop with a small gap around each letter. Substituent labels I, Br at top."
+  },
+  {
+   "name": "2,3-dihydroxy butenolide (Compound A, ascorbic-acid derivative)",
+   "smiles": "O=C1OCC(O)=C1O",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 6,
+   "notes": "Skeletal 5-membered ring. Lactone carbonyl C=O points DOWN-LEFT (label 'O' to lower-left, double line). Ring oxygen labelled 'O' at bottom. Enediol OH groups: left one written 'HO' (H first), right one 'OH' (mirror ordering by side). C=C drawn as inner double line across the top of the ring."
+  },
+  {
+   "name": "2,4-dihydroxybutanoic acid (Compound D)",
+   "smiles": "OCCC(O)C(=O)O",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 6,
+   "notes": "Skeletal chain showing STEREOCHEMISTRY at the chiral C: BOLD wedge (solid filled triangle) to H pointing down, HASHED/dashed wedge to OH pointing right. Carboxyl group at top drawn O=C-OH with the C=O pointing UP-LEFT and OH up-right. Terminal primary alcohol written 'HO-' (H first) at the far left."
+  },
+  {
+   "name": "Isoprene (2-methylbuta-1,3-diene)",
+   "smiles": "CC(=C)C=C",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 7,
+   "notes": "Skeletal diene, two terminal C=C double bonds each drawn as two parallel lines, methyl branch (plain line) pointing up. Shown in a reaction scheme between two single-barbed straight reaction arrows (reagent 'IBr (2 mol)' written above the right arrow, 'I' above the left)."
+  },
+  {
+   "name": "3-methylbut-1-ene (Compound C)",
+   "smiles": "C=CC(C)C",
+   "form": "skeletal",
+   "source": "6 Alkenes.pdf",
+   "page": 7,
+   "notes": "Skeletal: terminal C=C at left (double line), isopropyl-type branch (Y) at right."
+  },
+  {
+   "name": "Benzene",
+   "smiles": "c1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 3,
+   "notes": "Default aromatic reactant. Regular hexagon with an INSCRIBED CIRCLE, pointy-top orientation (vertex at 12 and 6 o'clock). Recurs as reactant in nearly every scheme (p3, p5, p6, p10)."
+  },
+  {
+   "name": "Cumene (isopropylbenzene)",
+   "smiles": "CC(C)c1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 1,
+   "notes": "Hexagon+circle; isopropyl drawn skeletal (zig-zag branch) off a side vertex to the right."
+  },
+  {
+   "name": "Methylbenzene (toluene)",
+   "smiles": "Cc1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 4,
+   "notes": "Hexagon+circle, CH3 condensed label at the TOP vertex pointing straight up. Recurs p4, p8."
+  },
+  {
+   "name": "Ethylbenzene",
+   "smiles": "CCc1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q10 starting material; hexagon+circle, ethyl drawn as skeletal zig-zag at top."
+  },
+  {
+   "name": "Phenylamine (aniline)",
+   "smiles": "Nc1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 1,
+   "notes": "NH2 condensed label at top vertex. In Q9 (p6) also drawn hexagon+circle; product side sometimes writes it H2N- when the bond emerges from the left."
+  },
+  {
+   "name": "Nitrobenzene",
+   "smiles": "[O-][N+](=O)c1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 6,
+   "notes": "Hexagon+circle, NO2 label (subscript 2) at top vertex. Written O2N- when bond emerges from the left (option A)."
+  },
+  {
+   "name": "Bromobenzene",
+   "smiles": "Brc1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 6,
+   "notes": "Hexagon+circle, Br at top vertex; Q9 option C/D intermediate."
+  },
+  {
+   "name": "Benzaldehyde",
+   "smiles": "O=Cc1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 3,
+   "notes": "Gattermann-Koch product; aldehyde ALWAYS condensed as CHO (never drawn CH=O), placed at top vertex pointing up. Ring = hexagon+circle."
+  },
+  {
+   "name": "Benzoic acid",
+   "smiles": "OC(=O)c1ccccc1",
+   "form": "mixed",
+   "source": "7 Arenes.pdf",
+   "page": 9,
+   "notes": "Birch reactant: one of the few DISPLAYED carbonyls - drawn O=C(-OH) with C=O double bond (two parallel lines) pointing up-left and OH to upper-right, on a hexagon+circle ring. Double bond not noticeably shorter than single bonds."
+  },
+  {
+   "name": "Benzenesulfonic acid",
+   "smiles": "OS(=O)(=O)c1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 10,
+   "notes": "Q15 product; hexagon+circle with SO3H condensed label."
+  },
+  {
+   "name": "Phenol",
+   "smiles": "Oc1ccccc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 10,
+   "notes": "OH label at top vertex; hexagon+circle. Recurs p10 (Q15b) and p11 blocking-group scheme."
+  },
+  {
+   "name": "2-bromophenol (ortho)",
+   "smiles": "Oc1ccccc1Br",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 10,
+   "notes": "OH up, Br on the adjacent (ortho) vertex to the right; illustrates ortho substituent placement."
+  },
+  {
+   "name": "4-bromophenol (para)",
+   "smiles": "Oc1ccc(Br)cc1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 10,
+   "notes": "OH at top vertex, Br at the bottom (para) vertex; illustrates para placement (drawn as the 60:40 major product)."
+  },
+  {
+   "name": "2-bromophenylamine (2-bromoaniline)",
+   "smiles": "Nc1ccccc1Br",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 6,
+   "notes": "Target of Q9; NH2 up, Br ortho. Rings in Q9 are hexagon+circle throughout."
+  },
+  {
+   "name": "3-amino-5-bromobenzoic acid",
+   "smiles": "OC(=O)c1cc(N)cc(Br)c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 1,
+   "notes": "Q2 product drawn KEKULE (alternating C=C), COOH at top vertex, H2N- and Br at the two lower vertices (label reversed to H2N- on the left)."
+  },
+  {
+   "name": "Benzene-1,2,4,5-tetracarboxylic acid",
+   "smiles": "OC(=O)c1c(C(=O)O)cc(C(=O)O)c(C(=O)O)c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 2,
+   "notes": "Q3 option B, drawn Kekule; key label-variety example - same ring shows HO2C on the LEFT vertices and CO2H on the RIGHT (label reversed to keep C nearest ring)."
+  },
+  {
+   "name": "3-bromobenzoic acid",
+   "smiles": "OC(=O)c1cccc(Br)c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 4,
+   "notes": "Fig 3.6 target, Kekule ring, CO2H at top, Br at a lower vertex."
+  },
+  {
+   "name": "2-bromo-4-nitrobenzoic acid",
+   "smiles": "OC(=O)c1ccc([N+](=O)[O-])cc1Br",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q10 target; Kekule ring, COOH up, Br ortho (right), NO2 at bottom vertex."
+  },
+  {
+   "name": "Benzene-1,2-dicarboxylic acid (phthalic acid)",
+   "smiles": "OC(=O)c1ccccc1C(=O)O",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q11 product; Kekule ring with two COOH on adjacent (ortho) vertices."
+  },
+  {
+   "name": "3-(chloromethyl)-5-formylbenzoic acid (compound W)",
+   "smiles": "OC(=O)c1cc(CCl)cc(C=O)c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 3,
+   "notes": "Q6 target, Kekule ring; carries three different labels at once: CH2Cl (top), HOOC (bottom-left, reversed), CHO (bottom-right). Shows all four acid spellings coexist across the paper."
+  },
+  {
+   "name": "Salicylic acid (2-hydroxybenzoic acid)",
+   "smiles": "OC(=O)c1ccccc1O",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q13 intermediate; Kekule ring, CO2H up, OH ortho."
+  },
+  {
+   "name": "4-aminosalicylic acid",
+   "smiles": "Nc1ccc(C(=O)O)c(O)c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q13 final product; Kekule ring bearing CO2H, OH and NH2 (NH2 at bottom vertex)."
+  },
+  {
+   "name": "5-tert-butyl-6-methyl-1H-indene (Compound G)",
+   "smiles": "Cc1cc2c(cc1C(C)(C)C)CC=C2",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 2,
+   "notes": "Fused bicyclic (benzo hexagon fused to a cyclopentene pentagon); benzo ring drawn Kekule; tert-butyl drawn skeletal (branching zig-zag), methyl condensed. C=C of the 5-ring shown."
+  },
+  {
+   "name": "Naphthalene",
+   "smiles": "c1ccc2ccccc2c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q12: EXPLICITLY labelled 'the Kekule structure of naphthalene' - two fused hexagons with alternating C=C, no inscribed circle. Only place the source names the representation."
+  },
+  {
+   "name": "Pyrrole",
+   "smiles": "c1cc[nH]c1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Heteroaromatic 5-membered ring drawn Kekule (two C=C), N at the bottom vertex with an explicit N-H drawn below it."
+  },
+  {
+   "name": "1,2,3,4-tetrahydronaphthalene (tetralin)",
+   "smiles": "C1CCc2ccccc2C1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q11 candidate 4; aromatic hexagon (circle) fused to a saturated hexagon drawn as a plain polygon."
+  },
+  {
+   "name": "1-methyl-2,3-dihydro-1H-indene (1-methylindane)",
+   "smiles": "CC1CCc2ccccc21",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q11 candidate 1; benzo hexagon (circle) fused to a saturated pentagon, methyl skeletal."
+  },
+  {
+   "name": "1,1-dimethylbenzocyclobutene",
+   "smiles": "CC1(C)Cc2ccccc21",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 8,
+   "notes": "Q11 candidate 3; benzo hexagon fused to a four-membered SQUARE - shows fused rings can be non-hexagonal polygons."
+  },
+  {
+   "name": "Methylbenzene arenium ion (Wheland/sigma-complex, 2-,3-,4-position)",
+   "smiles": "",
+   "form": "mechanism",
+   "source": "7 Arenes.pdf",
+   "page": 4,
+   "notes": "Fig 3.5 carbocation intermediates: cyclohexadienyl skeleton drawn Kekule (two C=C) with a small '+' placed AT the specific ring carbon, and the sp3 ring carbon shows explicit H and the added Br. No SMILES (delocalised cation)."
+  },
+  {
+   "name": "Chlorobenzene arenium ion (sigma-complex)",
+   "smiles": "",
+   "form": "mechanism",
+   "source": "7 Arenes.pdf",
+   "page": 2,
+   "notes": "Q4 option B: alternative cation style - hexagon with a CIRCLED '+' at the ring centre (delocalised), substituents O2N-, Cl, H drawn on ring carbons."
+  },
+  {
+   "name": "cis-1,2-disubstituted alkene (RCH=CHR)",
+   "smiles": "C(/R)=C\\R",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 5,
+   "notes": "Q8 epoxidation substrate; cis/Z geometry shown by both R groups on the SAME side (both drawn downward) of the C=C (two parallel lines)."
+  },
+  {
+   "name": "Alkene epoxide (oxirane)",
+   "smiles": "C1OC1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 5,
+   "notes": "Three-membered ring drawn as a triangle with the O at the APEX and the two R groups skeletal off the basal carbons."
+  },
+  {
+   "name": "Benzene 1,2-oxide (arene oxide)",
+   "smiles": "C1=CC=CC2OC12",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 5,
+   "notes": "Q8 benzene-epoxidation product; ring drawn Kekule (non-aromatic cyclohexadiene) fused to a triangular epoxide with O at apex - Kekule used because the product is no longer aromatic."
+  },
+  {
+   "name": "Alkyl benzenesulfonic acid",
+   "smiles": "CCCCCCCC(CCCC)c1ccc(cc1)S(=O)(=O)O",
+   "form": "mixed",
+   "source": "7 Arenes.pdf",
+   "page": 10,
+   "notes": "Q15 header structure: long alkyl chain drawn as skeletal zig-zag from a central CH at para; ring drawn Kekule; sulfonic acid drawn DISPLAYED as vertical O=S=O with OH written below the S."
+  },
+  {
+   "name": "Cyclohexa-2,5-dien-1-amine (aniline Birch product)",
+   "smiles": "NC1=CCC=CC1",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 10,
+   "notes": "Birch reduction product drawn Kekule (two isolated C=C + two CH2) with NH2 retained - non-aromatic so no circle."
+  },
+  {
+   "name": "2-(butan-2-yl)aniline",
+   "smiles": "CCC(C)c1ccccc1N",
+   "form": "skeletal",
+   "source": "7 Arenes.pdf",
+   "page": 11,
+   "notes": "Q15(b)(ii) target; hexagon+circle, NH2 label ortho, sec-butyl drawn skeletal. Q asks to draw its two ENANTIOMERS as 3-D diagrams (optical isomerism) but the blank paper supplies no wedge/dash drawing."
+  },
+  {
+   "name": "Compound Q — 4-methylphenylglyoxal (p-tolylglyoxal)",
+   "smiles": "Cc1ccc(cc1)C(=O)C=O",
+   "form": "mixed",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 1,
+   "notes": "Benzene drawn as hexagon + inscribed circle, para-substituted across the horizontal axis (methyl stub left, acyl right). Ketone C=O points up-right; aldehyde C=O points to the side (right) with the aldehyde H drawn explicitly below the carbonyl C. Serif labels."
+  },
+  {
+   "name": "1-iodobutan-2-one (Q2 option A)",
+   "smiles": "CCC(=O)CI",
+   "form": "mixed",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 1,
+   "notes": "Skeletal zig-zag ketone with the terminal carbon written as the condensed label CH2I. Ketone C=O drawn pointing straight UP (O directly above the interior carbonyl carbon)."
+  },
+  {
+   "name": "methyl ethanoate (Q2 option C)",
+   "smiles": "COC(C)=O",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 1,
+   "notes": "Ester drawn as -O-C(=O)- : the single-bonded ester oxygen is an explicit 'O' label bridging two skeletal methyls; carbonyl C=O points UP. Not condensed to COO."
+  },
+  {
+   "name": "N-methylethanamide / N-methylacetamide (Q2 option D)",
+   "smiles": "CNC(C)=O",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 1,
+   "notes": "Amide drawn as -NH-C(=O)- with N and its H shown explicitly (H below the N); carbonyl C=O points UP. Not condensed to CONH."
+  },
+  {
+   "name": "1-bromo-2-methylpropane (isobutyl bromide)",
+   "smiles": "CC(C)CBr",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 2,
+   "notes": "Plain skeletal zig-zag; halogen shown as 'Br' text label at the right-hand chain terminus, bond line abutting the label."
+  },
+  {
+   "name": "Compound E — 2-hydroxy-2-methylpropanal",
+   "smiles": "CC(C)(O)C=O",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 2,
+   "notes": "Skeletal; gem-dimethyl as an inverted-V at top, OH written below the quaternary carbon, aldehyde carbonyl =O drawn to the SIDE (right) with H implicit."
+  },
+  {
+   "name": "Compound F — 3-hydroxybutan-2-one (acetoin)",
+   "smiles": "CC(O)C(C)=O",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 3,
+   "notes": "Skeletal; ketone C=O drawn to the side (right, O at chain end), OH written below the adjacent CH. Distinguishes from E by having interior carbonyl with carbon on both sides."
+  },
+  {
+   "name": "Wittig carbonyl reactant (generic R1R2C=O, Ca labelled)",
+   "smiles": "O=C(C)C",
+   "form": "structural",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 3,
+   "notes": "Generic carbonyl in the reaction scheme: explicit 'Ca' atom label with C=O pointing straight UP and R1/R2 on the two lower bonds. Representative SMILES; R1,R2 defined as H, alkyl or aryl."
+  },
+  {
+   "name": "Wittig phosphonium ylide Ph3P(+)-C(-)R3R4",
+   "smiles": "[CH2-][P+](c1ccccc1)(c1ccccc1)c1ccccc1",
+   "form": "mechanism",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 3,
+   "notes": "Shows formal charges as superscripts: 'P +' on phosphorus, '-' on the ylide carbon Cb, plus an explicit lone-pair dot pair '··' on Cb. Three phenyls written as text 'Ph'."
+  },
+  {
+   "name": "Wittig oxaphosphetane intermediate (4-membered O-P-Cb-Ca ring)",
+   "smiles": "",
+   "form": "structural",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 3,
+   "notes": "Four-membered ring drawn as a square. Stereochemistry shown with wedge/dash: R1 and R4 on hashed (dashed) bonds, R2 and R3 on bold wedges. Only place in the document where 3D wedge/hash bonds appear."
+  },
+  {
+   "name": "cyclohexanol",
+   "smiles": "OC1CCCCC1",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 4,
+   "notes": "Cyclohexane as a regular hexagon in vertex-up orientation; single 'OH' substituent placed on the top vertex."
+  },
+  {
+   "name": "1-hydroxycyclohexane-1-carboxylic acid (product on p4)",
+   "smiles": "OC1(C(=O)O)CCCCC1",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 4,
+   "notes": "Hexagon (vertex-up) with two groups on the top vertex: hydroxyl written reversed as 'HO' (bond from right) and carboxylic acid spelled 'CO2H' with subscript 2 — NOT COOH."
+  },
+  {
+   "name": "citral (3,7-dimethylocta-2,6-dienal)",
+   "smiles": "O=CC=C(C)CCC=C(C)C",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 5,
+   "notes": "Skeletal terpenoid; aldehyde carbonyl =O to the side (right), H implicit. Two C=C double bonds and two methyl branches; alkene geometry drawn implicitly but NOT labelled E/Z."
+  },
+  {
+   "name": "citronellal (3,7-dimethyloct-6-enal)",
+   "smiles": "O=CCC(C)CCC=C(C)C",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 5,
+   "notes": "Same skeletal style as citral with the 2,3-C=C reduced to a single zig-zag bond; aldehyde =O to the side."
+  },
+  {
+   "name": "Compound Z — 1,2,3,4-tetrahydroquinoline",
+   "smiles": "c1ccc2c(c1)CCCN2",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 6,
+   "notes": "Benzene ring drawn as hexagon + INSCRIBED CIRCLE, edge-fused to a saturated six-membered N ring; ring N-H shown explicitly (H above N)."
+  },
+  {
+   "name": "propanone (in Leuckart / mechanism drawing)",
+   "smiles": "CC(C)=O",
+   "form": "mechanism",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 6,
+   "notes": "Hand-built structural style: 'H3C' and 'CH3' condensed labels either side of a carbonyl whose C=O points straight UP as a vertical double bond. Tetrahedral intermediate then drawn with right-angle bonds: H3C-C-N-H with CH3 up and O/OH down."
+  },
+  {
+   "name": "ethanal and its carbanion (aldol condensation, step 1)",
+   "smiles": "CC=O",
+   "form": "mechanism",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 7,
+   "notes": "Structural depiction with explicit central 'C', vertical C=O pointing UP, CH3 lower-left and H lower-right. Deprotonation gives the carbanion drawn as '(-)CH2' with the negative charge as a leading superscript minus."
+  },
+  {
+   "name": "hexanedial",
+   "smiles": "O=CCCCCC=O",
+   "form": "skeletal",
+   "source": "9.Carbonyl Compounds - Student Copy.pdf",
+   "page": 7,
+   "notes": "Skeletal zig-zag with an aldehyde at BOTH termini; each carbonyl =O drawn to the side (left O points left, right O points right), aldehyde H implicit."
+  },
+  {
+   "name": "Pentan-2-yl 2-methylbutanoate (the ester in Q1)",
+   "smiles": "CCC(C)C(=O)OC(C)CCC",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 1,
+   "notes": "Skeletal zig-zag, chain horizontal. Acyl group on left, alkoxy (pentan-2-yl) on right. Ester carbonyl C=O points DOWN (O label below, vertical double bond, inner line shorter). Ester O written as bare 'O' at top of the O-C bond. Chiral centres (acyl CH and O-CH) drawn flat, no wedges."
+  },
+  {
+   "name": "1,3-Dinitrobenzene (start of Q4 synthesis)",
+   "smiles": "O=[N+]([O-])c1cccc([N+](=O)[O-])c1",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 2,
+   "notes": "Benzene = hexagon with inscribed CIRCLE (not Kekule). Meta substitution. Nitro written 'O2N-' on the left (reversed, N touching ring) and '-NO2' on the right; charges not drawn on NO2."
+  },
+  {
+   "name": "N-(methoxy-nitrophenyl)propanamide (Q4 stage-III product)",
+   "smiles": "CCC(=O)Nc1cc(OC)cc([N+](=O)[O-])c1",
+   "form": "mixed",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 2,
+   "notes": "Ring skeletal (hexagon+circle) but the amide drawn DISPLAYED: H2C-C(=O)-NH- with amide C=O pointing UP (O on top, vertical double bond) and the propanoyl ethyl written as 'H2C' on the backbone with 'CH3' branch below. N-H shown explicitly. Amide group spelled -C(=O)-NH-, methoxy as -OCH3."
+  },
+  {
+   "name": "3-chloro-4-hydroxybenzoic acid (Q5b)",
+   "smiles": "O=C(O)c1ccc(O)c(Cl)c1",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 3,
+   "notes": "Aromatic acid; hexagon+circle. Carboxyl spelled 'COOH' as a condensed label at top vertex; -OH and -Cl (italic l) at other vertices. Substituent bonds touch labels. Companion 3-chloro-2-hydroxybenzoic acid drawn identically alongside."
+  },
+  {
+   "name": "Ethanoic acid (Q6a)",
+   "smiles": "CC(=O)O",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 3,
+   "notes": "Skeletal; methyl as a short line, C=O pointing DOWN (O below), -OH to the upper right. H on carbon implicit, shown only on the O."
+  },
+  {
+   "name": "Chloroethanoic acid (Q6a)",
+   "smiles": "O=C(O)CCl",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 3,
+   "notes": "Cl (italic l) label on the alpha carbon upper-left, C=O down, OH upper-right. Same skeletal style as ethanoic acid."
+  },
+  {
+   "name": "Ethanoyl chloride (Q6a)",
+   "smiles": "CC(=O)Cl",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 3,
+   "notes": "Acyl chloride drawn -C(=O)-Cl: carbonyl C=O points DOWN (O below), 'Cl' (italic l) label upper-right. Named 'ethanoyl chloride'."
+  },
+  {
+   "name": "Malic acid (Q7)",
+   "smiles": "O=C(O)CC(O)C(=O)O",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 4,
+   "notes": "Diacid, horizontal zig-zag. LEFT carboxyl written 'HO-' with its C=O pointing DOWN; RIGHT carboxyl '-OH' with its C=O pointing UP (the two carbonyls point in opposite vertical directions). Mid-chain -OH branch points down. Tartaric acid on same page drawn the same way with two -OH groups (one up, one down)."
+  },
+  {
+   "name": "Phenylethanoyl chloride (compound S, Q9)",
+   "smiles": "O=C(Cl)Cc1ccccc1",
+   "form": "mixed",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 4,
+   "notes": "Benzene hexagon+circle with a single line to a CONDENSED side-chain label '-CH2COCl' (acyl chloride contracted to COCl, italic l). Analogous compounds P '-CH2CH2Br' and Q '-CH2CH2Cl' drawn the same condensed way on the same page."
+  },
+  {
+   "name": "Compound Z (2-hydroxy-2-arylethanoic acid with ring-OH and vinyl, Q10)",
+   "smiles": "OC(=O)C(O)c1ccc(C=C)cc1O",
+   "form": "mixed",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 5,
+   "notes": "Mixed form: 'HO-' + C=O (O below) carboxyl and a CH(OH) drawn displayed, fused to a skeletal hexagon+circle ring; ring bears -OH and a vinyl drawn skeletal as C=CH2 ('CH2' label). Chiral CH(OH) and the C=C drawn flat, no stereochemistry. SMILES approximate for substitution pattern."
+  },
+  {
+   "name": "Acetoin / 3-hydroxybutan-2-one (Q11)",
+   "smiles": "CC(O)C(C)=O",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 5,
+   "notes": "Skeletal; -OH branch up on C3, ketone C=O pointing DOWN (O below). Oxalyl chloride in same question given only as molecular formula C2O2Cl2 (italic l), not drawn."
+  },
+  {
+   "name": "Ethyl ethanoate (Claisen worked example, Q12)",
+   "smiles": "CCOC(C)=O",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 6,
+   "notes": "Skeletal; acetyl on left with C=O UP (O above), ester O to ethyl on right. Contrast with the same molecule written displayed as R-CH2-C(=O)-O-R' in the general scheme above it."
+  },
+  {
+   "name": "Claisen ester template R-CH2-C(=O)-O-R' (general scheme, Q12)",
+   "smiles": "CC(=O)OC",
+   "form": "displayed",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 6,
+   "notes": "Fully displayed/structural: every atom and bond shown, straight horizontal backbone with RIGHT-ANGLE bonds; carbonyl drawn as a vertical double bond '||' with 'O' on top (points UP). Represents the house 'displayed formula' style used only in mechanism schemes. SMILES is a generic stand-in."
+  },
+  {
+   "name": "Ester enolate anion (Claisen step I, Q12)",
+   "smiles": "[CH2-]C(=O)OC",
+   "form": "mechanism",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 6,
+   "notes": "Carbanion depiction: R-CH with a CIRCLED minus (encircled -) above the carbon PLUS an explicit lone pair (two dots) on that carbon. Alkoxide by-product written 'R'O-' with a plain minus. No radical dots or zwitterions anywhere in the source. SMILES generic."
+  },
+  {
+   "name": "Ethyl 3-oxobutanoate / ethyl acetoacetate (keto-ester product, Q12)",
+   "smiles": "CCOC(=O)CC(C)=O",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 6,
+   "notes": "Skeletal keto ester; both C=O point UP (O labels above), ester O to ethyl on the right."
+  },
+  {
+   "name": "Ethyl 2-oxocyclopentanecarboxylate (Q12a v)",
+   "smiles": "O=C1CCCC1C(=O)OCC",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 7,
+   "notes": "Cyclopentane as a plain regular PENTAGON (no inscribed circle); ring ketone C=O at top vertex pointing UP; adjacent carbon bears a skeletal ester -C(=O)-O-CH2CH3 with its carbonyl up. Ethanol by-product drawn skeletal (CH2-OH)."
+  },
+  {
+   "name": "Cyclohexanone (Q12b)",
+   "smiles": "O=C1CCCCC1",
+   "form": "skeletal",
+   "source": "10.Carboxylic Acid and Derivatives - Student Copy.pdf",
+   "page": 7,
+   "notes": "Cycloalkane drawn as a plain regular HEXAGON with NO inscribed circle (distinguishing it from benzene); ring C=O at the top vertex pointing UP (O above)."
+  },
+  {
+   "name": "Methane",
+   "smiles": "C",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 3,
+   "notes": "Central C with an explicit H above, below, left and right (H–C–H cross). Every bond drawn. In the 'Structural Formula' column of the alkane table."
+  },
+  {
+   "name": "Ethane",
+   "smiles": "CC",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 2,
+   "notes": "Two carbons horizontal, each capped H top+bottom, chain ends capped H left/right: H–C–C–H. Used as the 'Alkane' functional-group example (p2) and repeated in the alkane table (p3) and the naming 'Eth-ane' figure (p2)."
+  },
+  {
+   "name": "Propane",
+   "smiles": "CCC",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 3,
+   "notes": "Horizontal 3-C chain, all H shown, right-angle geometry."
+  },
+  {
+   "name": "Butane",
+   "smiles": "CCCC",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 3,
+   "notes": "Horizontal 4-C chain, fully displayed, terminal H caps."
+  },
+  {
+   "name": "Ethene",
+   "smiles": "C=C",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 2,
+   "notes": "C=C drawn as two parallel horizontal lines, same length as single bonds. On p2 the C=C is boxed in grey to spotlight the functional group; repeated plain in the alkene table (p3)."
+  },
+  {
+   "name": "Propene (prop-1-ene)",
+   "smiles": "CC=C",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 3,
+   "notes": "Drawn H–C–C=C left to right (CH3–CH=CH2); C=C placed at the right end of the chain."
+  },
+  {
+   "name": "Butene (but-1-ene)",
+   "smiles": "C=CCC",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 3,
+   "notes": "Drawn H–C=C–C–C–H (CH2=CH–CH2–CH3); C=C placed at the LEFT end. No cis/trans geometry indicated."
+  },
+  {
+   "name": "Ethanol (alcohol example)",
+   "smiles": "CCO",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 2,
+   "notes": "Alcohol example: chain horizontal with –O–H at the RIGHT end (H–C–C–O–H). The O–H is boxed in grey."
+  },
+  {
+   "name": "Ethanoic acid (carboxylic acid example)",
+   "smiles": "CC(=O)O",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 2,
+   "notes": "Carboxylic acid example at the RIGHT end: C=O points sideways to the right, O–H hangs DOWN below the carbonyl carbon (displayed –C(=O)–O–H). The whole –COOH is boxed in grey. Labelled '-COOH group' in text."
+  },
+  {
+   "name": "Pentane (straight-chain C5H12)",
+   "smiles": "CCCCC",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 4,
+   "notes": "Straight-chain isomer example; all 5 C in one continuous horizontal line, fully displayed."
+  },
+  {
+   "name": "2-methylbutane (branched C5H12)",
+   "smiles": "CC(C)CC",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 4,
+   "notes": "Branched-chain isomer; a CH3 side chain drawn as a vertical branch (fully displayed with its H's) hanging DOWN off the main chain. Parent 4-C chain highlighted grey. Named 'methylbutane' in source."
+  },
+  {
+   "name": "2,2-dimethylpropane (neopentane, branched C5H12)",
+   "smiles": "CC(C)(C)C",
+   "form": "displayed",
+   "source": "Ch21&22 Intro & AlkanesAlkenes.pdf",
+   "page": 4,
+   "notes": "Branched isomer with two CH3 branches (one up, one down) off the central carbon; parent 3-C chain highlighted grey. Named 'dimethylpropane' in source."
+  },
+  {
+   "name": "Methanol",
+   "smiles": "CO",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 1,
+   "notes": "Displayed formula in the 'Structural Formula' column. Single C written centrally as H-C-OH with one H above and one H below the C; hydroxyl written as a combined 'OH' group joined to C by a single bond. Horizontal, all bonds at right angles, monochrome, bold sans-serif letters. Molecular-formula column: CH3OH (subscripts)."
+  },
+  {
+   "name": "Ethanol",
+   "smiles": "CCO",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 1,
+   "notes": "Displayed formula. 2-C horizontal chain H-C-C-OH, each backbone C carries H directly above and below; OH group on the RIGHT end. Right-angle bonds, no zig-zag."
+  },
+  {
+   "name": "Propan-1-ol",
+   "smiles": "CCCO",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 1,
+   "notes": "Displayed formula H-C-C-C-OH, OH on right, all H shown. NOTE source typo: molecular-formula column reads 'C3H6OH' (should be C3H7OH)."
+  },
+  {
+   "name": "Butan-1-ol",
+   "smiles": "CCCCO",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 1,
+   "notes": "Displayed formula, 4-C horizontal chain terminating in -OH on the right; every C shows an H above and below."
+  },
+  {
+   "name": "Methanoic acid",
+   "smiles": "O=CO",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 2,
+   "notes": "Displayed formula H-C=O with the C=O double bond drawn HORIZONTALLY to the RIGHT (side), and the hydroxyl drawn as a vertical single bond dropping to 'O-H' directly BELOW the carbonyl C. Double bond drawn same length as single bonds (equals-sign of two parallel lines). Condensed form given as HCOOH."
+  },
+  {
+   "name": "Ethanoic acid",
+   "smiles": "CC(=O)O",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 2,
+   "notes": "Displayed formula H-C(-H,-H)-C=O with O-H below the carbonyl C. Same house pattern: chain horizontal, C=O points to the SIDE (right), hydroxyl O-H hangs below. Condensed CH3COOH."
+  },
+  {
+   "name": "Propanoic acid",
+   "smiles": "CCC(=O)O",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 2,
+   "notes": "Displayed formula, 3 C in a horizontal row, carboxyl carbon rightmost with C=O to the side and O-H below. Condensed C2H5COOH."
+  },
+  {
+   "name": "Butanoic acid",
+   "smiles": "CCCC(=O)O",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 2,
+   "notes": "Displayed formula, 4-C horizontal chain, terminal carboxyl C=O to the right with O-H beneath. Condensed C3H7COOH."
+  },
+  {
+   "name": "Ester (general functional group R-COO-R')",
+   "smiles": "*C(=O)O*",
+   "form": "structural",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 5,
+   "notes": "General/structural formula using R and R' shorthand. Central C: bond to R on the LEFT, C=O double bond points UP (two parallel lines, same length), and single bond DOWN to O which connects to R'. Serif R/R' and O/C labels, monochrome. Contrast with p2 acids where C=O points to the side. Functional group also written in table as -COO-."
+  },
+  {
+   "name": "Propanoic acid (esterification reactant)",
+   "smiles": "CCC(=O)O",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 5,
+   "notes": "Same compound as p2 but here drawn with C=O pointing UP and the -O-H to the lower right (red-outlined box marks the -O-H that is eliminated). Coloured mechanism drawing: reacting O-H in red."
+  },
+  {
+   "name": "Ethanol (esterification reactant)",
+   "smiles": "CCO",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 5,
+   "notes": "Drawn REVERSED as ...H-O-C-C... so the reacting O-H (red) faces the acid; shows orientation is flipped for the mechanism. All H explicit."
+  },
+  {
+   "name": "Ethyl propanoate (esterification product)",
+   "smiles": "CCC(=O)OCC",
+   "form": "displayed",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 5,
+   "notes": "Product ester, displayed. Carbonyl C highlighted orange, C=O points UP, single C-O-C 'ester link' (labelled with a leader line) joins acyl group to ethyl. Coloured; + H2O shown in red. Chemical formula given acid-first as C2H5COOC2H5, named ethyl propanoate."
+  },
+  {
+   "name": "Esterification reaction scheme (propanoic acid + ethanol -> ethyl propanoate + water)",
+   "smiles": "CCC(=O)O.CCO>>CCC(=O)OCC.O",
+   "form": "mechanism",
+   "source": "Ch23 Alcohols and Carboxylic Acids.pdf",
+   "page": 5,
+   "notes": "Full reaction scheme with a blue block arrow. Left: two displayed reactants with the eliminated -O-H ... H-O- atoms boxed in red. Right: displayed product ester + H2O. Colour used for emphasis (red/orange reacting atoms, blue arrow); rest monochrome."
+  }
+ ]
+}
