@@ -66,6 +66,9 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
 - **Displayed hybridisation geometry** (unified BFS: every atom places its own neighbours off the bond
   it arrived on, by ITS hybridisation): `[done]`
   - **sp3 carbon** -> right-angle "comb": backbone bond continues straight, pendant H / branch bonds at 90 deg.
+    A **chain-link carbon** (exactly two heavy neighbours) sends its heavy continuation STRAIGHT AHEAD, so an
+    ethyl/propyl branch stays linear instead of turning 90 deg into a sibling group; the freed 90-deg slot takes
+    a small H. Fixes e.g. 2-ethylbut-1-ene, where a turned CH3 used to collide with the other ethyl's H.
   - **sp2 carbon (any C=O, C=C, C=N)** -> trigonal ~120 deg splay; the =O is biased straight up.
   - **divalent O / N (O-H, N-H, ester/ether -O-, secondary amine C-N-C)** -> BENT ~120 deg, NEVER collinear.
   - **terminal cap (-CH3) on a non-horizontal bond** -> H's fan away from the parent (a hanging methyl

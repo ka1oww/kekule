@@ -328,7 +328,7 @@ def _coords(mol, shorten_h=None):
     return P
 
 
-def _displayed_comb_layout(mol, grid=False):
+def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
     """Displayed formula in RIGHT-ANGLE 'comb' geometry (authentic A-level, per mined notes):
     horizontal heavy-atom spine with vertical C-H / substituent bonds. Every atom + bond explicit.
     grid=True forces EVERY atom (sp3, sp2, O/N alike) onto 90-deg right angles — the 'natural' form
@@ -341,7 +341,10 @@ def _displayed_comb_layout(mol, grid=False):
     hydroxylO = {i for i in range(A) if at(i).GetAtomicNum() == 8 and i not in carbonylO
                  and sum(1 for nb in at(i).GetNeighbors() if nb.GetAtomicNum() > 1) == 1
                  and any(nb.GetAtomicNum() == 1 for nb in at(i).GetNeighbors())}
-    _off = carbonylO | hydroxylO                         # keep -OH oxygens off the backbone -> drawn as substituents (down)
+    halogenX = {i for i in range(A) if at(i).GetAtomicNum() in (9, 17, 35, 53)
+                and sum(1 for nb in at(i).GetNeighbors() if nb.GetAtomicNum() > 1) == 1
+                and at(i).GetNeighbors()[0].GetAtomicNum() == 6}   # terminal C-X halogen -> substituent (NJC: C-chain horizontal, X drawn up/down)
+    _off = carbonylO | hydroxylO | halogenX              # keep -OH / -X off the backbone -> drawn as substituents
     adj = {i: [] for i in range(A) if at(i).GetAtomicNum() > 1 and i not in _off}
     for i in adj:
         adj[i] = [nb.GetIdx() for nb in at(i).GetNeighbors() if nb.GetIdx() in adj]
@@ -354,6 +357,10 @@ def _displayed_comb_layout(mol, grid=False):
     tot = sum(fw(i) for i in spine)
     if tot and spine and sum(k*fw(i) for k, i in enumerate(spine))/tot < (len(spine)-1)/2.0:
         spine = spine[::-1]
+    if spine_atoms is not None:                          # mechanism form: force the backbone to the functional-group bond
+        spine = [i for i in spine_atoms if i in adj] or spine
+    condense = condense or set()                          # heavy substituents to draw as ONE condensed label (CH3, C2H5...)
+    condlab = {}
     # UNIFIED BFS placement. Every atom places its own neighbours at angles set by ITS hybridisation,
     # measured off the bond it arrived on (its parent). sp3 -> 90 deg comb (straight-ahead spine, vertical
     # H); sp2 carbon / O / N -> 120 deg trigonal-or-bent. Nothing is ever pre-forced onto a flat line, so
@@ -421,12 +428,26 @@ def _displayed_comb_layout(mol, grid=False):
                 s, x, y = take(lambda s: -math.sin(s))
             elif j in spine_pos:                                     # backbone heads right (then up)
                 s, x, y = take(lambda s: (-round(math.cos(s), 3), -math.sin(s)))
-            elif at(j).GetAtomicNum() > 1:                           # heavy substituent: outward-right, else hangs down
-                s, x, y = take(lambda s: (-round(math.cos(s), 3), math.sin(s)))
+            elif at(j).GetAtomicNum() in (9, 17, 35, 53):            # halogen substituent -> UP (NJC: C-chain horizontal, X vertical; H takes the horizontal chain-end slot)
+                s, x, y = take(lambda s: -math.sin(s))
+            elif at(j).GetAtomicNum() > 1:                           # heavy substituent
+                heavy_nb_u = sum(1 for nb in at(u).GetNeighbors() if nb.GetAtomicNum() > 1)
+                if heavy_nb_u == 2 and occ and not _angular(u):      # chain link: continue the chain STRAIGHT AHEAD
+                    straight = occ[0] + R(180)                       # (keeps an ethyl/propyl branch linear; leaves the 90-deg spot for a small H, so a CH3 never turns into a sibling group)
+                    s, x, y = take(lambda s: abs(_norm(s - straight)))
+                else:                                                # branch point: outward-right, else hangs down
+                    s, x, y = take(lambda s: (-round(math.cos(s), 3), math.sin(s)))
+            elif at(u).GetFormalCharge() != 0 and at(u).GetAtomicNum() == 6 \
+                    and sum(1 for nb in at(u).GetNeighbors() if nb.GetAtomicNum() > 1) == 1:
+                s, x, y = take(lambda s: -abs(math.sin(s)))           # charged terminus (carbocation): H's go UP/DOWN, leaving the reactive face open
             else:                                                    # H: fill the widest remaining gap
                 s, x, y = take(lambda s: -min((abs(_norm(s-t)) for t in occ), default=math.pi))
-            pos[j] = (x, y); occ.append(s); q.append(j)
-    atoms = {i: (_elem(at(i)) + _charge_suffix(at(i).GetFormalCharge()), pos[i][0], pos[i][1])
+            pos[j] = (x, y); occ.append(s)
+            if j in condense:                                        # alkyl substituent -> ONE label (CH3, C2H5...), don't draw its atoms
+                condlab[j] = _sub_label(molH, set(spine), j)
+            else:
+                q.append(j)
+    atoms = {i: (condlab.get(i, _elem(at(i)) + _charge_suffix(at(i).GetFormalCharge())), pos[i][0], pos[i][1])
              for i in pos}
     bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _BONDORD.get(b.GetBondType(), 1))
              for b in molH.GetBonds() if b.GetBeginAtomIdx() in pos and b.GetEndAtomIdx() in pos]
@@ -447,11 +468,13 @@ def _displayed_natural_layout(mol):
     return atoms, bonds, [], set()
 
 
-def _natural_grid_layout(mol):
+def _natural_grid_layout(mol, spine_atoms=None):
     """Natural form: the CARBON BACKBONE drawn out on a 90-deg grid (each backbone C shown with its H
     at right angles), while every SUBSTITUENT hanging off the backbone is a CONDENSED label (CH3, OH,
     NH2, Br, OCH3...). C=O / C=C drawn. 'Every bond shown but not at the real bond angle', per the NJC
-    naming-diagram style (main chain out, substituents condensed)."""
+    naming-diagram style (main chain out, substituents condensed).
+    spine_atoms: force the backbone to exactly these atoms (e.g. just the C=C for a mechanism, so EVERY
+    alkyl group -- both methyls of 2-methylpropene -- condenses to a CH3 label)."""
     Chem.Kekulize(mol, clearAromaticFlags=True)
     molH = Chem.AddHs(mol)
     at = molH.GetAtomWithIdx
@@ -473,8 +496,11 @@ def _natural_grid_layout(mol):
                for nb in at(n).GetNeighbors()):
             return 1
         return 0
-    spine = _longest_path(badj, weight=_spwt,
-                          edgewt=lambda a, b: 1 if molH.GetBondBetweenAtoms(a, b).GetBondTypeAsDouble() >= 2 else 0)
+    if spine_atoms is not None:                          # caller forces the backbone (mechanism: just the functional-group bond)
+        spine = [i for i in spine_atoms if i in badj]
+    else:
+        spine = _longest_path(badj, weight=_spwt,
+                              edgewt=lambda a, b: 1 if molH.GetBondBetweenAtoms(a, b).GetBondTypeAsDouble() >= 2 else 0)
     if not spine:                                        # no backbone -> fall back to the 90-deg grid
         return _displayed_comb_layout(mol, grid=True)
     spineset = set(spine)
@@ -718,6 +744,13 @@ def layout(smiles, form='structural', angles='comb'):
         return _displayed_layout(mol, angles)
     if form in ('natural', 'expanded', 'full'):          # every atom + bond drawn on a 90-deg right-angle GRID (no trigonal/bent)
         return _displayed_layout(mol, 'grid')
+    if form == 'mechanism':                              # functional group drawn out at TRIGONAL angles (like ethene) + EVERY alkyl condensed
+        fg = next(([b.GetBeginAtomIdx(), b.GetEndAtomIdx()] for b in mol.GetBonds()
+                   if b.GetBondType() in (Chem.BondType.DOUBLE, Chem.BondType.TRIPLE) and not b.GetIsAromatic()), None)
+        if fg:
+            condense = {a.GetIdx() for a in mol.GetAtoms() if a.GetAtomicNum() > 1 and a.GetIdx() not in fg}
+            return _displayed_comb_layout(mol, spine_atoms=fg, condense=condense)
+        return _displayed_layout(mol, angles)
     if form == 'skeletal':
         return _skeletal_layout(mol)
     if form == 'stereo':
@@ -983,7 +1016,7 @@ def _draw_group(dr, anchor, suffix, side, cx, cy):
             dr.text((x, top), s, fill=(0, 0, 0), font=FONT); x += _txt_w(s, FONT)
 
 
-def draw(atoms, bonds, circles=None, reversible=None, fname=None):
+def draw(atoms, bonds, circles=None, reversible=None, fname=None, return_map=False):
     circles = circles or []
     reversible = reversible or set()
     nbx = collections.defaultdict(list)
@@ -1064,6 +1097,8 @@ def draw(atoms, bonds, circles=None, reversible=None, fname=None):
         _draw_group(dr, parsed[i][0], parsed[i][1], side[i], cx, cy)
     if fname:
         img.save(fname)
+    if return_map:
+        return img, pxc, W, H          # pxc(mol_x, mol_y) -> (px, py); lets an overlay (mechanism arrows) register to atoms/bonds
     return img
 
 
