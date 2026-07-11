@@ -311,7 +311,7 @@ def render_frame_svg(lhs, rhs=(), arrows=(), charges=(), lone_pairs=(),
 
     for arr in arrows:
         p0 = gpx(arr['from'])
-        p0 = (p0[0], p0[1] + arr.get('startperp', 14))     # tail emanates from BELOW the source bond
+        p0 = (p0[0] + arr.get('startdx', 0.0), p0[1] + arr.get('startperp', 14))   # offset the tail to the lone pair / off the source bond
         p1 = gpx(arr['to'])
         if arr.get('route'):
             p0, depth = route(arr, p0, p1)

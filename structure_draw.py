@@ -428,7 +428,7 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
                 s, x, y = take(lambda s: -math.sin(s))
             elif j in spine_pos:                                     # backbone heads right (then up)
                 s, x, y = take(lambda s: (-round(math.cos(s), 3), -math.sin(s)))
-            elif at(j).GetAtomicNum() in (9, 17, 35, 53):            # halogen substituent -> UP (NJC: C-chain horizontal, X vertical; H takes the horizontal chain-end slot)
+            elif at(j).GetAtomicNum() in (9, 17, 35, 53) or j in hydroxylO:   # halogen / -OH / -OH2+ substituent -> UP (NJC: C-chain horizontal, heteroatom vertical)
                 s, x, y = take(lambda s: -math.sin(s))
             elif at(j).GetAtomicNum() > 1:                           # heavy substituent
                 heavy_nb_u = sum(1 for nb in at(u).GetNeighbors() if nb.GetAtomicNum() > 1)
