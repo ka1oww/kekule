@@ -4,7 +4,7 @@ Turn a SMILES string into a sharp vector drawing of a chemical structure, or com
 
 ## Examples
 
-Every image below was produced by the renderer itself. Regenerate them with `python examples/render_examples.py`.
+Every image below was produced by the renderer itself. Regenerate them with `python3 examples/render_examples.py`.
 
 **Structures.** Chains, common functional groups, and substituted benzene rings:
 
@@ -54,9 +54,23 @@ build_doc([("ethanoic acid", "CC(=O)O"), ("benzene", "c1ccccc1")], "structures.d
 
 In a reaction, most species are SMILES. A species that is not, an inorganic reagent, an ion, a radical, or a coefficient, is written as a literal token with a leading `$`, for example `$H2O`, `$2[O]`, `$Na^+`, `$conc. HCl`. Digits after a letter auto-subscript, so `$H2SO4` prints as H₂SO₄. The `$` marks the token and is not drawn. Reagent and condition text are plain formula text and take no `$`.
 
+## Input validation
+
+Every public structure and reaction entry point validates a structural species before layout. Kekule accepts one connected SMILES string for a simple acyclic or single-ring molecule. It does not convert chemical names to SMILES.
+
+Invalid or unsupported input raises a typed `ValueError` subclass from `structure_draw`:
+
+- `InvalidSmilesError` for malformed SMILES or a chemical name passed as SMILES.
+- `DisconnectedStructureError` for salts, mixtures, or other dot-disconnected SMILES. In a reaction, pass separate species as separate list entries, or use an explicit `$` literal token.
+- `UnsupportedTopologyError` for multi-ring, fused, bridged, or spiro structures.
+- `UnsupportedRadicalError` while structural radical-dot rendering is unsupported. Radicals may still be typeset explicitly as reaction literals such as `$•CH3`.
+- `UnsupportedStereochemistryError` when a specialised stereo request cannot be represented faithfully. The raster stereo-pair helper supports exactly one tetrahedral stereocentre and draws both enantiomers; it does not select one configuration from `@` or `@@`. Multi-centre stereo is rejected, and wedge/dash stereo SVG is outside the supported scope.
+
+All of these inherit from `KekuleInputError`, so callers may catch either the specific condition or the shared base class.
+
 ## Scope
 
-The layout engine targets acyclic molecules (chains with one functional group and simple branches) and single-benzene-ring derivatives, which covers the common cases well. It does not lay out fused or polycyclic ring systems; those are outside what it was built for.
+The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Fused, bridged, spiro, and other multi-ring systems are outside its supported scope and are rejected before layout.
 
 ## Licence
 

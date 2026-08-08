@@ -22,10 +22,11 @@ _counter = [0]
 
 def add_structure(doc, run, smiles, width_in=1.7, png_path=None):
     """Render `smiles` and place it in `run` as SVG (vector) + PNG fallback."""
+    mol = N.validate_input(smiles)
     if png_path is None:
         png_path = os.path.join(tempfile.gettempdir(), f"_mol_{_counter[0]}.png")
-    N.render(smiles, png_path)                       # PNG fallback (also sets display size)
-    svg, _, _ = S.render_svg(smiles)
+    N._render_mol(mol, png_path)                     # PNG fallback (also sets display size)
+    svg, _, _ = S._render_svg_mol(mol)
     run.add_picture(png_path, width=Inches(width_in))
     part = Part(PackURI(f'/word/media/struct{_counter[0]}.svg'),
                 'image/svg+xml', svg.encode('utf-8'), doc.part.package)

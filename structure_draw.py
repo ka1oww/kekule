@@ -2,7 +2,7 @@
 Auto-layout from SMILES: horizontal backbone, C=O up, all H shown, Arial, monochrome.
 Acyclic molecules (chains + one functional group + simple branches). Aromatic handled separately."""
 import math, collections, re, statistics
-from rdkit import Chem
+from rdkit import Chem, rdBase
 from rdkit.Chem import rdDepictor
 from PIL import Image, ImageDraw, ImageFont
 
@@ -15,6 +15,95 @@ HEAVY_LEN = 1.95; H_LEN = 1.0
 FONT = ImageFont.truetype(FONT_PATH, 34)
 DIRS = {'up': (0, 1), 'down': (0, -1), 'left': (-1, 0), 'right': (1, 0)}
 OPP = {'up': 'down', 'down': 'up', 'left': 'right', 'right': 'left'}
+
+
+class KekuleInputError(ValueError):
+    """Base class for an input Kekule cannot render faithfully."""
+
+
+class InvalidSmilesError(KekuleInputError):
+    """The supplied value is not a valid SMILES string."""
+
+
+class DisconnectedStructureError(KekuleInputError):
+    """The SMILES contains more than one disconnected molecular fragment."""
+
+
+class UnsupportedTopologyError(KekuleInputError):
+    """The molecular graph is outside the renderer's supported topology."""
+
+
+class UnsupportedRadicalError(KekuleInputError):
+    """The molecule contains radical electrons that Kekule cannot show."""
+
+
+class UnsupportedStereochemistryError(KekuleInputError):
+    """The requested stereochemical representation is not supported faithfully."""
+
+
+def validate_input(smiles, form='structural'):
+    """Parse and validate one public structure input, returning an RDKit molecule.
+
+    Kekule accepts one connected SMILES for a simple acyclic or single-ring molecule.
+    Unsupported chemistry is rejected before any layout is attempted so the renderer
+    never silently drops a fragment or emits a misleading topology.
+    """
+    if not isinstance(smiles, str) or not smiles.strip():
+        raise InvalidSmilesError(
+            f"Invalid SMILES {smiles!r}. Kekule accepts a non-empty SMILES string, not a chemical name."
+        )
+    value = smiles.strip()
+    with rdBase.BlockLogs():
+        mol = Chem.MolFromSmiles(value)
+    if mol is None:
+        raise InvalidSmilesError(
+            f"Invalid SMILES {smiles!r}. Kekule accepts SMILES strings, not chemical names."
+        )
+
+    fragments = Chem.GetMolFrags(mol)
+    if len(fragments) != 1:
+        raise DisconnectedStructureError(
+            f"Disconnected SMILES {smiles!r} contains {len(fragments)} fragments. "
+            "Pass reaction species as separate list entries, or use a '$' literal token for a species "
+            "that should be typeset rather than structurally rendered."
+        )
+
+    radical_atoms = [a.GetIdx() for a in mol.GetAtoms() if a.GetNumRadicalElectrons()]
+    if radical_atoms:
+        raise UnsupportedRadicalError(
+            f"Radical SMILES {smiles!r} is not supported because Kekule cannot yet draw unpaired-electron dots."
+        )
+
+    rings = mol.GetRingInfo().NumRings()
+    if rings > 1:
+        raise UnsupportedTopologyError(
+            f"SMILES {smiles!r} has {rings} rings. Kekule supports at most one simple ring; "
+            "multi-ring, fused, bridged, and spiro topologies are not supported."
+        )
+
+    if form == 'stereo':
+        centres = Chem.FindMolChiralCenters(
+            mol, useLegacyImplementation=False, includeUnassigned=True
+        )
+        if len(centres) != 1:
+            raise UnsupportedStereochemistryError(
+                f"Stereo-pair rendering requires exactly one tetrahedral stereocentre; "
+                f"SMILES {smiles!r} has {len(centres)}."
+            )
+    elif form == 'geometric':
+        double_bonds = [
+            b for b in mol.GetBonds()
+            if b.GetBondType() == Chem.BondType.DOUBLE
+            and not b.IsInRing()
+            and b.GetBeginAtom().GetAtomicNum() == 6
+            and b.GetEndAtom().GetAtomicNum() == 6
+        ]
+        if len(double_bonds) != 1:
+            raise UnsupportedStereochemistryError(
+                f"Geometric-pair rendering requires exactly one open-chain C=C bond; "
+                f"SMILES {smiles!r} has {len(double_bonds)}."
+            )
+    return mol
 
 
 def _is_carbonyl_O(a):
@@ -660,7 +749,9 @@ def _stereo_layout(mol, mirror=False, star=False):
     bond (OH->HO, CH3->H3C). `mirror` reflects to the other enantiomer. Optional * centre (star=True)."""
     centres = Chem.FindMolChiralCenters(mol, useLegacyImplementation=False, includeUnassigned=True)
     if not centres:
-        raise ValueError("no chiral centre: the stereochemistry form needs a molecule with a stereocentre")
+        raise UnsupportedStereochemistryError(
+            "Stereo-pair rendering requires a molecule with exactly one tetrahedral stereocentre."
+        )
     c = centres[0][0]
     molH = Chem.AddHs(mol)
     atH = molH.GetAtomWithIdx
@@ -711,7 +802,9 @@ def _geometric_layout(mol, trans=False):
                if b.GetBondType() == Chem.BondType.DOUBLE and not b.IsInRing()
                and b.GetBeginAtom().GetAtomicNum() == 6 and b.GetEndAtom().GetAtomicNum() == 6), None)
     if db is None:
-        raise ValueError("no open-chain C=C: cis/trans needs a stereogenic double bond")
+        raise UnsupportedStereochemistryError(
+            "Geometric-pair rendering requires exactly one open-chain C=C bond."
+        )
     c1, c2 = db
     molH = Chem.AddHs(mol)
     atH = molH.GetAtomWithIdx
@@ -722,7 +815,9 @@ def _geometric_layout(mol, trans=False):
     def slbl(n):
         return "H" if atH(n).GetAtomicNum() == 1 else _sub_label(molH, {c1, c2}, n)
     if slbl(s1[0]) == slbl(s1[1]) or slbl(s2[0]) == slbl(s2[1]):
-        raise ValueError("no cis/trans: an alkene carbon bears two identical groups")
+        raise UnsupportedStereochemistryError(
+            "Geometric-pair rendering requires two different groups on each alkene carbon."
+        )
     ref1, oth1 = s1[0], s1[1]
     ref2, oth2 = s2[0], s2[1]
     P = {c1: (-0.75, 0.0), c2: (0.75, 0.0),
@@ -735,11 +830,13 @@ def _geometric_layout(mol, trans=False):
     return atoms, bonds, [], set()
 
 
-def layout(smiles, form='structural', angles='comb'):
-    """Layout for one of three representations: 'structural' (condensed, NJC house default),
+def _layout_mol(mol, form='structural', angles='comb'):
+    """Layout an already validated RDKit molecule.
+
+    One of three representations: 'structural' (condensed, NJC house default),
     'displayed' (every atom + bond at 'natural' bond angles by default, or right-angle 'comb'),
     or 'skeletal' (zig-zag, implicit C/H)."""
-    mol = Chem.MolFromSmiles(smiles)
+    mol = Chem.Mol(mol)                                    # layout helpers may Kekulize/mutate; keep the validated input reusable
     if form == 'displayed':
         return _displayed_layout(mol, angles)
     if form in ('natural', 'expanded', 'full'):          # every atom + bond drawn on a 90-deg right-angle GRID (no trigonal/bent)
@@ -954,6 +1051,11 @@ def layout(smiles, form='structural', angles='comb'):
     return atoms, bonds, [], reversible
 
 
+def layout(smiles, form='structural', angles='comb'):
+    """Validate one SMILES input, then lay it out in the requested representation."""
+    return _layout_mol(validate_input(smiles, form), form, angles)
+
+
 SUBFONT = ImageFont.truetype(FONT_PATH, 23)
 _SCRATCH = ImageDraw.Draw(Image.new("RGB", (8, 8)))
 _BASE_H = _SCRATCH.textbbox((0, 0), "H", font=FONT)[3] - _SCRATCH.textbbox((0, 0), "H", font=FONT)[1]
@@ -1102,17 +1204,23 @@ def draw(atoms, bonds, circles=None, reversible=None, fname=None, return_map=Fal
     return img
 
 
-def render(smiles, fname=None, form='structural', angles='comb'):
-    out = layout(smiles, form, angles)
+def _render_mol(mol, fname=None, form='structural', angles='comb'):
+    """Render an already validated RDKit molecule without parsing it again."""
+    out = _layout_mol(mol, form, angles)
     a, b, c = out[0], out[1], out[2]
     rev = out[3] if len(out) > 3 else set()
     return draw(a, b, c, rev, fname)
 
 
+def render(smiles, fname=None, form='structural', angles='comb'):
+    """Validate one SMILES input and render it as a Pillow image."""
+    return _render_mol(validate_input(smiles, form), fname, form, angles)
+
+
 def render_stereo_pair(smiles, fname=None):
     """The two enantiomers, drawn in ONE shared coordinate frame (identical scale, symmetric about
     the mirror line), split by a vertical dash-dot MIRROR-PLANE line and captioned per the NJC figure."""
-    mol = Chem.MolFromSmiles(smiles)
+    mol = validate_input(smiles, 'stereo')
     left = draw(*_stereo_layout(mol, mirror=False))      # equal scale (same U); centre each in an equal cell
     right = draw(*_stereo_layout(mol, mirror=True))
     cellW = max(left.width, right.width) + 24
@@ -1140,7 +1248,7 @@ def render_stereo_pair(smiles, fname=None):
 
 def render_geometric_pair(smiles, fname=None):
     """The cis and trans geometric isomers side by side, labelled 'cis' / 'trans' (never E/Z)."""
-    mol = Chem.MolFromSmiles(smiles)
+    mol = validate_input(smiles, 'geometric')
     imgs = [("cis", draw(*_geometric_layout(mol, trans=False))),
             ("trans", draw(*_geometric_layout(mol, trans=True)))]
     if fname:

@@ -179,9 +179,10 @@ def _centered_text_block(text, sz=FS):
     return dict(w=w, h=h, cy=cy, svg=svg, pil=pilfn)
 
 def _molecule_block(smiles):
-    inner, w, h, px = S.render_svg_inner(smiles)
+    mol = J.validate_input(smiles)
+    inner, w, h, px = S._render_svg_inner_mol(mol)
     cy = px(0.0, 0.0)[1]                       # backbone row (coord y=0) -> align here
-    pil_img = J.render(smiles)                 # same geometry as the SVG (white bg)
+    pil_img = J._render_mol(mol)               # same validated molecule and geometry as the SVG (white bg)
     def pil(img, dr, ox, oy):
         img.paste(pil_img, (int(round(ox)), int(round(oy))))
     return dict(w=w, h=h, cy=cy, svg=inner, pil=pil)
@@ -268,25 +269,33 @@ def _compose(reactants, products, reagent, conditions, arrow, arrow_len):
     H = int(max(ty + b["h"] for b, _, ty in placed) + PAD)
     return placed, W, H
 
-def render_reaction_svg(reactants, products, reagent="", conditions="",
-                        arrow="->", arrow_len=ARROW_MIN):
-    """reactants, products: list[str] of species ($literal or SMILES). -> (svg, W, H)."""
-    placed, W, H = _compose(reactants, products, reagent, conditions, arrow, arrow_len)
+
+def _placed_svg(placed, W, H):
     body = [f'<rect width="{W}" height="{H}" fill="white"/>']
     for b, tx, ty in placed:
         body.append(f'<g transform="translate({tx:.1f},{ty:.1f})">{b["svg"]}</g>')
-    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
-           f'viewBox="0 0 {W} {H}">{"".join(body)}</svg>')
-    return svg, W, H
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
+            f'viewBox="0 0 {W} {H}">{"".join(body)}</svg>')
 
-def render_reaction_png(reactants, products, reagent="", conditions="",
-                        arrow="->", arrow_len=ARROW_MIN):
-    placed, W, H = _compose(reactants, products, reagent, conditions, arrow, arrow_len)
+
+def _placed_png(placed, W, H):
     img = Image.new("RGB", (W, H), "white")
     dr = ImageDraw.Draw(img)
     for b, tx, ty in placed:
         b["pil"](img, dr, tx, ty)
     return img
+
+
+def render_reaction_svg(reactants, products, reagent="", conditions="",
+                        arrow="->", arrow_len=ARROW_MIN):
+    """reactants, products: list[str] of species ($literal or SMILES). -> (svg, W, H)."""
+    placed, W, H = _compose(reactants, products, reagent, conditions, arrow, arrow_len)
+    return _placed_svg(placed, W, H), W, H
+
+def render_reaction_png(reactants, products, reagent="", conditions="",
+                        arrow="->", arrow_len=ARROW_MIN):
+    placed, W, H = _compose(reactants, products, reagent, conditions, arrow, arrow_len)
+    return _placed_png(placed, W, H)
 
 # ----------------------------------------------------------------------------- docx
 _SVG_EXT_URI = "{96DAC541-7B7A-43D3-8B79-37D633B846F1}"
@@ -300,10 +309,11 @@ def add_reaction(doc, run, reactants, products, reagent="", conditions="",
     from docx.opc.part import Part
     from docx.opc.constants import RELATIONSHIP_TYPE as RT
     from docx.oxml import parse_xml
-    svg, W, H = render_reaction_svg(reactants, products, reagent, conditions, arrow, arrow_len)
+    placed, W, H = _compose(reactants, products, reagent, conditions, arrow, arrow_len)
+    svg = _placed_svg(placed, W, H)
     if png_path is None:
         png_path = os.path.join(tempfile.gettempdir(), f"_rxn_{_counter[0]}.png")
-    render_reaction_png(reactants, products, reagent, conditions, arrow, arrow_len).save(png_path)
+    _placed_png(placed, W, H).save(png_path)
     run.add_picture(png_path, width=Inches(width_in))
     part = Part(PackURI(f'/word/media/rxn{_counter[0]}.svg'),
                 'image/svg+xml', svg.encode('utf-8'), doc.part.package)

@@ -2,7 +2,7 @@
 import math, collections
 import structure_draw as J
 from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,
-                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME, layout)
+                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
 
 FS = 34        # main glyph px (Arial)
 SUBFS = 23     # subscript px
@@ -95,10 +95,33 @@ def draw_svg_inner(atoms, bonds, circles=None, reversible=None, font=FONT_NAME):
     elems, W, H, px = _geom_and_elems(atoms, bonds, circles, reversible, font)
     return ''.join(elems), W, H, px
 
-def render_svg(smiles, font=FONT_NAME, form='structural', angles='comb'):
-    a, b, c, rev = layout(smiles, form, angles)
+def _render_svg_mol(mol, font=FONT_NAME, form='structural', angles='comb'):
+    """Render an already validated RDKit molecule without parsing it again."""
+    a, b, c, rev = J._layout_mol(mol, form, angles)
     return draw_svg(a, b, c, rev, font)
 
-def render_svg_inner(smiles, font=FONT_NAME, form='structural', angles='comb'):
-    a, b, c, rev = layout(smiles, form, angles)
+
+def _render_svg_inner_mol(mol, font=FONT_NAME, form='structural', angles='comb'):
+    """Render inner SVG elements for an already validated RDKit molecule."""
+    a, b, c, rev = J._layout_mol(mol, form, angles)
     return draw_svg_inner(a, b, c, rev, font)
+
+
+def render_svg(smiles, font=FONT_NAME, form='structural', angles='comb'):
+    mol = J.validate_input(smiles, form)
+    if form == 'stereo':
+        raise J.UnsupportedStereochemistryError(
+            "Stereo wedge/dash rendering is not supported by the SVG backend; "
+            "use structure_draw.render_stereo_pair for the supported raster pair."
+        )
+    return _render_svg_mol(mol, font, form, angles)
+
+
+def render_svg_inner(smiles, font=FONT_NAME, form='structural', angles='comb'):
+    mol = J.validate_input(smiles, form)
+    if form == 'stereo':
+        raise J.UnsupportedStereochemistryError(
+            "Stereo wedge/dash rendering is not supported by the SVG backend; "
+            "use structure_draw.render_stereo_pair for the supported raster pair."
+        )
+    return _render_svg_inner_mol(mol, font, form, angles)
