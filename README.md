@@ -31,7 +31,7 @@ Every image below was produced by the renderer itself. Regenerate them with `pyt
 pip install -r requirements.txt
 ```
 
-Requirements are `rdkit` and `pillow`, plus `python-docx` if you use the Word export. The label font is Arial, read from the macOS system path in `structure_draw.py`; change `FONT_PATH` there to point at any TrueType font on another platform.
+Requirements are `rdkit` and `pillow`, plus `python-docx` for Word export. CI supports Python 3.11 through 3.13. The renderer uses Arial when it is installed and falls back to Liberation Sans or DejaVu Sans on other platforms. Reference-image byte comparisons run only with Arial; the cross-platform gate asserts stable chemical and artifact semantics instead of font-dependent pixels.
 
 ## Usage
 
@@ -71,6 +71,16 @@ All of these inherit from `KekuleInputError`, so callers may catch either the sp
 ## Scope
 
 The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Fused, bridged, spiro, and other multi-ring systems are outside its supported scope and are rejected before layout.
+
+## Readiness gate
+
+Run the complete local preview gate with one command from the repository root:
+
+```bash
+python3 scripts/readiness_gate.py
+```
+
+This compiles the Python sources, runs the 66-case geometric invariant suite, runs the 22 validation tests, and executes every case in [`evaluation/preview_manifest.json`](evaluation/preview_manifest.json), including the portable DOCX package smoke. The manifest is the single human-readable inventory of supported preview examples and typed rejection cases; the runner contains only generic entry-point dispatch and semantic artifact checks. GitHub Actions installs the declared dependencies and invokes this same command on Python 3.11, 3.12, and 3.13.
 
 ## Licence
 

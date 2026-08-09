@@ -29,7 +29,7 @@ import os, sys, re, math, tempfile
 sys.path.insert(0, os.path.dirname(__file__))
 import structure_draw as J
 import structure_svg as S
-from structure_draw import U, STROKE, DBL, ARIAL, FONT_NAME, _BASE_H, _txt_w
+from structure_draw import U, STROKE, DBL, FONT_PATH, FONT_NAME, _BASE_H, _txt_w
 from PIL import Image, ImageDraw, ImageFont
 
 FS = S.FS            # 34: main glyph, matches molecule labels
@@ -47,7 +47,7 @@ CENTRE = 0.35        # baseline offset to vertically centre a glyph on a point
 _font_cache = {}
 def _font(sz):
     if sz not in _font_cache:
-        _font_cache[sz] = ImageFont.truetype(ARIAL, sz)
+        _font_cache[sz] = ImageFont.truetype(FONT_PATH, sz)
     return _font_cache[sz]
 
 def _esc(s):

@@ -3,9 +3,10 @@
 import os
 import sys
 import unittest
+import xml.etree.ElementTree as ET
 from unittest import mock
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -183,26 +184,41 @@ class SupportedOutputStabilityTests(unittest.TestCase):
     def test_tracked_structure_examples_are_unchanged(self):
         for name, smiles in self.STRUCTURES.items():
             with self.subTest(name=name):
-                markup, _, _ = svg.render_svg(smiles)
-                with open(os.path.join(ROOT, "examples", f"{name}.svg")) as fh:
-                    self.assertEqual(markup, fh.read())
+                markup, width, height = svg.render_svg(smiles)
                 actual = draw.render(smiles)
-                with Image.open(os.path.join(ROOT, "examples", f"{name}.png")) as tracked:
-                    expected = tracked.convert("RGB")
-                self.assertEqual(actual.size, expected.size)
-                self.assertEqual(actual.tobytes(), expected.tobytes())
+                if draw.FONT_PATH == draw.ARIAL:
+                    with open(os.path.join(ROOT, "examples", f"{name}.svg")) as fh:
+                        self.assertEqual(markup, fh.read())
+                    with Image.open(os.path.join(ROOT, "examples", f"{name}.png")) as tracked:
+                        expected = tracked.convert("RGB")
+                    self.assertEqual(actual.size, expected.size)
+                    self.assertEqual(actual.tobytes(), expected.tobytes())
+                else:
+                    self._assert_portable_artifacts(markup, width, height, actual)
 
     def test_tracked_reaction_examples_are_unchanged(self):
         for name, kwargs in self.REACTIONS.items():
             with self.subTest(name=name):
-                markup, _, _ = reaction.render_reaction_svg(**kwargs)
-                with open(os.path.join(ROOT, "examples", f"{name}.svg")) as fh:
-                    self.assertEqual(markup, fh.read())
+                markup, width, height = reaction.render_reaction_svg(**kwargs)
                 actual = reaction.render_reaction_png(**kwargs)
-                with Image.open(os.path.join(ROOT, "examples", f"{name}.png")) as tracked:
-                    expected = tracked.convert("RGB")
-                self.assertEqual(actual.size, expected.size)
-                self.assertEqual(actual.tobytes(), expected.tobytes())
+                if draw.FONT_PATH == draw.ARIAL:
+                    with open(os.path.join(ROOT, "examples", f"{name}.svg")) as fh:
+                        self.assertEqual(markup, fh.read())
+                    with Image.open(os.path.join(ROOT, "examples", f"{name}.png")) as tracked:
+                        expected = tracked.convert("RGB")
+                    self.assertEqual(actual.size, expected.size)
+                    self.assertEqual(actual.tobytes(), expected.tobytes())
+                else:
+                    self._assert_portable_artifacts(markup, width, height, actual)
+
+    def _assert_portable_artifacts(self, markup, width, height, image):
+        root = ET.fromstring(markup)
+        self.assertTrue(root.tag.endswith("svg"))
+        self.assertGreater(width, 0)
+        self.assertGreater(height, 0)
+        self.assertEqual(image.size, (width, height))
+        white = Image.new(image.mode, image.size, "white")
+        self.assertIsNotNone(ImageChops.difference(image, white).getbbox())
 
 
 if __name__ == "__main__":

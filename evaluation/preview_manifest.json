@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "name": "Kekule narrow preview evaluation",
+  "description": "A small, privacy-safe inventory of the public preview promise. All inputs are synthetic textbook examples and contain no personal or proprietary source data.",
+  "promise": "Given a valid, single-component SMILES string for a simple acyclic organic molecule with one main functional group or a simple single-ring structure, Kekule deterministically renders an A-level-style structure to SVG or PNG. It can also compose caller-specified straight or equilibrium reaction schemes.",
+  "cases": [
+    {
+      "id": "supported-acyclic-structural-svg",
+      "input": "CC(=O)O",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "svg",
+        "molecule": {"atoms": 4, "bonds": 3, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-branched-displayed-layout",
+      "input": "CC(O)C",
+      "entry_point": "structure_draw.layout",
+      "representation": "displayed",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "connected_layout",
+        "molecule": {"atoms": 4, "bonds": 3, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-chain-skeletal-png",
+      "input": "CC#N",
+      "entry_point": "structure_draw.render",
+      "representation": "skeletal",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "png",
+        "molecule": {"atoms": 3, "bonds": 2, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-aromatic-single-ring-svg",
+      "input": "O=[N+]([O-])c1ccccc1",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "svg",
+        "molecule": {"atoms": 9, "bonds": 9, "rings": 1, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-cycloalkane-svg",
+      "input": "C1CCCCC1",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "skeletal",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "svg",
+        "molecule": {"atoms": 6, "bonds": 6, "rings": 1, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-formal-charge-svg",
+      "input": "CC(=O)[O-]",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "svg",
+        "molecule": {"atoms": 4, "bonds": 3, "rings": 0, "formal_charge": -1}
+      }
+    },
+    {
+      "id": "supported-equilibrium-reaction-svg",
+      "input": {
+        "reactants": ["CCO", "CC(=O)O"],
+        "products": ["CCOC(C)=O", "$H2O"],
+        "reagent": "conc. H2SO4",
+        "conditions": "heat",
+        "arrow": "<=>"
+      },
+      "entry_point": "reaction_render.render_reaction_svg",
+      "representation": "equilibrium reaction scheme",
+      "expected": {"outcome": "supported", "artifact": "reaction_svg"}
+    },
+    {
+      "id": "supported-single-centre-stereo-pair",
+      "input": "CC(O)C(=O)O",
+      "entry_point": "structure_draw.render_stereo_pair",
+      "representation": "generic enantiomer pair raster",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "stereo_pair_png",
+        "molecule": {"atoms": 6, "bonds": 5, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-open-chain-geometric-pair",
+      "input": "CC=CC",
+      "entry_point": "structure_draw.render_geometric_pair",
+      "representation": "generic cis/trans pair raster",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "geometric_pair_png",
+        "molecule": {"atoms": 4, "bonds": 3, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-structure-docx-package",
+      "input": [["ethanoic acid", "CC(=O)O"], ["benzene", "c1ccccc1"]],
+      "entry_point": "embed_docx.build_doc",
+      "representation": "DOCX with SVG and PNG fallback",
+      "expected": {"outcome": "supported", "artifact": "docx_package"}
+    },
+    {
+      "id": "reject-malformed-smiles",
+      "input": "not-smiles",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "InvalidSmilesError",
+        "message_contains": "Invalid SMILES"
+      }
+    },
+    {
+      "id": "reject-chemical-name-as-smiles",
+      "input": "ethanoic acid",
+      "entry_point": "structure_draw.layout",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "InvalidSmilesError",
+        "message_contains": "not chemical names"
+      }
+    },
+    {
+      "id": "reject-non-string-input",
+      "input": 42,
+      "entry_point": "structure_draw.validate_input",
+      "representation": "SMILES validation",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "InvalidSmilesError",
+        "message_contains": "non-empty SMILES string"
+      }
+    },
+    {
+      "id": "reject-disconnected-structure",
+      "input": "CCO.O",
+      "entry_point": "structure_draw.render",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "DisconnectedStructureError",
+        "message_contains": "2 fragments"
+      }
+    },
+    {
+      "id": "reject-disconnected-reaction-species",
+      "input": {"reactants": ["CCO.O"], "products": ["CC=O"]},
+      "entry_point": "reaction_render.render_reaction_svg",
+      "representation": "straight reaction scheme",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "DisconnectedStructureError",
+        "message_contains": "separate list entries"
+      }
+    },
+    {
+      "id": "reject-fused-ring-topology",
+      "input": "c1ccc2ccccc2c1",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedTopologyError",
+        "message_contains": "at most one simple ring"
+      }
+    },
+    {
+      "id": "reject-multiple-ring-topology",
+      "input": "c1ccccc1-c2ccccc2",
+      "entry_point": "structure_draw.layout",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedTopologyError",
+        "message_contains": "multi-ring, fused, bridged, and spiro"
+      }
+    },
+    {
+      "id": "reject-radical-without-electron-dot",
+      "input": "[CH3]",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedRadicalError",
+        "message_contains": "unpaired-electron dots"
+      }
+    },
+    {
+      "id": "reject-multi-centre-stereo-pair",
+      "input": "O=C(O)[C@H](O)[C@H](O)C(=O)O",
+      "entry_point": "structure_draw.render_stereo_pair",
+      "representation": "generic enantiomer pair raster",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedStereochemistryError",
+        "message_contains": "exactly one tetrahedral stereocentre"
+      }
+    },
+    {
+      "id": "reject-stereo-svg-backend",
+      "input": "CC(O)C(=O)O",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "stereo",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedStereochemistryError",
+        "message_contains": "SVG backend"
+      }
+    },
+    {
+      "id": "reject-non-stereogenic-geometric-pair",
+      "input": "C=C",
+      "entry_point": "structure_draw.render_geometric_pair",
+      "representation": "generic cis/trans pair raster",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedStereochemistryError",
+        "message_contains": "two different groups"
+      }
+    }
+  ]
+}

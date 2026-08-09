@@ -11,7 +11,7 @@ This module is being built incrementally. Right now: the curly-arrow PRIMITIVE o
 import math
 from PIL import Image, ImageDraw, ImageFont
 import structure_draw as J
-from structure_draw import STROKE, ARIAL
+from structure_draw import STROKE, FONT_PATH
 
 ARROW_W = STROKE                 # arrow shaft weight, matches bond stroke
 HEAD_LEN = 14                    # arrowhead barb length (px)
@@ -148,7 +148,7 @@ def render_frame(lhs, rhs=(), arrows=(), charges=(), lone_pairs=(), reagent="", 
       arrow:  {'from': (side, i, loc), 'to': (side, i, loc), 'bow', 'kind'}
       charge: {'at': (side, i, atom), 'text': 'δ+', 'dx':0, 'dy':-26}
     loc: ('atom', i) | ('bond', i, j) | ('pt', dx, dy) relative to that species' top-left."""
-    fbig = ImageFont.truetype(ARIAL, 30); fsm = ImageFont.truetype(ARIAL, 24); frg = ImageFont.truetype(ARIAL, 22)
+    fbig = ImageFont.truetype(FONT_PATH, 30); fsm = ImageFont.truetype(FONT_PATH, 24); frg = ImageFont.truetype(FONT_PATH, 22)
     L = [_lay_species(s) for s in lhs]
     R = [_lay_species(s) for s in rhs]
     axis = max([s['axis'] for s in L + R] + [0])            # common backbone axis (max so nothing clips above)
@@ -240,7 +240,7 @@ def render_frame(lhs, rhs=(), arrows=(), charges=(), lone_pairs=(), reagent="", 
 def _test_card(path):
     W, H = 900, 620
     img = Image.new("RGB", (W, H), "white"); dr = ImageDraw.Draw(img)
-    f = ImageFont.truetype(ARIAL, 20)
+    f = ImageFont.truetype(FONT_PATH, 20)
     cases = [
         ("full, bow +0.4  (arcs left)",  (80, 120),  (320, 120),  0.4,  'full'),
         ("full, bow -0.4  (arcs right)", (420, 120), (660, 120), -0.4,  'full'),

@@ -23,7 +23,7 @@ import math, os, tempfile
 from PIL import ImageFont
 import structure_draw as J
 import structure_svg as S
-from structure_draw import U, HEAVY_LEN, ARIAL, _txt_w
+from structure_draw import U, HEAVY_LEN, FONT_PATH, _txt_w
 
 ARROW_W = 3.0
 HEAD_LEN = 17.0
@@ -168,7 +168,7 @@ def _shaft_samples(p0, p1, depth, lift, stop, head_len=HEAD_LEN, n=44):
 _font_cache = {}
 def _font(sz):
     if sz not in _font_cache:
-        _font_cache[sz] = ImageFont.truetype(ARIAL, sz)
+        _font_cache[sz] = ImageFont.truetype(FONT_PATH, sz)
     return _font_cache[sz]
 
 def _text(x, y, s, sz, anchor='start'):

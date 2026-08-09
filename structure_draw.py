@@ -8,8 +8,33 @@ from PIL import Image, ImageDraw, ImageFont
 
 ARIAL = "/System/Library/Fonts/Supplemental/Arial.ttf"
 CALIBRI = "/Applications/Microsoft Word.app/Contents/Resources/DFonts/Calibri.ttf"
-FONT_PATH = ARIAL              # label font: Arial for clean, even structure labels
-FONT_NAME = "Arial"            # font-family used in SVG output
+
+
+def _resolve_font_path():
+    """Prefer the reference Arial face, with portable metrically similar fallbacks."""
+    candidates = (
+        ARIAL,
+        "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf",
+        "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "DejaVuSans.ttf",
+    )
+    for candidate in candidates:
+        try:
+            ImageFont.truetype(candidate, 12)
+        except OSError:
+            continue
+        return candidate
+    raise RuntimeError("Kekule requires a TrueType sans-serif font, but no supported font was found.")
+
+
+FONT_PATH = _resolve_font_path()  # Arial on macOS; portable sans-serif fallback elsewhere
+if "LiberationSans" in FONT_PATH:
+    FONT_NAME = "Liberation Sans"
+elif "DejaVuSans" in FONT_PATH:
+    FONT_NAME = "DejaVu Sans"
+else:
+    FONT_NAME = "Arial"
 U = 46; STROKE = 3; GAP = 15; DBL = 6; TRP = 7
 HEAVY_LEN = 1.95; H_LEN = 1.0
 FONT = ImageFont.truetype(FONT_PATH, 34)
