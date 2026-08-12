@@ -6,3 +6,6 @@ venv/
 # scratch renders (the committed examples/*.png and *.svg are kept intentionally)
 /tmp_*.png
 /tmp_*.svg
+AGENTS.md
+CLAUDE.md
+.claude/
