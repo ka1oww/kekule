@@ -2,6 +2,7 @@
 import math, collections
 import structure_draw as J
 from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,
+                      _suffix_for_side, _anchor_w, _inline_w, _inline_runs,
                       U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
 
 FS = 34        # main glyph px (Arial)
@@ -13,6 +14,14 @@ SUP_RISE = 11  # superscript (charge) rise above the baseline
 def _esc(s):
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
+
+def _inline_svg(text):
+    return ''.join(
+        f'<tspan font-style="italic">{_esc(run)}</tspan>' if is_italic else _esc(run)
+        for run, is_italic in _inline_runs(text)
+    )
+
+
 def _geom_and_elems(atoms, bonds, circles, reversible, font):
     circles = circles or []; reversible = reversible or set()
     nbx = collections.defaultdict(list)
@@ -22,11 +31,13 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
     for i, (label, x, y) in atoms.items():
         if not label:
             continue
-        a, s = _parse_label(label); parsed[i] = (a, s)
+        a, s = _parse_label(label)
         has_r = any(dx > 0.3 for dx in nbx[i]); has_l = any(dx < -0.3 for dx in nbx[i])
         sd = 'left' if (i in reversible and has_r and not has_l) else 'right'
+        s = _suffix_for_side(a, s, sd)
+        parsed[i] = (a, s)
         side[i] = sd
-        aw = _txt_w(a, FONT); sw = _suffix_w(s)
+        aw = _anchor_w(a); sw = _suffix_w(s)
         ext[i] = (aw / 2 + (sw if sd == 'left' else 0),
                   aw / 2 + (sw if sd == 'right' else 0), _BASE_H / 2)
 
@@ -64,10 +75,15 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
     for i in parsed:
         cx, cy = px(i); anchor, suffix = parsed[i]; sd = side[i]
         by = cy + BASE
-        out.append(f'<text x="{cx:.1f}" y="{by:.1f}" font-family="{font}" font-size="{FS}" '
-                   f'text-anchor="middle">{_esc(anchor)}</text>')
+        aw = _anchor_w(anchor)
+        if anchor == "Cl":
+            x0 = cx - aw / 2
+            out.append(f'<text x="{x0:.1f}" y="{by:.1f}" font-family="{font}" '
+                       f'font-size="{FS}" text-anchor="start">{_inline_svg(anchor)}</text>')
+        else:
+            out.append(f'<text x="{cx:.1f}" y="{by:.1f}" font-family="{font}" font-size="{FS}" '
+                       f'text-anchor="middle">{_esc(anchor)}</text>')
         if suffix:
-            aw = _txt_w(anchor, FONT)
             x = cx + aw / 2 if sd == 'right' else cx - aw / 2 - _suffix_w(suffix)
             for s, kind in _label_runs(suffix):
                 if kind == 'sub':
@@ -80,8 +96,8 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
                     x += _txt_w(s, SUBFONT)
                 else:
                     out.append(f'<text x="{x:.1f}" y="{by:.1f}" font-family="{font}" '
-                               f'font-size="{FS}" text-anchor="start">{_esc(s)}</text>')
-                    x += _txt_w(s, FONT)
+                               f'font-size="{FS}" text-anchor="start">{_inline_svg(s)}</text>')
+                    x += _inline_w(s, FONT)
     return out, W, H, pxc
 
 def draw_svg(atoms, bonds, circles=None, reversible=None, font=FONT_NAME):

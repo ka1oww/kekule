@@ -80,7 +80,7 @@ Run the complete local preview gate with one command from the repository root:
 python3 scripts/readiness_gate.py
 ```
 
-This compiles the Python sources, runs the 66-case geometric invariant suite, runs the 22 validation tests, and executes every case in [`evaluation/preview_manifest.json`](evaluation/preview_manifest.json), including the portable DOCX package smoke. The manifest is the single human-readable inventory of supported preview examples and typed rejection cases; the runner contains only generic entry-point dispatch and semantic artifact checks. GitHub Actions installs the declared dependencies and invokes this same command on Python 3.11, 3.12, and 3.13.
+This compiles the Python sources, runs the geometric invariant and input-validation suites, and executes every case in [`evaluation/preview_manifest.json`](evaluation/preview_manifest.json), including the portable DOCX package smoke. The manifest is the single human-readable inventory of supported preview examples and typed rejection cases; the runner contains only generic entry-point dispatch and semantic artifact checks. GitHub Actions installs the declared dependencies and invokes this same command on Python 3.11, 3.12, and 3.13.
 
 ## Licence
 

@@ -1,5 +1,6 @@
 """Regression tests for Kekule's public SMILES validation boundary."""
 
+import math
 import os
 import sys
 import unittest
@@ -18,6 +19,35 @@ import structure_svg as svg
 
 
 class ValidationBoundaryTests(unittest.TestCase):
+    @staticmethod
+    def _reference_sides(smiles):
+        mol = draw.validate_input(smiles, "displayed")
+        double = next(
+            bond for bond in mol.GetBonds()
+            if bond.GetBondType() == draw.Chem.BondType.DOUBLE and not bond.IsInRing()
+        )
+        c1, c2 = double.GetBeginAtomIdx(), double.GetEndAtomIdx()
+        ref1, ref2 = double.GetStereoAtoms()
+        atoms, _, _, _ = draw.layout(smiles, "displayed")
+        ax = atoms[c2][1] - atoms[c1][1]
+        ay = atoms[c2][2] - atoms[c1][2]
+
+        def side(centre, reference):
+            vx = atoms[reference][1] - atoms[centre][1]
+            vy = atoms[reference][2] - atoms[centre][2]
+            return 1 if ax * vy - ay * vx > 0 else -1
+
+        return side(c1, ref1), side(c2, ref2)
+
+    @staticmethod
+    def _angle(atoms, centre, first, second):
+        ax = atoms[first][1] - atoms[centre][1]
+        ay = atoms[first][2] - atoms[centre][2]
+        bx = atoms[second][1] - atoms[centre][1]
+        by = atoms[second][2] - atoms[centre][2]
+        cosine = (ax * bx + ay * by) / (math.hypot(ax, ay) * math.hypot(bx, by))
+        return math.degrees(math.acos(max(-1.0, min(1.0, cosine))))
+
     def test_valid_core_input_returns_a_reusable_molecule(self):
         mol = draw.validate_input("CC(=O)O")
         self.assertEqual(mol.GetNumAtoms(), 4)
@@ -79,6 +109,122 @@ class ValidationBoundaryTests(unittest.TestCase):
             with self.subTest(size=image.size):
                 self.assertGreater(image.width, 0)
                 self.assertGreater(image.height, 0)
+
+    def test_directional_alkene_stereo_changes_displayed_geometry(self):
+        self.assertEqual(self._reference_sides("C/C=C\\C")[0], self._reference_sides("C/C=C\\C")[1])
+        self.assertNotEqual(self._reference_sides("C/C=C/C")[0], self._reference_sides("C/C=C/C")[1])
+
+    def test_directional_ring_alkene_stereo_changes_displayed_geometry(self):
+        e_sides = self._reference_sides("c1ccccc1/C=C/Cl")
+        z_sides = self._reference_sides("c1ccccc1/C=C\\Cl")
+        self.assertNotEqual(e_sides[0], e_sides[1])
+        self.assertEqual(z_sides[0], z_sides[1])
+        self.assertNotEqual(e_sides, z_sides)
+
+    def test_skeletal_form_keeps_formal_charge_on_carbon(self):
+        for smiles in ("[CH2+]CBr", "C[CH+]CC", "[CH+]1CCCCC1"):
+            atoms, _, _, _ = draw.layout(smiles, "skeletal")
+            self.assertTrue(any(label.startswith("C^") for label, _, _ in atoms.values()))
+
+    def test_displayed_ring_branches_preserve_public_topology(self):
+        cases = {
+            "amide": "CC(=O)Nc1ccc(O)cc1",
+            "ester": "CCOC(=O)c1ccccc1",
+            "aldehyde": "O=Cc1ccccc1",
+            "methoxy": "COc1ccccc1",
+            "benzyl": "OCc1ccccc1",
+            "branched alkyl": "CC(C)(C)c1ccccc1",
+        }
+        for name, smiles in cases.items():
+            with self.subTest(name=name):
+                mol = draw.validate_input(smiles, "displayed")
+                mol_h = draw.Chem.AddHs(mol)
+                ring = set(mol.GetRingInfo().AtomRings()[0])
+                expected_atoms = set(ring)
+                for atom in mol_h.GetAtoms():
+                    idx = atom.GetIdx()
+                    if atom.GetAtomicNum() > 1 and idx not in ring:
+                        expected_atoms.add(idx)
+                    elif atom.GetAtomicNum() == 1 and atom.GetNeighbors()[0].GetIdx() not in ring:
+                        expected_atoms.add(idx)
+                expected_bonds = {
+                    (min(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()),
+                     max(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()),
+                     draw._BONDORD.get(bond.GetBondType(), 1))
+                    for bond in mol_h.GetBonds()
+                    if bond.GetBeginAtomIdx() in expected_atoms and bond.GetEndAtomIdx() in expected_atoms
+                }
+                atoms, bonds, _, _ = draw.layout(smiles, "displayed")
+                actual_bonds = {(min(first, second), max(first, second), order)
+                                for first, second, order in bonds}
+                self.assertEqual(set(atoms), expected_atoms)
+                self.assertEqual(actual_bonds, expected_bonds)
+
+    def test_displayed_ring_branches_use_bent_and_trigonal_slots(self):
+        methoxy = "COc1ccccc1"
+        methoxy_mol = draw.validate_input(methoxy, "displayed")
+        methoxy_h = draw.Chem.AddHs(methoxy_mol)
+        methoxy_atoms, _, _, _ = draw.layout(methoxy, "displayed")
+        oxygen = next(atom.GetIdx() for atom in methoxy_h.GetAtoms()
+                      if atom.GetAtomicNum() == 8 and atom.GetDegree() == 2)
+        oxygen_neighbours = [atom.GetIdx() for atom in methoxy_h.GetAtomWithIdx(oxygen).GetNeighbors()]
+        self.assertAlmostEqual(
+            self._angle(methoxy_atoms, oxygen, *oxygen_neighbours), 120.0, delta=1.0
+        )
+        methyl = next(idx for idx in oxygen_neighbours
+                      if methoxy_h.GetAtomWithIdx(idx).GetAtomicNum() == 6
+                      and idx not in methoxy_mol.GetRingInfo().AtomRings()[0])
+        parent = oxygen
+        hydrogens = [atom.GetIdx() for atom in methoxy_h.GetAtomWithIdx(methyl).GetNeighbors()
+                     if atom.GetAtomicNum() == 1]
+        self.assertTrue(all(self._angle(methoxy_atoms, methyl, parent, hydrogen) > 45
+                            for hydrogen in hydrogens))
+
+        amide = "CC(=O)Nc1ccccc1"
+        amide_mol = draw.validate_input(amide, "displayed")
+        amide_h = draw.Chem.AddHs(amide_mol)
+        amide_atoms, _, _, _ = draw.layout(amide, "displayed")
+        nitrogen = next(atom.GetIdx() for atom in amide_h.GetAtoms() if atom.GetAtomicNum() == 7)
+        nitrogen_neighbours = [atom.GetIdx() for atom in amide_h.GetAtomWithIdx(nitrogen).GetNeighbors()]
+        angles = [self._angle(amide_atoms, nitrogen, nitrogen_neighbours[i], nitrogen_neighbours[j])
+                  for i in range(len(nitrogen_neighbours))
+                  for j in range(i + 1, len(nitrogen_neighbours))]
+        self.assertTrue(all(abs(angle - 120.0) <= 1.0 for angle in angles))
+
+        aldehyde = "O=Cc1ccccc1"
+        aldehyde_mol = draw.validate_input(aldehyde, "displayed")
+        aldehyde_h = draw.Chem.AddHs(aldehyde_mol)
+        aldehyde_atoms, _, _, _ = draw.layout(aldehyde, "displayed")
+        carbonyl = next(atom.GetIdx() for atom in aldehyde_h.GetAtoms()
+                        if atom.GetAtomicNum() == 6
+                        and any(bond.GetBondType() == draw.Chem.BondType.DOUBLE for bond in atom.GetBonds()))
+        oxygen = next(atom.GetIdx() for atom in aldehyde_h.GetAtomWithIdx(carbonyl).GetNeighbors()
+                      if atom.GetAtomicNum() == 8)
+        hydrogen = next(atom.GetIdx() for atom in aldehyde_h.GetAtomWithIdx(carbonyl).GetNeighbors()
+                        if atom.GetAtomicNum() == 1)
+        self.assertAlmostEqual(
+            self._angle(aldehyde_atoms, carbonyl, oxygen, hydrogen), 120.0, delta=1.0
+        )
+
+    def test_chlorine_lowercase_l_is_italic_in_svg(self):
+        markup, _, _ = svg.render_svg("Clc1ccccc1")
+        self.assertIn('font-style="italic">l</tspan>', markup)
+
+        reaction_markup, _, _ = reaction.render_reaction_svg(
+            ["$HCl"], ["$Cl2"], reagent="AlCl3", conditions="HCl"
+        )
+        self.assertEqual(reaction_markup.count('font-style="italic">l</tspan>'), 4)
+        with mock.patch.object(draw, "_draw_inline", wraps=draw._draw_inline) as inline:
+            image = reaction.render_reaction_png(
+                ["$HCl"], ["$Cl2"], reagent="AlCl3", conditions="HCl"
+            )
+        self.assertGreater(image.width, 0)
+        self.assertTrue(any("Cl" in call.args[3] for call in inline.call_args_list))
+
+    def test_left_facing_condensed_labels_reverse_the_non_anchor_atoms(self):
+        self.assertEqual(draw._suffix_for_side("C", "HO", "left"), "OH")
+        self.assertEqual(draw._suffix_for_side("C", "OOH", "left"), "HOO")
+        self.assertEqual(draw._suffix_for_side("N", "H2", "left"), "H2")
 
     def test_non_stereogenic_pair_requests_have_typed_errors(self):
         with self.assertRaises(draw.UnsupportedStereochemistryError):
