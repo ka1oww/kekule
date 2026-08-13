@@ -56,12 +56,12 @@ In a reaction, most species are SMILES. Ionic compounds may use dot-disconnected
 
 ## Input validation
 
-Every public structure and reaction entry point validates a structural species before layout. Kekule accepts one or more dot-disconnected SMILES fragments when every fragment is a simple acyclic or single-ring molecule. It does not convert chemical names to SMILES.
+Every public structure and reaction entry point validates a structural species before layout. Kekule accepts one or more dot-disconnected SMILES fragments when every fragment is a simple acyclic or single-ring molecule and has a visible atom label, bond, or circle in the selected representation. It does not convert chemical names to SMILES.
 
 Invalid or unsupported input raises a typed `ValueError` subclass from `structure_draw`:
 
 - `InvalidSmilesError` for malformed SMILES or a chemical name passed as SMILES.
-- `DisconnectedStructureError` when a specialised renderer that needs one connected fragment, such as `stereo` or `geometric`, receives dot-disconnected SMILES.
+- `DisconnectedStructureError` when a specialised renderer that needs one connected fragment, such as `stereo` or `geometric`, receives dot-disconnected SMILES, or when any fragment has no visible atom label, bond, or circle in the selected representation.
 - `UnsupportedTopologyError` for multi-ring, fused, bridged, or spiro structures.
 - `UnsupportedRadicalError` while structural radical-dot rendering is unsupported. Radicals may still be typeset explicitly as reaction literals such as `$•CH3`.
 - `UnsupportedStereochemistryError` when a specialised stereo request cannot be represented faithfully. The raster stereo-pair helper supports exactly one tetrahedral stereocentre and draws both enantiomers; it does not select one configuration from `@` or `@@`. Multi-centre stereo is rejected, and wedge/dash stereo SVG is outside the supported scope.
@@ -70,7 +70,7 @@ All of these inherit from `KekuleInputError`, so callers may catch either the sp
 
 ## Scope
 
-The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Dot-disconnected compounds are rendered fragment by fragment from left to right with a clear gap. Each fragment retains the same scope checks, so fused, bridged, spiro, and other multi-ring fragments are rejected before layout.
+The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Dot-disconnected compounds are rendered fragment by fragment from left to right with a clear gap when every fragment has a visible primitive in the selected representation. Each fragment retains the same scope checks, so fused, bridged, spiro, and other multi-ring fragments are rejected before layout.
 
 ## Readiness gate
 

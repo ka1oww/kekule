@@ -69,7 +69,7 @@ class InvalidSmilesError(KekuleInputError):
 
 
 class DisconnectedStructureError(KekuleInputError):
-    """Disconnected fragments cannot be used by a specialised single-fragment renderer."""
+    """A disconnected request needs one fragment or a visible layout for every fragment."""
 
 
 class UnsupportedTopologyError(KekuleInputError):
