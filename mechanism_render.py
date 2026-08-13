@@ -4,9 +4,10 @@ Sits ON TOP of the per-molecule engine (structure_draw / structure_svg): a speci
 by that engine, then electron-flow annotations are overlaid, addressed by atom / bond index in
 the SAME pixel space. A-level (9729) house style, arrow-pushing convention.
 
-This module is being built incrementally. Right now: the curly-arrow PRIMITIVE only.
-  * full  arrow  (double-barb head)  -> a PAIR of electrons  (heterolysis, most mechanisms)
-  * half  arrow  (single-barb 'fish-hook') -> ONE electron    (homolysis, free-radical)
+The layer supports species overlays and composed reaction frames with lone pairs, partial charges,
+and both electron-flow arrow kinds:
+  * full arrow (double-barb head) -> a PAIR of electrons (heterolysis, most mechanisms)
+  * half arrow (single-barb 'fish-hook') -> ONE electron (homolysis, free-radical)
 """
 import math
 from PIL import Image, ImageDraw, ImageFont

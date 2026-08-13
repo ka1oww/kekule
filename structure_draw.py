@@ -790,7 +790,7 @@ def _displayed_layout(mol, angles='comb'):
         return _ring_layout(mol, 'structural' if angles == 'grid' else 'displayed')
     if angles == 'grid':                                 # 'natural' form: backbone out on a 90-deg grid, substituents condensed
         return _natural_grid_layout(mol)
-    if angles == 'tetrahedral':                          # RDKit natural tetrahedral fan (kept, not the default 'natural')
+    if angles == 'tetrahedral':                          # RDKit natural tetrahedral fan (kept, not the default comb)
         return _displayed_natural_layout(mol)
     return _displayed_comb_layout(mol)
 
@@ -976,7 +976,7 @@ def _layout_mol(mol, form='structural', angles='comb'):
     """Layout an already validated RDKit molecule.
 
     One of three representations: 'structural' (condensed, NJC house default),
-    'displayed' (every atom + bond at 'natural' bond angles by default, or right-angle 'comb'),
+    'displayed' (every atom + bond in the right-angle comb by default, or a tetrahedral variant),
     or 'skeletal' (zig-zag, implicit C/H)."""
     mol = Chem.Mol(mol)                                    # layout helpers may Kekulize/mutate; keep the validated input reusable
     if form == 'displayed':

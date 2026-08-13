@@ -32,14 +32,15 @@ this spec is amended.
 Also: **stereochemical** (flying-wedge enantiomer pairs) and **geometric** (cis/trans C=C).
 
 Structural is the NJC house default (what teaching material uses). **Displayed uses right-angle
-"comb" geometry** by default (authentic A-level, per mined notes; `angles='natural'` gives the
-tetrahedral variant). **Skeletal uses the ~120 degree zig-zag.** Rings in skeletal (and, for now,
-displayed) render as the house hexagon + inscribed circle / plain polygon. `[done]`
+"comb" geometry** by default (authentic A-level, per mined notes; `angles='tetrahedral'` gives the
+tetrahedral variant). **Skeletal uses the ~120 degree zig-zag.** Rings in structural, displayed,
+and skeletal forms render as the house hexagon + inscribed circle / plain polygon. `[done]`
 
 ## 2. Backbone and orientation
 - Longest carbon chain laid **horizontal** (principal-axis rotation; natural angles preserved). `[done]`
 - **Functional group oriented to the right**; a **left-hand terminal group reverses** so the bonded
-  atom sits next to the bond and the rest hangs off the far side (`H3C-`, `H2N-`, `O2N-`, `HO-`).
+  atom sits next to the bond and the rest hangs off the far side (`H3C-`, `H2N-`, `O2N-`, `HO-`,
+  `OHC-`, `HOOC-`, `HO2C-`).
   Driven by the `reversible` set + the renderer's bond-direction gate (`has_r and not has_l`), so it is
   now consistent across **all forms** — structural, natural, displayed and skeletal (skeletal/structural
   previously returned an empty set and left `-OH`/`-NH2` unflipped on the left end). `[done]`
@@ -62,7 +63,8 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
 - Single / double / triple as 1 / 2 / 3 parallel lines. `[done]`
 - Bonds inset from a labelled atom so the line meets the letter, not its centre; blank vertices close
   fully (rings). `[done]`
-- Stroke ~3px, bond length ~1.95 units (uniform: C-H = C-C = C-Br), monochrome black on white. `[done]`
+- Stroke ~3px, heavy-atom bond length ~1.95 units, monochrome black on white. Displayed C-H bonds
+  use the shortened 1.25-unit length specified in section 4. `[done]`
 - **Displayed hybridisation geometry** (unified BFS: every atom places its own neighbours off the bond
   it arrived on, by ITS hybridisation): `[done]`
   - **sp3 carbon** -> right-angle "comb": backbone bond continues straight, pendant H / branch bonds at 90 deg.
@@ -70,6 +72,8 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
     ethyl/propyl branch stays linear instead of turning 90 deg into a sibling group; the freed 90-deg slot takes
     a small H. Fixes e.g. 2-ethylbut-1-ene, where a turned CH3 used to collide with the other ethyl's H.
   - **sp2 carbon (any C=O, C=C, C=N)** -> trigonal ~120 deg splay; the =O is biased straight up.
+    A directional open-chain C=C from SMILES is seated horizontally, with its reference
+    substituents on the same side for Z and opposite sides for E.
   - **divalent O / N (O-H, N-H, ester/ether -O-, secondary amine C-N-C)** -> BENT ~120 deg, NEVER collinear.
   - **terminal cap (-CH3) on a non-horizontal bond** -> H's fan away from the parent (a hanging methyl
     would collide if combed onto the grid); horizontal chain-end methyls keep the clean comb.
@@ -81,19 +85,24 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
   three forms**. `[done]`
 - Cycloalkanes: plain polygons (no circle), upright; ring C=C as an inner parallel line. `[done]`
 - **Ring substituents are form-aware** (`_ring_layout(mol, form)`): structural = condensed label;
-  displayed = terminal `-CH3`/`-OH`/`-NH2` expanded to explicit atoms with the comb/bent geometry
-  (O-H and N-H bend), and **carbonyl substituents (`-CHO`, `-COOH`, `-COCl`, ester) drawn OUT** as
-  ring-C(=O)-X (=O biased up, trigonal splay, acid O-H bent) — like the acyclic displayed; skeletal =
-  alkyl substituent drawn as bare zig-zag stub (first bond radial/straight, then zig-zag), heteroatom
-  groups keep their label. `[done]` (longer plain-alkyl substituents stay condensed in displayed — edge, `[partial]`)
-- Fused / polycyclic rings: out of scope; should fall back to RDKit depiction and flag. `[todo]`
+  displayed = every non-ring branch expanded to explicit atoms and bonds with the same comb, bent,
+  and trigonal rules as an acyclic displayed formula. This includes ring-attached amide, ester,
+  aldehyde, methoxy, benzyl, and branched-alkyl groups. Skeletal = alkyl substituent drawn as a bare
+  zig-zag stub (first bond radial/straight, then zig-zag), while heteroatom groups keep their label.
+  `[done]`
+- Fused, bridged, spiro, and other multi-ring topologies are out of scope and raise the typed
+  `UnsupportedTopologyError` before layout. There is no fallback drawing. `[done]` (scope boundary)
 
 ## 7. Functional-group labels
-- Canonical labels: `OH NH2 COOH CHO CN NO2 Cl Br`; ester `-COO-`; acyl chloride `-COCl`. `[partial]`
-- Confirm from notes: `COOH` vs `CO2H`; `CHO` orientation; ester drawn as `-C(=O)-O-` vs `-COO-`.
+- Canonical condensed labels: `OH NH2 COOH CHO CN NO2 Cl Br`; ester `-COO-`; acyl chloride
+  `-COCl`. Displayed ester, aldehyde, and acyl branches expand to explicit atoms and bonds, including
+  when attached to a supported single ring. `[partial]`
+- Confirm from notes: `COOH` vs `CO2H` and the source-specific `CHO` option remain open.
 
 ## 8. Charges, ions, radicals
-- Formal charge as a superscript token (`O^-` -> O with superscript minus). `[done]`
+- Formal charge as a superscript token (`O^-` -> O with superscript minus). A charged skeletal
+  carbon is labelled `C` with its charge instead of remaining an unlabelled vertex. This also
+  applies to charged carbon vertices in a simple ring. `[done]`
 - Carbocation / carbanion / zwitterion (amino acid) layout. `[partial]`
 - Free radical: the unpaired-electron dot. `[todo]`
 
@@ -112,6 +121,9 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
 - **cis/trans geometric (C=C)**: horizontal explicit `C=C`, four plain substituents ~120 deg,
   reference groups same-side (cis) / diagonal (trans), labelled `cis`/`trans`. `render_geometric_pair`.
   `[done]`
+- **Directional SMILES E/Z in an ordinary displayed formula**: preserve RDKit's open-chain C=C
+  stereo in the displayed geometry, including an alkene branch attached to a supported single
+  ring. The drawing does not add an E/Z text label. `[done]`
 - **Labelling policy**: NEVER emit R/S, E/Z, D/L or (+)/(-) on a structure (out of 9729 scope). `[done]`
 - Config-aware parity (draw a SPECIFIED @/@@ enantiomer), multiple stereocentres (2^n), meso
   (internal plane of symmetry), ring cis/trans (wedge/dash on a polygon), Fischer projection. `[todo]`
@@ -120,11 +132,13 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
 - Delocalisation: dashed/partial bonds, partial charges (delta+/delta-). `[todo]`
 - Polymer repeat unit: brackets with `n` and trailing bonds. `[todo]`
 - Mechanism arrows: full (two-electron) and half (single-electron) curly arrows, lone pairs.
-  `[partial]` (reaction_render draws schemes; curly arrows todo)
+  `[partial]` (primitives and composed frames are implemented; advanced arenium depiction remains open)
 
 ## 11. Typography
 - Sans-serif (Arial), monochrome, subscript digits dropped low, superscript charges raised. `[done]`
-- Portability: bundle or gracefully fall back on the font so non-macOS installs work. `[todo]`
+- Chlorine uses an italic lowercase `l` in `Cl` across structure and reaction SVG/PNG text. The
+  capital `I` in iodine and both letters in `Br` remain upright. `[done]`
+- Portability: prefer Arial and gracefully fall back to Liberation Sans or DejaVu Sans. `[done]`
 
 ---
 
@@ -133,8 +147,9 @@ displayed) render as the house hexagon + inscribed circle / plain polygon. `[don
 Mined from 11 real A-level sources (intro chapter, Alkene/Arene/Alcohol notes, memory sheet, four
 CHEM-IS-TRY question banks, two summary sheets): **270 catalogued structures**, conventions ranked
 by independent-source support. Full data in `corpus/catalog.json` + `corpus/synthesis.json`; the
-prioritised worklist is in `docs/REFINEMENT-BACKLOG.md`. Tally: **6 conventions the engine already
-matches, 7 partial, 11 not yet handled.**
+prioritised worklist is in `docs/REFINEMENT-BACKLOG.md`. The original mining pass classified
+**6 conventions as matching, 7 as partial, and 11 as not yet handled**; the implementation status
+in this specification is current.
 
 Confirmed by the notes (engine already correct): per-form hydrogen treatment, horizontal backbone
 with functional group right, sans-serif monochrome typography with subscripts, double/triple bond
@@ -144,10 +159,12 @@ Corrections the notes forced (notes win over the spec):
 - **Displayed formula uses right-angle "comb" geometry** (horizontal C-C spine, vertical C-H bonds),
   NOT tetrahedral zig-zag. 8 sources. The zig-zag (~120 degrees) belongs to the **skeletal** form
   only. This reverses the earlier "natural angles" choice for displayed; see the amendment note.
-- Benzene = hexagon + inscribed circle in **all three** forms (currently structural only).
-- Cycloalkanes = plain polygons, no circle; ring C=C as an inner parallel line.
-- Chlorine typeset with an **italic lowercase l** everywhere (house quirk vs the digit 1).
-- Acid label context-selectable (COOH / CO2H / reversed HOOC- from the left); displayed acid = -C(=O)-OH.
+- Benzene = hexagon + inscribed circle in **all three** forms. Implemented.
+- Cycloalkanes = plain polygons, no circle; ring C=C as an inner parallel line. Implemented.
+- Chlorine typeset with an **italic lowercase l** everywhere (house quirk vs the digit 1). Implemented.
+- Acid label context-selectable (COOH / CO2H / reversed HOOC- from the left); displayed acid =
+  -C(=O)-OH. Left-facing reversal and displayed expansion are implemented; the spelling option remains open.
 - Amino acids are the backbone-orientation exception: NH2 left, COOH right; ionisation state matches conditions.
 - Stereochemistry (wedge/dash, optical mirror pairs, cis/trans) is a formally defined A-level
-  convention and completely unhandled.
+  convention. The single-centre optical pair and open-chain geometric pair are implemented;
+  unsupported stereo requests retain typed rejection.

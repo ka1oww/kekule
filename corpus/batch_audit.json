@@ -1971,7 +1971,7 @@
   },
   "automated_rerun": {
    "invariants": "66/66 passed",
-   "validation_tests": "27/27 passed",
+   "validation_tests": "29/29 passed",
    "preview_manifest": "21/21 passed",
    "visual_verdicts": "not recomputed without the source-crop adjudicator"
   }
