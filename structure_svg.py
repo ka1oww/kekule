@@ -2,7 +2,8 @@
 import math, collections
 import structure_draw as J
 from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,
-                      _suffix_for_side, _anchor_w, _inline_w, U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
+                      _suffix_for_side, _anchor_w, _inline_w, _inline_runs,
+                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
 
 FS = 34        # main glyph px (Arial)
 SUBFS = 23     # subscript px
@@ -12,6 +13,14 @@ SUP_RISE = 11  # superscript (charge) rise above the baseline
 
 def _esc(s):
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+def _inline_svg(text):
+    return ''.join(
+        f'<tspan font-style="italic">{_esc(run)}</tspan>' if is_italic else _esc(run)
+        for run, is_italic in _inline_runs(text)
+    )
+
 
 def _geom_and_elems(atoms, bonds, circles, reversible, font):
     circles = circles or []; reversible = reversible or set()
@@ -28,7 +37,7 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
         s = _suffix_for_side(a, s, sd)
         parsed[i] = (a, s)
         side[i] = sd
-        aw = _txt_w(a, FONT); sw = _suffix_w(s)
+        aw = _anchor_w(a); sw = _suffix_w(s)
         ext[i] = (aw / 2 + (sw if sd == 'left' else 0),
                   aw / 2 + (sw if sd == 'right' else 0), _BASE_H / 2)
 
@@ -70,7 +79,7 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
         if anchor == "Cl":
             x0 = cx - aw / 2
             out.append(f'<text x="{x0:.1f}" y="{by:.1f}" font-family="{font}" '
-                       f'font-size="{FS}" text-anchor="start">C<tspan font-style="italic">l</tspan></text>')
+                       f'font-size="{FS}" text-anchor="start">{_inline_svg(anchor)}</text>')
         else:
             out.append(f'<text x="{cx:.1f}" y="{by:.1f}" font-family="{font}" font-size="{FS}" '
                        f'text-anchor="middle">{_esc(anchor)}</text>')
@@ -86,20 +95,8 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
                                f'font-size="{SUBFS}" text-anchor="start">{_esc(s)}</text>')
                     x += _txt_w(s, SUBFONT)
                 else:
-                    if "Cl" in s:
-                        chunks = []
-                        k = 0
-                        while k < len(s):
-                            if s[k:k + 2] == "Cl":
-                                chunks.append("C<tspan font-style=\"italic\">l</tspan>")
-                                k += 2
-                            else:
-                                chunks.append(_esc(s[k])); k += 1
-                        body = ''.join(chunks)
-                    else:
-                        body = _esc(s)
                     out.append(f'<text x="{x:.1f}" y="{by:.1f}" font-family="{font}" '
-                               f'font-size="{FS}" text-anchor="start">{body}</text>')
+                               f'font-size="{FS}" text-anchor="start">{_inline_svg(s)}</text>')
                     x += _inline_w(s, FONT)
     return out, W, H, pxc
 

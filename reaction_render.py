@@ -29,7 +29,7 @@ import os, sys, re, math, tempfile
 sys.path.insert(0, os.path.dirname(__file__))
 import structure_draw as J
 import structure_svg as S
-from structure_draw import U, STROKE, DBL, FONT_PATH, FONT_NAME, _BASE_H, _txt_w
+from structure_draw import U, STROKE, DBL, FONT_PATH, FONT_NAME, _BASE_H
 from PIL import Image, ImageDraw, ImageFont
 
 FS = S.FS            # 34: main glyph, matches molecule labels
@@ -50,11 +50,8 @@ def _font(sz):
         _font_cache[sz] = ImageFont.truetype(FONT_PATH, sz)
     return _font_cache[sz]
 
-def _esc(s):
-    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-
 def _text_w(text, sz):
-    return _txt_w(text, _font(sz))
+    return J._inline_w(text, _font(sz))
 
 # ----------------------------------------------------------------------------- formula text
 _FRAC_GLYPHS = {'½': '1/2', '⅓': '1/3', '⅔': '2/3', '¼': '1/4', '¾': '3/4',
@@ -129,9 +126,9 @@ def _runs_svg_pil(runs, cx, lc, main_sz):
 
     def _txt(s, xx, base, sz):
         svg.append(f'<text x="{xx:.1f}" y="{base:.1f}" font-family="{FONT_NAME}" '
-                   f'font-size="{sz}" text-anchor="start">{_esc(s)}</text>')
+                   f'font-size="{sz}" text-anchor="start">{S._inline_svg(s)}</text>')
         ops.append(lambda img, dr, ox, oy, s=s, xx=xx, base=base, sz=sz:
-                   dr.text((ox + xx, oy + base), s, fill=(0, 0, 0), font=_font(sz), anchor='ls'))
+                   J._draw_inline(dr, ox + xx, oy + base, s, _font(sz), anchor='ls'))
 
     for s, k in runs:
         if k == 'frac':

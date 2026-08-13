@@ -182,6 +182,11 @@ def _elem(a):
     return _RGROUP.get(a.GetAtomMapNum(), "R") if a.GetAtomicNum() == 0 else a.GetSymbol()
 
 
+def _implicit_carbon_label(a):
+    charge = _charge_suffix(a.GetFormalCharge())
+    return "C" + charge if charge else ""
+
+
 def _condense(molH, idx, exclude, visited=None):
     """Full condensed-formula string for the branch rooted at `idx`, preserving EVERY atom (no lossy
     collapse). `exclude` = atoms outside the branch (the ring / the stereocentre)."""
@@ -303,7 +308,7 @@ def _ring_layout(mol, form='structural'):
         th = angles[i]
         a = mol.GetAtomWithIdx(i); sym = a.GetSymbol()
         if sym == "C":
-            lab = ""
+            lab = _implicit_carbon_label(a)
         elif sym == "N" and a.GetTotalNumHs() >= 1:
             lab = "NH"                               # ring N-H (e.g. piperidine, lactam)
         else:
@@ -333,8 +338,8 @@ def _ring_layout(mol, form='structural'):
         Z, nHr = ra.GetAtomicNum(), ra.GetTotalNumHs()
         heavy_out = [nb.GetIdx() for nb in ra.GetNeighbors() if nb.GetAtomicNum() > 1 and nb.GetIdx() not in ringset]
         if form == 'displayed':
-            branch_atoms, branch_bonds, hid = _ring_display_branch(
-                molH, ringset, ri_atom, root, vx, vy, rx, ry, hid
+            branch_atoms, branch_bonds = _ring_display_branch(
+                mol, ringset, ri_atom, root, vx, vy, rx, ry
             )
             atoms.update(branch_atoms)
             bonds.extend(branch_bonds)
@@ -409,76 +414,29 @@ def _ring_layout(mol, form='structural'):
     return atoms, bonds, circles, reversible
 
 
-def _ring_display_branch(molH, ringset, ring_atom, root, vx, vy, rx, ry, hid_start=-1):
-    """Expand a single-ring substituent into explicit atoms for displayed form.
-
-    The ring itself remains the house polygon/circle.  Only the attached branch
-    is expanded, which preserves the deliberately mixed ring convention while
-    preventing amides, esters, aldehydes, and methoxy groups from collapsing to
-    opaque labels.  This helper is intentionally limited to one simple ring,
-    matching the validation boundary.
-    """
-    at = molH.GetAtomWithIdx
-    atoms, bonds = {}, []
-    seen = set(ringset)
-    od = (rx, ry)
-    pos = {root: (vx + rx * 1.4, vy + ry * 1.4)}
-    queue = collections.deque([(root, od)])
-    seen.add(root)
-    atoms[root] = (_elem(at(root)) + _charge_suffix(at(root).GetFormalCharge()), *pos[root])
-    bonds.append((ring_atom, root, 1))
-
-    def rot(v, degrees):
-        c, s = math.cos(math.radians(degrees)), math.sin(math.radians(degrees))
-        return (v[0] * c - v[1] * s, v[0] * s + v[1] * c)
-
-    def unit(v):
-        n = math.hypot(*v) or 1.0
-        return v[0] / n, v[1] / n
-
-    hid = hid_start
-    while queue:
-        u, out = queue.popleft()
-        ux, uy = pos[u]
-        heavy = [nb for nb in at(u).GetNeighbors()
-                 if nb.GetAtomicNum() > 1 and nb.GetIdx() not in seen]
-        heavy.sort(key=lambda nb: (not _is_carbonyl_O(nb), nb.GetIdx()))
-        directions = []
-        if len(heavy) == 1:
-            if _is_carbonyl_O(heavy[0]):
-                choices = [unit(rot(out, 60)), unit(rot(out, -60))]
-                directions = [max(choices, key=lambda v: v[1])]
-            else:
-                directions = [unit(out)]
-        elif heavy:
-            choices = [unit(rot(out, 60)), unit(rot(out, -60))]
-            carbonyl = next((nb for nb in heavy if _is_carbonyl_O(nb)), None)
-            if carbonyl is not None:
-                carbonyl_direction = max(choices, key=lambda v: v[1])
-                other_direction = min(choices, key=lambda v: v[1])
-                directions = [carbonyl_direction if nb is carbonyl else other_direction for nb in heavy]
-            else:
-                directions = choices
-        for nb, direction in zip(heavy, directions):
-            j = nb.GetIdx()
-            seen.add(j)
-            length = 1.35 if _is_carbonyl_O(nb) else 1.4
-            pos[j] = (ux + direction[0] * length, uy + direction[1] * length)
-            atoms[j] = (_elem(nb) + _charge_suffix(nb.GetFormalCharge()), *pos[j])
-            order = _BONDORD.get(molH.GetBondBetweenAtoms(u, j).GetBondType(), 1)
-            bonds.append((u, j, order))
-            queue.append((j, direction))
-
-        hydrogens = [nb for nb in at(u).GetNeighbors() if nb.GetAtomicNum() == 1]
-        if hydrogens:
-            candidates = [unit(rot(out, 90)), unit(rot(out, -90)), unit(rot(out, 180))]
-            for nb, direction in zip(hydrogens, candidates):
-                j = hid
-                hid -= 1
-                pos[j] = (ux + direction[0] * 1.15, uy + direction[1] * 1.15)
-                atoms[j] = ("H", *pos[j])
-                bonds.append((u, j, 1))
-    return atoms, bonds, hid
+def _ring_display_branch(mol, ringset, ring_atom, root, vx, vy, rx, ry):
+    length = 1.4
+    atoms, bonds, _, _ = _displayed_comb_layout(
+        mol,
+        seed_positions={
+            ring_atom: (vx, vy),
+            root: (vx + rx * length, vy + ry * length),
+        },
+        roots=(root,),
+        blocked=set(ringset) - {ring_atom},
+        bond_length=length,
+    )
+    _, px, py = atoms[ring_atom]
+    _, qx, qy = atoms[root]
+    turn = math.atan2(ry, rx) - math.atan2(qy - py, qx - px)
+    c, s = math.cos(turn), math.sin(turn)
+    for idx, (label, x, y) in list(atoms.items()):
+        if idx == ring_atom:
+            continue
+        dx, dy = x - px, y - py
+        atoms[idx] = (label, vx + dx * c - dy * s, vy + dx * s + dy * c)
+    atoms.pop(ring_atom)
+    return atoms, bonds
 
 
 HLEN = 1.25                                              # visual length of a terminal X-H bond (heavy bond == HEAVY_LEN)
@@ -539,15 +497,19 @@ def _coords(mol, shorten_h=None):
     return P
 
 
-def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
+def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None,
+                           seed_positions=None, roots=None, blocked=None,
+                           bond_length=HEAVY_LEN):
     """Displayed formula in RIGHT-ANGLE 'comb' geometry (authentic A-level, per mined notes):
     horizontal heavy-atom spine with vertical C-H / substituent bonds. Every atom + bond explicit.
     grid=True forces EVERY atom (sp3, sp2, O/N alike) onto 90-deg right angles — the 'natural' form
     that shows all bonds but does NOT follow real bond angles (no trigonal splay, no O-H/N-H bend)."""
+    mol = Chem.Mol(mol)
     Chem.Kekulize(mol, clearAromaticFlags=True)
     molH = Chem.AddHs(mol)
     at = molH.GetAtomWithIdx
     A = molH.GetNumAtoms()
+    blocked = set(blocked or ())
     carbonylO = {i for i in range(A) if _is_carbonyl_O(at(i))}
     hydroxylO = {i for i in range(A) if at(i).GetAtomicNum() == 8 and i not in carbonylO
                  and sum(1 for nb in at(i).GetNeighbors() if nb.GetAtomicNum() > 1) == 1
@@ -556,7 +518,8 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
                 and sum(1 for nb in at(i).GetNeighbors() if nb.GetAtomicNum() > 1) == 1
                 and at(i).GetNeighbors()[0].GetAtomicNum() == 6}   # terminal C-X halogen -> substituent (NJC: C-chain horizontal, X drawn up/down)
     _off = carbonylO | hydroxylO | halogenX              # keep -OH / -X off the backbone -> drawn as substituents
-    adj = {i: [] for i in range(A) if at(i).GetAtomicNum() > 1 and i not in _off}
+    adj = {i: [] for i in range(A)
+           if at(i).GetAtomicNum() > 1 and i not in _off and i not in blocked}
     for i in adj:
         adj[i] = [nb.GetIdx() for nb in at(i).GetNeighbors() if nb.GetIdx() in adj]
     spine = _longest_path(adj, weight=lambda n: 2 if any(nb.GetIdx() in carbonylO for nb in at(n).GetNeighbors())
@@ -578,9 +541,7 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
     # mid-chain carbonyls, the ester/ether -O-, and secondary-amine N all splay instead of going collinear.
     R = math.radians
     spine_pos = {v: k for k, v in enumerate(spine)}
-    pos = {}
-    def blen(i, j):                                      # uniform bond length (C-H = C-C = C-Br), per NJC displayed
-        return HEAVY_LEN
+    pos = dict(seed_positions or {})
     def collides(x, y):
         return any(abs(x-px) < 0.9 and abs(y-py) < 0.72 for px, py in pos.values())
     def _is_dbl(i, j):
@@ -627,29 +588,43 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
         if _angular(u):
             # Put an unparented sp2 backbone on the horizontal axis.  The
             # carbonyl preference below still selects the upward slot.
-            return [occ[0] + R(120), occ[0] - R(120)] if occ else [R(0), R(120), R(240)]
-        if not occ:
-            return [R(0), R(90), R(270), R(180)]
-        if _terminal(u):                                 # a cap (-CH3): snap its H's to the page-axis comb; only fan if that would collide
+            slots = [occ[0] + R(120), occ[0] - R(120)] if occ else [R(0), R(120), R(240)]
+        elif not occ:
+            slots = [R(0), R(90), R(270), R(180)]
+        elif _terminal(u):
             ux, uy = pos[u]
             comb = sorted([R(0), R(90), R(180), R(270)], key=lambda s: -abs(_norm(s - occ[0])))[:3]
-            if all(not collides(ux + HEAVY_LEN*math.cos(s), uy + HEAVY_LEN*math.sin(s)) for s in comb):
-                return comb
-            return [occ[0] + R(180), occ[0] + R(120), occ[0] - R(120)]   # crowded hanging methyl -> fan away from the parent
-        return [occ[0] + R(180), occ[0] + R(90), occ[0] - R(90)]
+            if all(not collides(ux + bond_length*math.cos(s), uy + bond_length*math.sin(s)) for s in comb):
+                slots = comb
+            else:
+                slots = [occ[0] + R(180), occ[0] + R(120), occ[0] - R(120)]
+        else:
+            slots = [occ[0] + R(180), occ[0] + R(90), occ[0] - R(90)]
+        return slots
     q = collections.deque()
-    root = spine[0] if spine else next(iter(adj), 0)
-    pos[root] = (0.0, 0.0); q.append(root)
+    if roots is None:
+        root = spine[0] if spine else next(iter(adj), 0)
+        pos[root] = (0.0, 0.0)
+        q.append(root)
+    else:
+        q.extend(roots)
     while q:
         u = q.popleft(); ux, uy = pos[u]
         occ = [math.atan2(pos[n.GetIdx()][1]-uy, pos[n.GetIdx()][0]-ux)
-               for n in at(u).GetNeighbors() if n.GetIdx() in pos]
-        unplaced = [nb.GetIdx() for nb in at(u).GetNeighbors() if nb.GetIdx() not in pos]
+               for n in at(u).GetNeighbors() if n.GetIdx() in pos and n.GetIdx() not in blocked]
+        unplaced = [nb.GetIdx() for nb in at(u).GetNeighbors()
+                    if nb.GetIdx() not in pos and nb.GetIdx() not in blocked]
         if not unplaced:
             continue
         slots = _slots(u, occ)
+        for degrees in range(0, 360, 15):
+            if len(slots) >= len(unplaced):
+                break
+            candidate = R(degrees)
+            if all(abs(_norm(candidate - existing)) > 1e-6 for existing in slots):
+                slots.append(candidate)
         def take(key):                                   # pop the free, non-crowding slot that best matches key(); returns (angle, x, y)
-            L = HEAVY_LEN
+            L = bond_length
             for s in sorted(slots, key=key):
                 if all(abs(_norm(s-t)) > R(48) for t in occ) and not collides(ux+L*math.cos(s), uy+L*math.sin(s)):
                     slots.remove(s); return s, ux+L*math.cos(s), uy+L*math.sin(s)
@@ -710,13 +685,13 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
         if c1 in pos and c2 in pos:
             midx = (pos[c1][0] + pos[c2][0]) / 2.0
             midy = (pos[c1][1] + pos[c2][1]) / 2.0
-            pos[c1], pos[c2] = (midx - HEAVY_LEN / 2.0, midy), (midx + HEAVY_LEN / 2.0, midy)
+            pos[c1], pos[c2] = (midx - bond_length / 2.0, midy), (midx + bond_length / 2.0, midy)
 
-            def move_branch(start, blocked, target):
+            def move_branch(start, barrier, target):
                 if start not in pos:
                     return
                 dx, dy = target[0] - pos[start][0], target[1] - pos[start][1]
-                seen_branch, todo = {blocked}, [start]
+                seen_branch, todo = {barrier}, [start]
                 while todo:
                     u = todo.pop()
                     if u in seen_branch:
@@ -725,7 +700,8 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
                     if u in pos:
                         pos[u] = (pos[u][0] + dx, pos[u][1] + dy)
                     todo.extend(nb.GetIdx() for nb in at(u).GetNeighbors()
-                                if nb.GetIdx() not in seen_branch and nb.GetIdx() in pos)
+                                if nb.GetIdx() not in seen_branch and nb.GetIdx() in pos
+                                and nb.GetIdx() not in blocked)
 
             for centre, other, centre_side, angle in (
                     (c1, c2, 120, 120), (c2, c1, 60, 60)):
@@ -733,8 +709,8 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None):
                 for neighbour in neighbours:
                     side = stereo_sides.get((centre, neighbour), -centre_side)
                     degrees = angle if side > 0 else -angle
-                    target = (pos[centre][0] + HEAVY_LEN * math.cos(R(degrees)),
-                              pos[centre][1] + HEAVY_LEN * math.sin(R(degrees)))
+                    target = (pos[centre][0] + bond_length * math.cos(R(degrees)),
+                              pos[centre][1] + bond_length * math.sin(R(degrees)))
                     move_branch(neighbour, centre, target)
     atoms = {i: (condlab.get(i, _elem(at(i)) + _charge_suffix(at(i).GetFormalCharge())), pos[i][0], pos[i][1])
              for i in pos}
@@ -916,7 +892,7 @@ def _skeletal_layout(mol):
             # A charged carbon cannot remain an unlabelled skeletal vertex:
             # hiding its formal charge changes a carbocation/carbanion into a
             # neutral alkane.  Neutral carbon remains implicit as usual.
-            lab = "C" + ch if ch else ""                 # carbon vertex: implicit unless charged
+            lab = _implicit_carbon_label(a)               # carbon vertex: implicit unless charged
         elif Z == 8:
             lab = ("OH" if nH == 1 else "O") + ch
         elif Z == 7:
@@ -1322,18 +1298,35 @@ def _txt_w(text, font):
     tb = _SCRATCH.textbbox((0, 0), text, font=font); return tb[2] - tb[0]
 
 
+_ITALIC_FONT_CACHE = {ITALIC_FONT.size: ITALIC_FONT}
+
+
+def _italic_font_for(font):
+    size = font.size
+    if size not in _ITALIC_FONT_CACHE:
+        _ITALIC_FONT_CACHE[size] = ImageFont.truetype(ITALIC_FONT_PATH, size)
+    return _ITALIC_FONT_CACHE[size]
+
+
+def _inline_runs(text):
+    runs = []
+    cursor = 0
+    for match in re.finditer("Cl", text):
+        regular = text[cursor:match.start() + 1]
+        if regular:
+            runs.append((regular, False))
+        runs.append(("l", True))
+        cursor = match.end()
+    if cursor < len(text):
+        runs.append((text[cursor:], False))
+    return runs
+
+
 def _inline_w(text, font=FONT):
     """Width of inline chemistry text with the house italic chlorine l."""
-    width = 0
-    i = 0
-    while i < len(text):
-        if text[i:i + 2] == "Cl":
-            width += _txt_w("C", font) + _txt_w("l", ITALIC_FONT)
-            i += 2
-        else:
-            width += _txt_w(text[i], font)
-            i += 1
-    return width
+    italic = _italic_font_for(font)
+    return sum(_txt_w(run, italic if is_italic else font)
+               for run, is_italic in _inline_runs(text))
 
 
 def _anchor_w(anchor, font=FONT):
@@ -1343,16 +1336,13 @@ def _suffix_w(suffix):
     return sum(_inline_w(s, SUBFONT if k in ('sub', 'sup') else FONT) for s, k in _label_runs(suffix))
 
 
-def _draw_inline(dr, x, y, text, font):
+def _draw_inline(dr, x, y, text, font, anchor=None):
     """Draw inline text while keeping only the l in Cl italic."""
-    i = 0
-    while i < len(text):
-        if text[i:i + 2] == "Cl":
-            dr.text((x, y), "C", fill=(0, 0, 0), font=font); x += _txt_w("C", font)
-            dr.text((x, y), "l", fill=(0, 0, 0), font=ITALIC_FONT); x += _txt_w("l", ITALIC_FONT)
-            i += 2
-        else:
-            dr.text((x, y), text[i], fill=(0, 0, 0), font=font); x += _txt_w(text[i], font); i += 1
+    italic = _italic_font_for(font)
+    for run, is_italic in _inline_runs(text):
+        run_font = italic if is_italic else font
+        dr.text((x, y), run, fill=(0, 0, 0), font=run_font, anchor=anchor)
+        x += _txt_w(run, run_font)
     return x
 
 def _draw_group(dr, anchor, suffix, side, cx, cy):
