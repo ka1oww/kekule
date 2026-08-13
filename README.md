@@ -52,16 +52,16 @@ from embed_docx import build_doc
 build_doc([("ethanoic acid", "CC(=O)O"), ("benzene", "c1ccccc1")], "structures.docx")
 ```
 
-In a reaction, most species are SMILES. A species that is not, an inorganic reagent, an ion, a radical, or a coefficient, is written as a literal token with a leading `$`, for example `$H2O`, `$2[O]`, `$Na^+`, `$conc. HCl`. Digits after a letter auto-subscript, so `$H2SO4` prints as H₂SO₄. The `$` marks the token and is not drawn. Reagent and condition text are plain formula text and take no `$`.
+In a reaction, most species are SMILES. Ionic compounds may use dot-disconnected SMILES such as `CC(=O)[O-].[Na+]`. Single-atom fragment tokens such as `[Na+]`, `[Cl-]`, and `[NH4+]` retain their labels and formal charges. A species that is not structural SMILES, an inorganic reagent, a radical, or a coefficient, is written as a literal token with a leading `$`, for example `$H2O`, `$2[O]`, `$Na^+`, `$conc. HCl`. Digits after a letter auto-subscript, so `$H2SO4` prints as H₂SO₄. The `$` marks the token and is not drawn. Reagent and condition text are plain formula text and take no `$`.
 
 ## Input validation
 
-Every public structure and reaction entry point validates a structural species before layout. Kekule accepts one connected SMILES string for a simple acyclic or single-ring molecule. It does not convert chemical names to SMILES.
+Every public structure and reaction entry point validates a structural species before layout. Kekule accepts simple acyclic or single-ring SMILES. A dot-disconnected request is accepted when every fragment meets that scope and has a visible atom label, bond, or circle in the selected representation. It does not convert chemical names to SMILES.
 
 Invalid or unsupported input raises a typed `ValueError` subclass from `structure_draw`:
 
 - `InvalidSmilesError` for malformed SMILES or a chemical name passed as SMILES.
-- `DisconnectedStructureError` for salts, mixtures, or other dot-disconnected SMILES. In a reaction, pass separate species as separate list entries, or use an explicit `$` literal token.
+- `DisconnectedStructureError` when a specialised renderer that needs one connected fragment, such as `stereo` or `geometric`, receives dot-disconnected SMILES, or when any fragment has no visible atom label, bond, or circle in the selected representation.
 - `UnsupportedTopologyError` for multi-ring, fused, bridged, or spiro structures.
 - `UnsupportedRadicalError` while structural radical-dot rendering is unsupported. Radicals may still be typeset explicitly as reaction literals such as `$•CH3`.
 - `UnsupportedStereochemistryError` when a specialised stereo request cannot be represented faithfully. The raster stereo-pair helper supports exactly one tetrahedral stereocentre and draws both enantiomers; it does not select one configuration from `@` or `@@`. Multi-centre stereo is rejected, and wedge/dash stereo SVG is outside the supported scope.
@@ -70,7 +70,7 @@ All of these inherit from `KekuleInputError`, so callers may catch either the sp
 
 ## Scope
 
-The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Fused, bridged, spiro, and other multi-ring systems are outside its supported scope and are rejected before layout.
+The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Dot-disconnected compounds are rendered fragment by fragment from left to right with a clear gap in displayed, structural, and skeletal forms when every fragment has a visible primitive. Each fragment retains the same scope checks, so fused, bridged, spiro, radical, and other unsupported fragments are rejected before layout and identified in the error.
 
 ## Readiness gate
 

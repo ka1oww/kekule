@@ -1,5 +1,7 @@
 """Regression tests for Kekule's public SMILES validation boundary."""
 
+import hashlib
+import json
 import math
 import os
 import sys
@@ -71,13 +73,20 @@ class ValidationBoundaryTests(unittest.TestCase):
                 with self.assertRaises(draw.InvalidSmilesError):
                     draw.validate_input(value)
 
-    def test_disconnected_structure_is_rejected(self):
-        with self.assertRaisesRegex(draw.DisconnectedStructureError, "separate list entries"):
-            draw.layout("CCO.O")
+    def test_disconnected_stereo_request_is_rejected(self):
+        with self.assertRaisesRegex(draw.DisconnectedStructureError, "stereo renderer requires one"):
+            draw.render("CC(O)C.[Na+]", form="stereo")
 
-    def test_salt_is_rejected_as_one_structure(self):
-        with self.assertRaisesRegex(draw.DisconnectedStructureError, "2 fragments"):
-            draw.render("[Na+].[Cl-]")
+    def test_unsupported_fragment_error_names_the_fragment(self):
+        cases = (
+            ("[CH3].[Na+]", draw.UnsupportedRadicalError, r"Fragment 1 '\[CH3\]'"),
+            ("[Na+].c1ccc2ccccc2c1", draw.UnsupportedTopologyError,
+             r"Fragment 2 'c1ccc2ccccc2c1'"),
+        )
+        for smiles, error_type, message in cases:
+            with self.subTest(smiles=smiles):
+                with self.assertRaisesRegex(error_type, message):
+                    draw.render(smiles)
 
     def test_radical_is_rejected_until_the_electron_dot_is_supported(self):
         with self.assertRaisesRegex(draw.UnsupportedRadicalError, "unpaired-electron dots"):
@@ -248,6 +257,72 @@ class ValidationBoundaryTests(unittest.TestCase):
                     self.assertGreater(height, 0)
 
 
+class MultiFragmentRenderingTests(unittest.TestCase):
+    @staticmethod
+    def _components(atoms, bonds):
+        adjacency = {atom_id: set() for atom_id in atoms}
+        for first, second, _ in bonds:
+            adjacency[first].add(second)
+            adjacency[second].add(first)
+        components = []
+        unseen = set(atoms)
+        while unseen:
+            pending = [next(iter(unseen))]
+            component = set()
+            while pending:
+                atom_id = pending.pop()
+                if atom_id in component:
+                    continue
+                component.add(atom_id)
+                pending.extend(adjacency[atom_id] - component)
+            unseen -= component
+            components.append(component)
+        return components
+
+    def test_sodium_ethanoate_fragments_have_a_clear_non_overlapping_gap(self):
+        for form in ("displayed", "structural", "skeletal"):
+            with self.subTest(form=form):
+                atoms, bonds, circles, reversible = draw.layout("CC(=O)[O-].[Na+]", form)
+                components = self._components(atoms, bonds)
+                self.assertEqual(len(components), 2)
+                bounds = []
+                for component in components:
+                    component_atoms = {i: atoms[i] for i in component}
+                    component_bonds = [bond for bond in bonds if bond[0] in component]
+                    bounds.append(draw._layout_visual_bounds(
+                        component_atoms, component_bonds, [], reversible & component
+                    ))
+                bounds.sort(key=lambda bound: bound[0])
+                self.assertGreaterEqual(bounds[1][0] - bounds[0][1], draw.FRAGMENT_GAP - 1e-9)
+                image = draw.render("CC(=O)[O-].[Na+]", form=form)
+                self.assertGreater(image.width, 0)
+                self.assertGreater(image.height, 0)
+                white = Image.new(image.mode, image.size, "white")
+                self.assertIsNotNone(ImageChops.difference(image, white).getbbox())
+
+    def test_monatomic_ion_labels_and_charges_are_preserved(self):
+        structural = draw.layout("[NH4+].[Cl-]", "structural")
+        self.assertEqual([atom[0] for atom in structural[0].values()], ["NH4^+", "Cl^-"])
+        displayed = draw.layout("[NH4+].[Cl-]", "displayed")
+        displayed_labels = [atom[0] for atom in displayed[0].values()]
+        self.assertEqual(displayed[0][0][0], "N^+")
+        self.assertEqual(displayed[0][1][0], "Cl^-")
+        self.assertEqual(set(displayed[0]) - {0, 1}, {2, 3, 4, 5})
+        self.assertIn("N^+", displayed_labels)
+        self.assertEqual(displayed_labels.count("H"), 4)
+        self.assertIn("Cl^-", displayed_labels)
+        markup, _, _ = svg.render_svg("[NH4+].[Cl-]")
+        self.assertIn(">+</text>", markup)
+        self.assertIn(">-</text>", markup)
+
+    def test_invisible_skeletal_fragment_is_rejected_and_identified(self):
+        cases = (("C.[Na+]", "Fragment 1 'C'"), ("[Na+].C", "Fragment 2 'C'"))
+        for smiles, message in cases:
+            with self.subTest(smiles=smiles):
+                with self.assertRaisesRegex(draw.DisconnectedStructureError, message):
+                    draw.layout(smiles, "skeletal")
+
+
 class PublicEntryPointTests(unittest.TestCase):
     def test_structure_entry_points_share_the_typed_boundary(self):
         entry_points = (
@@ -261,15 +336,12 @@ class PublicEntryPointTests(unittest.TestCase):
                 with self.assertRaises(draw.InvalidSmilesError):
                     call()
 
-    def test_reaction_smiles_species_use_the_same_boundary(self):
-        entry_points = (
-            lambda: reaction.render_reaction_svg(["CCO.O"], ["CC=O"]),
-            lambda: reaction.render_reaction_png(["CCO.O"], ["CC=O"]),
-        )
-        for call in entry_points:
-            with self.subTest(call=call):
-                with self.assertRaisesRegex(draw.DisconnectedStructureError, "separate list entries"):
-                    call()
+    def test_reaction_smiles_species_accept_ionic_fragments(self):
+        svg_result = reaction.render_reaction_svg(["CC(=O)[O-].[Na+]"], ["CC(=O)O"])
+        png_result = reaction.render_reaction_png(["CC(=O)[O-].[Na+]"], ["CC(=O)O"])
+        self.assertIn(">+</text>", svg_result[0])
+        self.assertGreater(svg_result[1], 0)
+        self.assertGreater(png_result.width, 0)
 
     def test_reaction_rejects_unsupported_topology(self):
         with self.assertRaises(draw.UnsupportedTopologyError):
@@ -305,6 +377,53 @@ class PublicEntryPointTests(unittest.TestCase):
 
 
 class SupportedOutputStabilityTests(unittest.TestCase):
+    SINGLE_FRAGMENT_HASHES = {
+        "C1CCCCC1": {
+            "displayed": "1a5525551f14c859fd164ba59703ff3ea0549e6f95c52285598e1b6e7c379f1e",
+            "structural": "1a5525551f14c859fd164ba59703ff3ea0549e6f95c52285598e1b6e7c379f1e",
+            "skeletal": "1a5525551f14c859fd164ba59703ff3ea0549e6f95c52285598e1b6e7c379f1e",
+        },
+        "CC#N": {
+            "displayed": "2f8726b528023e1fd8261d5a76fb0779e0b26d6c7f8009c6facfe8797d75b664",
+            "structural": "cc81536b0d90a2f15e8f0a3bfc8dab6f8c571a53a62a428af6e40eec91444ac2",
+            "skeletal": "99a70e64a029aa04b1535457a24f440cdabe1a8a47b52a8ef5bcc6b416376d8b",
+        },
+        "CC(=O)O": {
+            "displayed": "45e009594425098df399744d85029e8831fd77632f11805c210bf872e40c162e",
+            "structural": "cb1a893b29063515ccbc9ea82da9da69330be8ef10639ec1910422c5ad58c8ea",
+            "skeletal": "2785881bc46683f9ce09b4596e1a4c21739591685aec2f2482d13bf25f1e580f",
+        },
+        "CC(=O)[O-]": {
+            "displayed": "4779b292f206c51de53fa85b1ce4c533921dbdf3dec4e8c298cf9f5ac4a53df8",
+            "structural": "1db26efd7d9c9942ded8f3709e7d498e15c4b323b57e1f349a9d5bc287c54678",
+            "skeletal": "ecb383f9e95cd3c4e5cdeafb1b7e21dca49fea2315ab25a60060890931a86f13",
+        },
+        "CC(O)C": {
+            "displayed": "9994eb57bfdcb8f5b6727a83f3fcd88a3a274e1d79b6c78b376b58ec2a1eae0e",
+            "structural": "95486ca6cffa537d136a57271ab7fb98d55e3999e26a7d03a516233b3b408daf",
+            "skeletal": "b772c81469a687cc79d965a90fd7e4dd7f418af2f2b51c5370f748fd691ea19e",
+        },
+        "CC(O)C(=O)O": {
+            "displayed": "6e65a06bad9a46f674580f95ad6ff5b75761581838a3d496bdb42063fc30d7f3",
+            "structural": "aed223b437b383376bd6143f239b7a62ea55fc348ccfc4a1b8eb3a10df261081",
+            "skeletal": "264c53fe370ab332654b86c79c317d1ac685b1b07590c7bed2b0b4b8a0196391",
+        },
+        "CC=CC": {
+            "displayed": "00caf4b2c76b5a5977a8365fe2dd667cd297431d97ecf4d2bd88cab834677d31",
+            "structural": "0ef8c86c313a25a04a660e40d8a15d8a5a5850c5a5593b7a1d3e43a9db619065",
+            "skeletal": "018e6b1ef9c26e4dd48c01350209e69e93fd0dde71f90fdb6ecbdc1e9e1c7249",
+        },
+        "O=[N+]([O-])c1ccccc1": {
+            "displayed": "be600886add4ab544b99d7acc05739e65caac504d4d273545d57db4bb1aa3a73",
+            "structural": "47a2c07a6700a622630bf1092a21cfa79dd6d45663d4e0dce6e90c60cb11aa62",
+            "skeletal": "47a2c07a6700a622630bf1092a21cfa79dd6d45663d4e0dce6e90c60cb11aa62",
+        },
+        "[NH3+]CC(=O)[O-]": {
+            "displayed": "4f9b439da38b4283ce28bfa509d9b5f2e9c58272d9955f1d77780a5ad778d7ce",
+            "structural": "c85a3cd303e61127e51ee7fdbc19b3d520d29bd2a42211965b503391f3dcef26",
+            "skeletal": "272a9abb4b3bc815b788f1537588a936b294dacbf10e587a8391df72e1d8d5ce",
+        },
+    }
     STRUCTURES = {
         "ethanoic-acid": "CC(=O)O",
         "ethyl-ethanoate": "CCOC(C)=O",
@@ -326,6 +445,27 @@ class SupportedOutputStabilityTests(unittest.TestCase):
             "arrow": "->",
         },
     }
+
+    def test_manifest_single_fragment_renders_keep_pre_change_hashes(self):
+        with open(os.path.join(ROOT, "evaluation", "preview_manifest.json")) as fh:
+            manifest = json.load(fh)
+        manifest_smiles = set()
+        for case in manifest["cases"]:
+            smiles = case["input"]
+            if case["expected"]["outcome"] != "supported" or not isinstance(smiles, str):
+                continue
+            molecule = draw.Chem.MolFromSmiles(smiles)
+            self.assertIsNotNone(molecule, case["id"])
+            if len(draw.Chem.GetMolFrags(molecule)) == 1:
+                manifest_smiles.add(smiles)
+        self.assertEqual(set(self.SINGLE_FRAGMENT_HASHES), manifest_smiles)
+        if draw.FONT_PATH != draw.ARIAL:
+            self.skipTest("Exact pre-change hashes require the reference Arial font")
+        for smiles, expected_by_form in self.SINGLE_FRAGMENT_HASHES.items():
+            for form, expected in expected_by_form.items():
+                with self.subTest(smiles=smiles, form=form):
+                    actual = hashlib.sha256(draw.render(smiles, form=form).tobytes()).hexdigest()
+                    self.assertEqual(actual, expected)
 
     def test_tracked_structure_examples_are_unchanged(self):
         for name, smiles in self.STRUCTURES.items():
