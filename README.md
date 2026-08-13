@@ -56,7 +56,7 @@ In a reaction, most species are SMILES. Ionic compounds may use dot-disconnected
 
 ## Input validation
 
-Every public structure and reaction entry point validates a structural species before layout. Kekule accepts one or more dot-disconnected SMILES fragments when every fragment is a simple acyclic or single-ring molecule and has a visible atom label, bond, or circle in the selected representation. It does not convert chemical names to SMILES.
+Every public structure and reaction entry point validates a structural species before layout. Kekule accepts simple acyclic or single-ring SMILES. A dot-disconnected request is accepted when every fragment meets that scope and has a visible atom label, bond, or circle in the selected representation. It does not convert chemical names to SMILES.
 
 Invalid or unsupported input raises a typed `ValueError` subclass from `structure_draw`:
 
