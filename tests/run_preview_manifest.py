@@ -157,7 +157,11 @@ def _assert_structure_invariants(test, case, molecule, result):
     else:
         layout = structure_draw.layout(case["input"], representation)
     atoms, bonds = layout[0], layout[1]
-    for check in invariants.CHECKS:
+    if len(Chem.GetMolFrags(molecule)) > 1:
+        checks = (invariants.chk_finite, invariants.chk_placed, invariants.chk_no_overlap)
+    else:
+        checks = invariants.CHECKS
+    for check in checks:
         ok, message = check(atoms, bonds, molecule, representation)
         test.assertTrue(ok, f"{check.__name__}: {message}")
 

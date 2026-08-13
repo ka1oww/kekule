@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Kekule narrow preview evaluation",
   "description": "A small, privacy-safe inventory of the public preview promise. All inputs are synthetic textbook examples and contain no personal or proprietary source data.",
-  "promise": "Given a valid, single-component SMILES string for a simple acyclic organic molecule with one main functional group or a simple single-ring structure, Kekule deterministically renders an A-level-style structure to SVG or PNG. It can also compose caller-specified straight or equilibrium reaction schemes.",
+  "promise": "Given a valid SMILES string containing simple acyclic or single-ring fragments, Kekule deterministically renders every fragment in an A-level-style structure to SVG or PNG. It can also compose caller-specified straight or equilibrium reaction schemes.",
   "cases": [
     {
       "id": "supported-acyclic-structural-svg",
@@ -68,6 +68,39 @@
         "outcome": "supported",
         "artifact": "svg",
         "molecule": {"atoms": 4, "bonds": 3, "rings": 0, "formal_charge": -1}
+      }
+    },
+    {
+      "id": "supported-sodium-ethanoate-png",
+      "input": "CC(=O)[O-].[Na+]",
+      "entry_point": "structure_draw.render",
+      "representation": "structural",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "png",
+        "molecule": {"atoms": 5, "bonds": 3, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-ammonium-chloride-svg",
+      "input": "[NH4+].[Cl-]",
+      "entry_point": "structure_svg.render_svg",
+      "representation": "structural",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "svg",
+        "molecule": {"atoms": 2, "bonds": 0, "rings": 0, "formal_charge": 0}
+      }
+    },
+    {
+      "id": "supported-glycine-zwitterion-png",
+      "input": "[NH3+]CC(=O)[O-]",
+      "entry_point": "structure_draw.render",
+      "representation": "displayed",
+      "expected": {
+        "outcome": "supported",
+        "artifact": "png",
+        "molecule": {"atoms": 5, "bonds": 4, "rings": 0, "formal_charge": 0}
       }
     },
     {
@@ -146,25 +179,25 @@
       }
     },
     {
-      "id": "reject-disconnected-structure",
-      "input": "CCO.O",
+      "id": "reject-disconnected-stereo-request",
+      "input": "CC(O)C.[Na+]",
+      "entry_point": "structure_draw.render",
+      "representation": "stereo",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "DisconnectedStructureError",
+        "message_contains": "stereo renderer requires one connected molecular fragment"
+      }
+    },
+    {
+      "id": "reject-unsupported-fragment-in-salt",
+      "input": "[Na+].c1ccc2ccccc2c1",
       "entry_point": "structure_draw.render",
       "representation": "structural",
       "expected": {
         "outcome": "rejected",
-        "error_type": "DisconnectedStructureError",
-        "message_contains": "2 fragments"
-      }
-    },
-    {
-      "id": "reject-disconnected-reaction-species",
-      "input": {"reactants": ["CCO.O"], "products": ["CC=O"]},
-      "entry_point": "reaction_render.render_reaction_svg",
-      "representation": "straight reaction scheme",
-      "expected": {
-        "outcome": "rejected",
-        "error_type": "DisconnectedStructureError",
-        "message_contains": "separate list entries"
+        "error_type": "UnsupportedTopologyError",
+        "message_contains": "Fragment 2 'c1ccc2ccccc2c1'"
       }
     },
     {
