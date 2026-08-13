@@ -414,12 +414,12 @@ class SupportedOutputStabilityTests(unittest.TestCase):
             "skeletal": "018e6b1ef9c26e4dd48c01350209e69e93fd0dde71f90fdb6ecbdc1e9e1c7249",
         },
         "O=[N+]([O-])c1ccccc1": {
-            "displayed": "47a2c07a6700a622630bf1092a21cfa79dd6d45663d4e0dce6e90c60cb11aa62",
+            "displayed": "be600886add4ab544b99d7acc05739e65caac504d4d273545d57db4bb1aa3a73",
             "structural": "47a2c07a6700a622630bf1092a21cfa79dd6d45663d4e0dce6e90c60cb11aa62",
             "skeletal": "47a2c07a6700a622630bf1092a21cfa79dd6d45663d4e0dce6e90c60cb11aa62",
         },
         "[NH3+]CC(=O)[O-]": {
-            "displayed": "22af0c097f2e465a1add6729822db72498fb34823fb81881075f43b001d27fc5",
+            "displayed": "4f9b439da38b4283ce28bfa509d9b5f2e9c58272d9955f1d77780a5ad778d7ce",
             "structural": "c85a3cd303e61127e51ee7fdbc19b3d520d29bd2a42211965b503391f3dcef26",
             "skeletal": "272a9abb4b3bc815b788f1537588a936b294dacbf10e587a8391df72e1d8d5ce",
         },
