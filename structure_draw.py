@@ -982,9 +982,14 @@ def _layout_mol(mol, form='structural', angles='comb'):
     'displayed' (every atom + bond in the right-angle comb by default, or a tetrahedral variant),
     or 'skeletal' (zig-zag, implicit C/H)."""
     mol = Chem.Mol(mol)                                    # layout helpers may Kekulize/mutate; keep the validated input reusable
-    fragments = Chem.GetMolFrags(mol, asMols=True)
+    fragment_atom_mappings = []
+    fragments = Chem.GetMolFrags(
+        mol, asMols=True, fragsMolAtomMapping=fragment_atom_mappings
+    )
     if len(fragments) > 1:
-        return _compose_fragment_layouts(fragments, form, angles)
+        return _compose_fragment_layouts(
+            fragments, fragment_atom_mappings, mol.GetNumAtoms(), form, angles
+        )
     if form == 'displayed':
         return _displayed_layout(mol, angles)
     if form in ('natural', 'expanded', 'full'):          # every atom + bond drawn on a 90-deg right-angle GRID (no trigonal/bent)
@@ -1344,25 +1349,30 @@ def _layout_visual_bounds(atoms, bonds, circles, reversible):
             min(bound[2] for bound in bounds), max(bound[3] for bound in bounds))
 
 
-def _compose_fragment_layouts(fragments, form, angles):
+def _compose_fragment_layouts(fragments, atom_mappings, source_atom_count, form, angles):
     """Compose existing single-fragment layouts from left to right with a visible gap."""
     atoms, bonds, circles, reversible = {}, [], [], set()
-    next_id = 0
+    next_synthetic_id = source_atom_count
     right_edge = None
-    for fragment in fragments:
+    for fragment, atom_mapping in zip(fragments, atom_mappings):
         frag_atoms, frag_bonds, frag_circles, frag_reversible = _layout_mol(fragment, form, angles)
         minx, maxx, miny, maxy = _layout_visual_bounds(
             frag_atoms, frag_bonds, frag_circles, frag_reversible
         )
         dx = -minx if right_edge is None else right_edge + FRAGMENT_GAP - minx
         dy = -(miny + maxy) / 2
-        id_map = {old_id: next_id + offset for offset, old_id in enumerate(frag_atoms)}
+        id_map = {}
+        for old_id in frag_atoms:
+            if 0 <= old_id < fragment.GetNumAtoms():
+                id_map[old_id] = atom_mapping[old_id]
+            else:
+                id_map[old_id] = next_synthetic_id
+                next_synthetic_id += 1
         for old_id, (label, x, y) in frag_atoms.items():
             atoms[id_map[old_id]] = (label, x + dx, y + dy)
         bonds.extend((id_map[i], id_map[j], order) for i, j, order in frag_bonds)
         circles.extend((cx + dx, cy + dy, radius) for cx, cy, radius in frag_circles)
         reversible.update(id_map[i] for i in frag_reversible)
-        next_id += len(frag_atoms)
         right_edge = maxx + dx
     return atoms, bonds, circles, reversible
 
