@@ -71,13 +71,14 @@ class ValidationBoundaryTests(unittest.TestCase):
                 with self.assertRaises(draw.InvalidSmilesError):
                     draw.validate_input(value)
 
-    def test_disconnected_structure_is_rejected(self):
-        with self.assertRaisesRegex(draw.DisconnectedStructureError, "separate list entries"):
-            draw.layout("CCO.O")
+    def test_disconnected_stereo_request_is_rejected(self):
+        with self.assertRaisesRegex(draw.DisconnectedStructureError, "stereo renderer requires one"):
+            draw.render("CC(O)C.[Na+]", form="stereo")
 
-    def test_salt_is_rejected_as_one_structure(self):
-        with self.assertRaisesRegex(draw.DisconnectedStructureError, "2 fragments"):
-            draw.render("[Na+].[Cl-]")
+    def test_unsupported_fragment_error_names_the_fragment(self):
+        smiles = "[Na+].c1ccc2ccccc2c1"
+        with self.assertRaisesRegex(draw.UnsupportedTopologyError, r"Fragment 2 'c1ccc2ccccc2c1'"):
+            draw.render(smiles)
 
     def test_radical_is_rejected_until_the_electron_dot_is_supported(self):
         with self.assertRaisesRegex(draw.UnsupportedRadicalError, "unpaired-electron dots"):
@@ -248,6 +249,57 @@ class ValidationBoundaryTests(unittest.TestCase):
                     self.assertGreater(height, 0)
 
 
+class MultiFragmentRenderingTests(unittest.TestCase):
+    @staticmethod
+    def _components(atoms, bonds):
+        adjacency = {atom_id: set() for atom_id in atoms}
+        for first, second, _ in bonds:
+            adjacency[first].add(second)
+            adjacency[second].add(first)
+        components = []
+        unseen = set(atoms)
+        while unseen:
+            pending = [next(iter(unseen))]
+            component = set()
+            while pending:
+                atom_id = pending.pop()
+                if atom_id in component:
+                    continue
+                component.add(atom_id)
+                pending.extend(adjacency[atom_id] - component)
+            unseen -= component
+            components.append(component)
+        return components
+
+    def test_sodium_ethanoate_fragments_have_a_clear_non_overlapping_gap(self):
+        for form in ("displayed", "structural", "skeletal"):
+            with self.subTest(form=form):
+                atoms, bonds, circles, reversible = draw.layout("CC(=O)[O-].[Na+]", form)
+                components = self._components(atoms, bonds)
+                self.assertEqual(len(components), 2)
+                bounds = []
+                for component in components:
+                    component_atoms = {i: atoms[i] for i in component}
+                    component_bonds = [bond for bond in bonds if bond[0] in component]
+                    bounds.append(draw._layout_visual_bounds(
+                        component_atoms, component_bonds, [], reversible & component
+                    ))
+                bounds.sort(key=lambda bound: bound[0])
+                self.assertGreaterEqual(bounds[1][0] - bounds[0][1], draw.FRAGMENT_GAP - 1e-9)
+
+    def test_monatomic_ion_labels_and_charges_are_preserved(self):
+        structural = draw.layout("[NH4+].[Cl-]", "structural")
+        self.assertEqual([atom[0] for atom in structural[0].values()], ["NH4^+", "Cl^-"])
+        displayed = draw.layout("[NH4+].[Cl-]", "displayed")
+        displayed_labels = [atom[0] for atom in displayed[0].values()]
+        self.assertIn("N^+", displayed_labels)
+        self.assertEqual(displayed_labels.count("H"), 4)
+        self.assertIn("Cl^-", displayed_labels)
+        markup, _, _ = svg.render_svg("[NH4+].[Cl-]")
+        self.assertIn(">+</text>", markup)
+        self.assertIn(">-</text>", markup)
+
+
 class PublicEntryPointTests(unittest.TestCase):
     def test_structure_entry_points_share_the_typed_boundary(self):
         entry_points = (
@@ -261,15 +313,12 @@ class PublicEntryPointTests(unittest.TestCase):
                 with self.assertRaises(draw.InvalidSmilesError):
                     call()
 
-    def test_reaction_smiles_species_use_the_same_boundary(self):
-        entry_points = (
-            lambda: reaction.render_reaction_svg(["CCO.O"], ["CC=O"]),
-            lambda: reaction.render_reaction_png(["CCO.O"], ["CC=O"]),
-        )
-        for call in entry_points:
-            with self.subTest(call=call):
-                with self.assertRaisesRegex(draw.DisconnectedStructureError, "separate list entries"):
-                    call()
+    def test_reaction_smiles_species_accept_ionic_fragments(self):
+        svg_result = reaction.render_reaction_svg(["CC(=O)[O-].[Na+]"], ["CC(=O)O"])
+        png_result = reaction.render_reaction_png(["CC(=O)[O-].[Na+]"], ["CC(=O)O"])
+        self.assertIn(">+</text>", svg_result[0])
+        self.assertGreater(svg_result[1], 0)
+        self.assertGreater(png_result.width, 0)
 
     def test_reaction_rejects_unsupported_topology(self):
         with self.assertRaises(draw.UnsupportedTopologyError):
@@ -326,6 +375,14 @@ class SupportedOutputStabilityTests(unittest.TestCase):
             "arrow": "->",
         },
     }
+
+    def test_single_fragment_public_render_is_byte_identical_to_tracked_output(self):
+        actual = draw.render("CC(=O)O")
+        with Image.open(os.path.join(ROOT, "examples", "ethanoic-acid.png")) as tracked:
+            expected = tracked.convert("RGB")
+        if draw.FONT_PATH == draw.ARIAL:
+            self.assertEqual(actual.size, expected.size)
+            self.assertEqual(actual.tobytes(), expected.tobytes())
 
     def test_tracked_structure_examples_are_unchanged(self):
         for name, smiles in self.STRUCTURES.items():

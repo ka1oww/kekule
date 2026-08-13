@@ -69,7 +69,7 @@ class InvalidSmilesError(KekuleInputError):
 
 
 class DisconnectedStructureError(KekuleInputError):
-    """The SMILES contains more than one disconnected molecular fragment."""
+    """Disconnected fragments cannot be used by a specialised single-fragment renderer."""
 
 
 class UnsupportedTopologyError(KekuleInputError):
@@ -87,7 +87,7 @@ class UnsupportedStereochemistryError(KekuleInputError):
 def validate_input(smiles, form='structural'):
     """Parse and validate one public structure input, returning an RDKit molecule.
 
-    Kekule accepts one connected SMILES for a simple acyclic or single-ring molecule.
+    Kekule accepts one or more simple acyclic or single-ring molecular fragments.
     Unsupported chemistry is rejected before any layout is attempted so the renderer
     never silently drops a fragment or emits a misleading topology.
     """
@@ -103,26 +103,29 @@ def validate_input(smiles, form='structural'):
             f"Invalid SMILES {smiles!r}. Kekule accepts SMILES strings, not chemical names."
         )
 
-    fragments = Chem.GetMolFrags(mol)
-    if len(fragments) != 1:
+    fragments = Chem.GetMolFrags(mol, asMols=True)
+    if len(fragments) != 1 and form in ('stereo', 'geometric'):
         raise DisconnectedStructureError(
             f"Disconnected SMILES {smiles!r} contains {len(fragments)} fragments. "
-            "Pass reaction species as separate list entries, or use a '$' literal token for a species "
-            "that should be typeset rather than structurally rendered."
+            f"The {form} renderer requires one connected molecular fragment."
         )
 
-    radical_atoms = [a.GetIdx() for a in mol.GetAtoms() if a.GetNumRadicalElectrons()]
-    if radical_atoms:
-        raise UnsupportedRadicalError(
-            f"Radical SMILES {smiles!r} is not supported because Kekule cannot yet draw unpaired-electron dots."
-        )
+    for fragment_number, fragment in enumerate(fragments, start=1):
+        fragment_smiles = Chem.MolToSmiles(fragment)
+        context = (f"Fragment {fragment_number} {fragment_smiles!r} of SMILES {smiles!r}"
+                   if len(fragments) > 1 else f"SMILES {smiles!r}")
+        radical_atoms = [a.GetIdx() for a in fragment.GetAtoms() if a.GetNumRadicalElectrons()]
+        if radical_atoms:
+            raise UnsupportedRadicalError(
+                f"Radical {context} is not supported because Kekule cannot yet draw unpaired-electron dots."
+            )
 
-    rings = mol.GetRingInfo().NumRings()
-    if rings > 1:
-        raise UnsupportedTopologyError(
-            f"SMILES {smiles!r} has {rings} rings. Kekule supports at most one simple ring; "
-            "multi-ring, fused, bridged, and spiro topologies are not supported."
-        )
+        rings = fragment.GetRingInfo().NumRings()
+        if rings > 1:
+            raise UnsupportedTopologyError(
+                f"{context} has {rings} rings. Kekule supports at most one simple ring; "
+                "multi-ring, fused, bridged, and spiro topologies are not supported."
+            )
 
     if form == 'stereo':
         centres = Chem.FindMolChiralCenters(
@@ -979,6 +982,9 @@ def _layout_mol(mol, form='structural', angles='comb'):
     'displayed' (every atom + bond in the right-angle comb by default, or a tetrahedral variant),
     or 'skeletal' (zig-zag, implicit C/H)."""
     mol = Chem.Mol(mol)                                    # layout helpers may Kekulize/mutate; keep the validated input reusable
+    fragments = Chem.GetMolFrags(mol, asMols=True)
+    if len(fragments) > 1:
+        return _compose_fragment_layouts(fragments, form, angles)
     if form == 'displayed':
         return _displayed_layout(mol, angles)
     if form in ('natural', 'expanded', 'full'):          # every atom + bond drawn on a 90-deg right-angle GRID (no trigonal/bent)
@@ -1307,6 +1313,58 @@ def _draw_inline(dr, x, y, text, font, anchor=None):
         dr.text((x, y), run, fill=(0, 0, 0), font=run_font, anchor=anchor)
         x += _txt_w(run, run_font)
     return x
+
+
+FRAGMENT_GAP = 1.25
+
+
+def _layout_visual_bounds(atoms, bonds, circles, reversible):
+    """Return label-aware coordinate bounds for one laid-out fragment."""
+    nbx = collections.defaultdict(list)
+    for i, j, _ in bonds:
+        nbx[i].append(atoms[j][1] - atoms[i][1])
+        nbx[j].append(atoms[i][1] - atoms[j][1])
+    bounds = []
+    for i, (label, x, y) in atoms.items():
+        if label:
+            anchor, suffix = _parse_label(label)
+            has_r = any(dx > 0.3 for dx in nbx[i])
+            has_l = any(dx < -0.3 for dx in nbx[i])
+            side = 'left' if (i in reversible and has_r and not has_l) else 'right'
+            anchor_half = _txt_w(anchor, FONT) / 2
+            suffix_width = _suffix_w(suffix)
+            left = anchor_half + (suffix_width if side == 'left' else 0)
+            right = anchor_half + (suffix_width if side == 'right' else 0)
+            vertical = _BASE_H / 2
+            bounds.append((x - left / U, x + right / U, y - vertical / U, y + vertical / U))
+        else:
+            bounds.append((x, x, y, y))
+    bounds.extend((cx - r, cx + r, cy - r, cy + r) for cx, cy, r in circles)
+    return (min(bound[0] for bound in bounds), max(bound[1] for bound in bounds),
+            min(bound[2] for bound in bounds), max(bound[3] for bound in bounds))
+
+
+def _compose_fragment_layouts(fragments, form, angles):
+    """Compose existing single-fragment layouts from left to right with a visible gap."""
+    atoms, bonds, circles, reversible = {}, [], [], set()
+    next_id = 0
+    right_edge = None
+    for fragment in fragments:
+        frag_atoms, frag_bonds, frag_circles, frag_reversible = _layout_mol(fragment, form, angles)
+        minx, maxx, miny, maxy = _layout_visual_bounds(
+            frag_atoms, frag_bonds, frag_circles, frag_reversible
+        )
+        dx = -minx if right_edge is None else right_edge + FRAGMENT_GAP - minx
+        dy = -(miny + maxy) / 2
+        id_map = {old_id: next_id + offset for offset, old_id in enumerate(frag_atoms)}
+        for old_id, (label, x, y) in frag_atoms.items():
+            atoms[id_map[old_id]] = (label, x + dx, y + dy)
+        bonds.extend((id_map[i], id_map[j], order) for i, j, order in frag_bonds)
+        circles.extend((cx + dx, cy + dy, radius) for cx, cy, radius in frag_circles)
+        reversible.update(id_map[i] for i in frag_reversible)
+        next_id += len(frag_atoms)
+        right_edge = maxx + dx
+    return atoms, bonds, circles, reversible
 
 def _draw_group(dr, anchor, suffix, side, cx, cy):
     aw = _anchor_w(anchor)
