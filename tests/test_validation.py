@@ -304,6 +304,13 @@ class MultiFragmentRenderingTests(unittest.TestCase):
         self.assertIn(">+</text>", markup)
         self.assertIn(">-</text>", markup)
 
+    def test_invisible_skeletal_fragment_is_rejected_and_identified(self):
+        cases = (("C.[Na+]", "Fragment 1 'C'"), ("[Na+].C", "Fragment 2 'C'"))
+        for smiles, message in cases:
+            with self.subTest(smiles=smiles):
+                with self.assertRaisesRegex(draw.DisconnectedStructureError, message):
+                    draw.layout(smiles, "skeletal")
+
 
 class PublicEntryPointTests(unittest.TestCase):
     def test_structure_entry_points_share_the_typed_boundary(self):

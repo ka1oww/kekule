@@ -1354,8 +1354,17 @@ def _compose_fragment_layouts(fragments, atom_mappings, source_atom_count, form,
     atoms, bonds, circles, reversible = {}, [], [], set()
     next_synthetic_id = source_atom_count
     right_edge = None
-    for fragment, atom_mapping in zip(fragments, atom_mappings):
+    for fragment_number, (fragment, atom_mapping) in enumerate(
+        zip(fragments, atom_mappings), start=1
+    ):
         frag_atoms, frag_bonds, frag_circles, frag_reversible = _layout_mol(fragment, form, angles)
+        if not any(label for label, _, _ in frag_atoms.values()) \
+                and not frag_bonds and not frag_circles:
+            fragment_smiles = Chem.MolToSmiles(fragment)
+            raise DisconnectedStructureError(
+                f"Fragment {fragment_number} {fragment_smiles!r} cannot be rendered in {form!r} form "
+                "because its layout has no visible atom label, bond, or circle."
+            )
         minx, maxx, miny, maxy = _layout_visual_bounds(
             frag_atoms, frag_bonds, frag_circles, frag_reversible
         )
