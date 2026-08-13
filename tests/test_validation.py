@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import sys
 import unittest
 import xml.etree.ElementTree as ET
@@ -374,6 +375,110 @@ class PublicEntryPointTests(unittest.TestCase):
         with mock.patch.object(draw.Chem, "MolFromSmiles", wraps=parser) as wrapped:
             reaction.render_reaction_svg(["CCO", "$2[O]"], ["CC=O", "$H2O"])
         self.assertEqual(wrapped.call_count, 2)
+
+
+class DativeBondTests(unittest.TestCase):
+    ADDUCT = "[NH3]->[BH3]"
+    FORMS = ("structural", "displayed", "skeletal")
+
+    def test_dative_input_without_opt_in_is_refused_and_identifies_the_bond(self):
+        entry_points = (
+            lambda: draw.layout(self.ADDUCT),
+            lambda: draw.render(self.ADDUCT),
+            lambda: svg.render_svg(self.ADDUCT),
+            lambda: svg.render_svg_inner(self.ADDUCT),
+        )
+        for call in entry_points:
+            with self.subTest(call=call):
+                with self.assertRaisesRegex(
+                    draw.UnsupportedDativeBondError,
+                    r"N\(atom 0\)->B\(atom 1\).*dative=True",
+                ):
+                    call()
+
+    def test_dative_opt_in_rejects_unsupported_forms_and_rings(self):
+        for form in ("natural", "mechanism", "stereo", "geometric"):
+            with self.subTest(form=form):
+                with self.assertRaisesRegex(draw.UnsupportedDativeBondError, form):
+                    draw.validate_input(self.ADDUCT, form, dative=True)
+        with self.assertRaisesRegex(draw.UnsupportedDativeBondError, "ring"):
+            draw.layout("C1CCCCC1[NH2]->[BH3]", "skeletal", dative=True)
+
+    def test_invalid_dative_chemistry_is_still_invalid_smiles(self):
+        for smiles in ("[NH3]->[CH5]", "[NH3]->"):
+            with self.subTest(smiles=smiles):
+                with self.assertRaises(draw.InvalidSmilesError):
+                    draw.render(smiles, dative=True)
+
+    def test_formal_charges_are_never_reinterpreted_as_arrows(self):
+        for smiles in ("[NH4+]", "O=[N+]([O-])O", "[NH4+].[Cl-]"):
+            for form in self.FORMS:
+                with self.subTest(smiles=smiles, form=form):
+                    atoms, bonds, _, _ = draw.layout(smiles, form, dative=True)
+                    self.assertNotIn("dative", [order for _, _, order in bonds])
+        atoms, _, _, _ = draw.layout("[NH4+]", "structural", dative=True)
+        self.assertEqual([label for label, _, _ in atoms.values()], ["NH4^+"])
+
+    def test_dative_flag_leaves_non_dative_renders_byte_identical(self):
+        for smiles, expected_by_form in SupportedOutputStabilityTests.SINGLE_FRAGMENT_HASHES.items():
+            for form in expected_by_form:
+                with self.subTest(smiles=smiles, form=form):
+                    self.assertEqual(
+                        draw.render(smiles, form=form).tobytes(),
+                        draw.render(smiles, form=form, dative=True).tobytes(),
+                    )
+
+    def test_dative_layout_orders_the_bond_donor_first(self):
+        for form in self.FORMS:
+            with self.subTest(form=form):
+                _, bonds, _, _ = draw.layout(self.ADDUCT, form, dative=True)
+                self.assertIn((0, 1, "dative"), bonds)
+
+    @staticmethod
+    def _dative_head_geometry(elems):
+        """Return (shaft_start, head_base_mid, head_tip) pixels from the dative SVG elements."""
+        before_path, after = elems.split('<path d="M ', 1)
+        head = after.split('"', 1)[0]
+        tip_text, base_one, base_two = head.rstrip(" Z").split(" L ")
+        tip = tuple(float(value) for value in tip_text.split())
+        bases = [tuple(float(value) for value in point.split()) for point in (base_one, base_two)]
+        base_mid = ((bases[0][0] + bases[1][0]) / 2.0, (bases[0][1] + bases[1][1]) / 2.0)
+        shaft_element = "<line" + before_path.rsplit("<line", 1)[-1]
+        start = re.search(r'x1="([0-9.-]+)" y1="([0-9.-]+)"', shaft_element)
+        return (float(start.group(1)), float(start.group(2))), base_mid, tip
+
+    def test_dative_svg_arrowhead_points_from_donor_to_acceptor_in_all_three_forms(self):
+        for form in self.FORMS:
+            with self.subTest(form=form):
+                atoms, bonds, circles, reversible = draw.layout(self.ADDUCT, form, dative=True)
+                elems, _, _, pxc = svg.draw_svg_inner(atoms, bonds, circles, reversible)
+                self.assertIn('fill="black"', elems)
+                shaft_start, base_mid, tip = self._dative_head_geometry(elems)
+                donor = pxc(atoms[0][1], atoms[0][2])
+                acceptor = pxc(atoms[1][1], atoms[1][2])
+                axis = (acceptor[0] - donor[0], acceptor[1] - donor[1])
+                head = (tip[0] - base_mid[0], tip[1] - base_mid[1])
+                self.assertGreater(axis[0] * head[0] + axis[1] * head[1], 0)
+                shaft = (base_mid[0] - shaft_start[0], base_mid[1] - shaft_start[1])
+                self.assertGreater(axis[0] * shaft[0] + axis[1] * shaft[1], 0)
+                markup, _, _ = svg.render_svg(self.ADDUCT, form=form, dative=True)
+                self.assertIn('<path d="M', markup)
+
+    def test_dative_png_arrowhead_pixels_sit_at_the_acceptor_end(self):
+        for form in self.FORMS:
+            with self.subTest(form=form):
+                atoms, bonds, circles, reversible = draw.layout(self.ADDUCT, form, dative=True)
+                plain = [(i, j, 1 if order == "dative" else order) for i, j, order in bonds]
+                arrowed = draw.draw(atoms, bonds, circles, reversible)
+                flat = draw.draw(atoms, plain, circles, reversible)
+                difference = ImageChops.difference(arrowed, flat).getbbox()
+                self.assertIsNotNone(difference)
+                centre = ((difference[0] + difference[2]) / 2.0,
+                          (difference[1] + difference[3]) / 2.0)
+                elems, _, _, _ = svg.draw_svg_inner(atoms, bonds, circles, reversible)
+                shaft_start, _, tip = self._dative_head_geometry(elems)
+                self.assertLess(math.hypot(centre[0] - tip[0], centre[1] - tip[1]),
+                                math.hypot(centre[0] - shaft_start[0], centre[1] - shaft_start[1]))
 
 
 class SupportedOutputStabilityTests(unittest.TestCase):

@@ -65,6 +65,10 @@ and skeletal forms render as the house hexagon + inscribed circle / plain polygo
   fully (rings). `[done]`
 - Stroke ~3px, heavy-atom bond length ~1.95 units, monochrome black on white. Displayed C-H bonds
   use the shortened 1.25-unit length specified in section 4. `[done]`
+- **Coordinate (dative) bond**: a single-headed arrow from donor to acceptor, house stroke with the
+  reaction arrow's filled head, in structural, displayed, and skeletal forms. Opt-in (`dative=True`)
+  and drawn only where the input expresses the bond with SMILES dative notation; formal charges are
+  never silently reinterpreted. `[done]`
 - **Displayed hybridisation geometry** (unified BFS: every atom places its own neighbours off the bond
   it arrived on, by ITS hybridisation): `[done]`
   - **sp3 carbon** -> right-angle "comb": backbone bond continues straight, pendant H / branch bonds at 90 deg.

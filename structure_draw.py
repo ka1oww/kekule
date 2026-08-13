@@ -84,12 +84,72 @@ class UnsupportedStereochemistryError(KekuleInputError):
     """The requested stereochemical representation is not supported faithfully."""
 
 
-def validate_input(smiles, form='structural'):
+class UnsupportedDativeBondError(KekuleInputError):
+    """A coordinate (dative) bond needs the opt-in arrow rendering, or is out of scope."""
+
+
+DATIVE_FORMS = ('structural', 'displayed', 'skeletal')
+
+
+def _dative_bonds(mol):
+    return [b for b in mol.GetBonds() if b.GetBondType() == Chem.BondType.DATIVE]
+
+
+def _describe_dative_bond(bond):
+    """Name one coordinate bond as donor->acceptor with atom indices."""
+    donor, acceptor = bond.GetBeginAtom(), bond.GetEndAtom()
+    return (f"{donor.GetSymbol()}(atom {donor.GetIdx()})->"
+            f"{acceptor.GetSymbol()}(atom {acceptor.GetIdx()})")
+
+
+def _parse_dative_smiles(value):
+    """Parse SMILES containing RDKit's -> / <- dative notation, or return None.
+
+    Strict sanitisation counts a dative bond towards the acceptor's valence, so an
+    adduct such as [NH3]->[BH3] fails the default parse.  The chemistry is checked
+    on a charge-separated twin instead: every dative bond becomes a single bond with
+    +1 on the donor and -1 on the acceptor, which must sanitise strictly.  The
+    returned molecule keeps the DATIVE bonds and the input's own formal charges,
+    with radical counts taken from the twin so the lenient property cache cannot
+    invent unpaired electrons on the acceptor.
+    """
+    with rdBase.BlockLogs():
+        mol = Chem.MolFromSmiles(value, sanitize=False)
+    if mol is None or not _dative_bonds(mol):
+        return None
+    twin = Chem.RWMol(mol)
+    for bond in twin.GetBonds():
+        if bond.GetBondType() == Chem.BondType.DATIVE:
+            bond.SetBondType(Chem.BondType.SINGLE)
+            bond.GetBeginAtom().SetFormalCharge(bond.GetBeginAtom().GetFormalCharge() + 1)
+            bond.GetEndAtom().SetFormalCharge(bond.GetEndAtom().GetFormalCharge() - 1)
+    try:
+        with rdBase.BlockLogs():
+            Chem.SanitizeMol(twin)
+    except Exception:
+        return None
+    mol.UpdatePropertyCache(strict=False)
+    with rdBase.BlockLogs():
+        Chem.SanitizeMol(mol, Chem.SANITIZE_ALL ^ Chem.SANITIZE_PROPERTIES)
+    for atom in mol.GetAtoms():
+        atom.SetNumRadicalElectrons(
+            twin.GetAtomWithIdx(atom.GetIdx()).GetNumRadicalElectrons()
+        )
+    return mol
+
+
+def validate_input(smiles, form='structural', dative=False):
     """Parse and validate one public structure input, returning an RDKit molecule.
 
     Kekule accepts one or more simple acyclic or single-ring molecular fragments.
     Unsupported chemistry is rejected before any layout is attempted so the renderer
     never silently drops a fragment or emits a misleading topology.
+
+    A coordinate bond written with SMILES dative notation (`[NH3]->[BH3]`) is accepted
+    only when the caller opts in with `dative=True`; it is then drawn as a
+    donor-to-acceptor arrow in the structural, displayed, and skeletal forms.  Formal
+    charges are never reinterpreted: `[NH4+]` stays a charged label, and only an input
+    that actually expresses a dative bond gets an arrow.
     """
     if not isinstance(smiles, str) or not smiles.strip():
         raise InvalidSmilesError(
@@ -99,11 +159,34 @@ def validate_input(smiles, form='structural'):
     with rdBase.BlockLogs():
         mol = Chem.MolFromSmiles(value)
     if mol is None:
+        mol = _parse_dative_smiles(value)
+    if mol is None:
         raise InvalidSmilesError(
             f"Invalid SMILES {smiles!r}. Kekule accepts SMILES strings, not chemical names."
         )
 
-    fragments = Chem.GetMolFrags(mol, asMols=True)
+    dative_bonds = _dative_bonds(mol)
+    if dative_bonds:
+        described = _describe_dative_bond(dative_bonds[0])
+        if not dative:
+            raise UnsupportedDativeBondError(
+                f"SMILES {smiles!r} contains a coordinate (dative) bond {described}. "
+                "Pass dative=True to draw it as a donor-to-acceptor arrow."
+            )
+        if form not in DATIVE_FORMS:
+            raise UnsupportedDativeBondError(
+                f"The {form} renderer cannot draw the coordinate bond {described} in "
+                f"SMILES {smiles!r}; dative arrows are supported in the structural, "
+                "displayed, and skeletal forms."
+            )
+        if mol.GetRingInfo().NumRings() > 0:
+            raise UnsupportedDativeBondError(
+                f"SMILES {smiles!r} mixes the coordinate bond {described} with a ring; "
+                "dative arrows are supported for acyclic structures only."
+            )
+        fragments = Chem.GetMolFrags(mol, asMols=True, sanitizeFrags=False)
+    else:
+        fragments = Chem.GetMolFrags(mol, asMols=True)
     if len(fragments) != 1 and form in ('stereo', 'geometric'):
         raise DisconnectedStructureError(
             f"Disconnected SMILES {smiles!r} contains {len(fragments)} fragments. "
@@ -407,6 +490,15 @@ def _ring_display_branch(mol, ringset, ring_atom, root, vx, vy, rx, ry):
 
 HLEN = 1.25                                              # visual length of a terminal X-H bond (heavy bond == HEAVY_LEN)
 _BONDORD = {Chem.BondType.SINGLE: 1, Chem.BondType.DOUBLE: 2, Chem.BondType.TRIPLE: 3}
+DATIVE_HEAD_LEN = 12                                     # arrowhead length/half-width shared with the
+DATIVE_HEAD_HALF = 5.5                                   # reaction arrow's filled head
+
+
+def _bond_order(bond):
+    """Drawn order for one RDKit bond; a coordinate bond keeps its donor->acceptor direction."""
+    if bond.GetBondType() == Chem.BondType.DATIVE:
+        return 'dative'
+    return _BONDORD.get(bond.GetBondType(), 1)
 
 
 def _fweight(a):
@@ -680,7 +772,7 @@ def _displayed_comb_layout(mol, grid=False, spine_atoms=None, condense=None,
                     move_branch(neighbour, centre, target)
     atoms = {i: (condlab.get(i, _elem(at(i)) + _charge_suffix(at(i).GetFormalCharge())), pos[i][0], pos[i][1])
              for i in pos}
-    bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _BONDORD.get(b.GetBondType(), 1))
+    bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _bond_order(b))
              for b in molH.GetBonds() if b.GetBeginAtomIdx() in pos and b.GetEndAtomIdx() in pos]
     return atoms, bonds, [], set()
 
@@ -694,7 +786,7 @@ def _displayed_natural_layout(mol):
     at = molH.GetAtomWithIdx
     atoms = {i: (_elem(at(i)) + _charge_suffix(at(i).GetFormalCharge()), P[i][0], P[i][1])
              for i in range(molH.GetNumAtoms())}
-    bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _BONDORD.get(b.GetBondType(), 1))
+    bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _bond_order(b))
              for b in molH.GetBonds()]
     return atoms, bonds, [], set()
 
@@ -867,11 +959,12 @@ def _skeletal_layout(mol):
             else:
                 lab = "N" + ("H" if nH >= 1 else "") + (str(nH) if nH >= 2 else "") + ch
         else:
-            lab = _elem(a) + ch
+            # other elements keep their hydrogens in the label (BH3 in a dative adduct)
+            lab = _elem(a) + ("H" if nH >= 1 else "") + (str(nH) if nH >= 2 else "") + ch
         atoms[i] = (lab, P[i][0], P[i][1])
         if heavy_nb == 1 and nH >= 1 and Z in (7, 8):    # terminal -OH / -NH2: flip to HO-/H2N- when the bond enters from the right
             reversible.add(i)
-    bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _BONDORD.get(b.GetBondType(), 1))
+    bonds = [(b.GetBeginAtomIdx(), b.GetEndAtomIdx(), _bond_order(b))
              for b in mol.GetBonds()]
     hid = -1                                              # secondary-amine N-H: put the H ON TOP of the N (not inline)
     for i in range(mol.GetNumAtoms()):
@@ -983,8 +1076,9 @@ def _layout_mol(mol, form='structural', angles='comb'):
     or 'skeletal' (zig-zag, implicit C/H)."""
     mol = Chem.Mol(mol)                                    # layout helpers may Kekulize/mutate; keep the validated input reusable
     fragment_atom_mappings = []
-    fragments = Chem.GetMolFrags(
-        mol, asMols=True, fragsMolAtomMapping=fragment_atom_mappings
+    fragments = Chem.GetMolFrags(                          # a dative molecule only carries the lenient
+        mol, asMols=True, fragsMolAtomMapping=fragment_atom_mappings,   # property cache, so strict fragment
+        sanitizeFrags=not _dative_bonds(mol)               # sanitisation would reject it here
     )
     if len(fragments) > 1:
         return _compose_fragment_layouts(
@@ -1141,16 +1235,15 @@ def _layout_mol(mol, form='structural', angles='comb'):
             return "N" + ("H" if nH >= 1 else "") + (str(nH) if nH >= 2 else "") + ch
         if Z == 0:                               # dummy = R-group placeholder
             return _RGROUP.get(a.GetAtomMapNum(), "R")
-        return a.GetSymbol() + ch
+        # other elements keep their hydrogens in the label (BH3 in a dative adduct)
+        return a.GetSymbol() + ("H" if nH >= 1 else "") + (str(nH) if nH >= 2 else "") + ch
 
     atoms = {i: (lab(i), pos[i][0], pos[i][1]) for i in pos}
     bonds = []
     for b in mol.GetBonds():
         i, j = b.GetBeginAtomIdx(), b.GetEndAtomIdx()
         if i in pos and j in pos:
-            o = {Chem.BondType.SINGLE: 1, Chem.BondType.DOUBLE: 2,
-                 Chem.BondType.TRIPLE: 3}.get(b.GetBondType(), 1)
-            bonds.append((i, j, o))
+            bonds.append((i, j, _bond_order(b)))
     for hid_, c in extraH:
         bonds.append((c, hid_, 1))
 
@@ -1204,9 +1297,12 @@ def _layout_mol(mol, form='structural', angles='comb'):
     return atoms, bonds, [], reversible
 
 
-def layout(smiles, form='structural', angles='comb'):
-    """Validate one SMILES input, then lay it out in the requested representation."""
-    return _layout_mol(validate_input(smiles, form), form, angles)
+def layout(smiles, form='structural', angles='comb', dative=False):
+    """Validate one SMILES input, then lay it out in the requested representation.
+
+    dative=True opts in to coordinate-bond arrows for dative SMILES input; a dative
+    bond appears in the bond list as (donor, acceptor, 'dative')."""
+    return _layout_mol(validate_input(smiles, form, dative), form, angles)
 
 
 SUBFONT = ImageFont.truetype(FONT_PATH, 23)
@@ -1473,6 +1569,13 @@ def draw(atoms, bonds, circles=None, reversible=None, fname=None, return_map=Fal
                 dr.line([(cx + ox * wl, cy + oy * wl), (cx - ox * wl, cy - oy * wl)],
                         fill=(0, 0, 0), width=STROKE - 1)
             continue
+        if order == 'dative':                            # coordinate bond: arrow with the filled head at the acceptor
+            bx, by = q[0] - ux * DATIVE_HEAD_LEN, q[1] - uy * DATIVE_HEAD_LEN
+            dr.line([(p[0], p[1]), (bx, by)], fill=(0, 0, 0), width=STROKE)
+            dr.polygon([(q[0], q[1]),
+                        (bx + ox * DATIVE_HEAD_HALF, by + oy * DATIVE_HEAD_HALF),
+                        (bx - ox * DATIVE_HEAD_HALF, by - oy * DATIVE_HEAD_HALF)], fill=(0, 0, 0))
+            continue
         offs = {1: [0], 2: [-DBL, DBL], 3: [-TRP, 0, TRP]}[order]
         for s in offs:
             dr.line([(p[0] + ox * s, p[1] + oy * s), (q[0] + ox * s, q[1] + oy * s)],
@@ -1500,9 +1603,13 @@ def _render_mol(mol, fname=None, form='structural', angles='comb'):
     return draw(a, b, c, rev, fname)
 
 
-def render(smiles, fname=None, form='structural', angles='comb'):
-    """Validate one SMILES input and render it as a Pillow image."""
-    return _render_mol(validate_input(smiles, form), fname, form, angles)
+def render(smiles, fname=None, form='structural', angles='comb', dative=False):
+    """Validate one SMILES input and render it as a Pillow image.
+
+    dative=True draws a coordinate bond written in SMILES dative notation as a
+    donor-to-acceptor arrow; the default refuses such input rather than drawing
+    a plain line silently."""
+    return _render_mol(validate_input(smiles, form, dative), fname, form, angles)
 
 
 def render_stereo_pair(smiles, fname=None):

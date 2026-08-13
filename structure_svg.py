@@ -3,7 +3,8 @@ import math, collections
 import structure_draw as J
 from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,
                       _suffix_for_side, _anchor_w, _inline_w, _inline_runs,
-                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
+                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME,
+                      DATIVE_HEAD_LEN, DATIVE_HEAD_HALF)
 
 FS = 34        # main glyph px (Arial)
 SUBFS = 23     # subscript px
@@ -64,6 +65,15 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
         p = (p[0] + ux * gap(i, ux, uy), p[1] + uy * gap(i, ux, uy))
         q = (q[0] - ux * gap(j, -ux, -uy), q[1] - uy * gap(j, -ux, -uy))
         ox, oy = -uy, ux
+        if order == 'dative':  # coordinate bond: arrow with the filled head at the acceptor
+            bx, by = q[0] - ux * DATIVE_HEAD_LEN, q[1] - uy * DATIVE_HEAD_LEN
+            out.append(f'<line x1="{p[0]:.1f}" y1="{p[1]:.1f}" x2="{bx:.1f}" y2="{by:.1f}" '
+                       f'stroke="black" stroke-width="{STROKE}" stroke-linecap="round"/>')
+            out.append(f'<path d="M {q[0]:.1f} {q[1]:.1f} '
+                       f'L {bx + ox * DATIVE_HEAD_HALF:.1f} {by + oy * DATIVE_HEAD_HALF:.1f} '
+                       f'L {bx - ox * DATIVE_HEAD_HALF:.1f} {by - oy * DATIVE_HEAD_HALF:.1f} Z" '
+                       'fill="black"/>')
+            continue
         for s in {1: [0], 2: [-DBL, DBL], 3: [-TRP, 0, TRP]}[order]:
             out.append(f'<line x1="{p[0]+ox*s:.1f}" y1="{p[1]+oy*s:.1f}" '
                        f'x2="{q[0]+ox*s:.1f}" y2="{q[1]+oy*s:.1f}" '
@@ -123,8 +133,13 @@ def _render_svg_inner_mol(mol, font=FONT_NAME, form='structural', angles='comb')
     return draw_svg_inner(a, b, c, rev, font)
 
 
-def render_svg(smiles, font=FONT_NAME, form='structural', angles='comb'):
-    mol = J.validate_input(smiles, form)
+def render_svg(smiles, font=FONT_NAME, form='structural', angles='comb', dative=False):
+    """Render one SMILES input as an SVG string.
+
+    dative=True draws a coordinate bond written in SMILES dative notation as a
+    donor-to-acceptor arrow; the default refuses such input rather than drawing
+    a plain line silently."""
+    mol = J.validate_input(smiles, form, dative)
     if form == 'stereo':
         raise J.UnsupportedStereochemistryError(
             "Stereo wedge/dash rendering is not supported by the SVG backend; "
@@ -133,8 +148,9 @@ def render_svg(smiles, font=FONT_NAME, form='structural', angles='comb'):
     return _render_svg_mol(mol, font, form, angles)
 
 
-def render_svg_inner(smiles, font=FONT_NAME, form='structural', angles='comb'):
-    mol = J.validate_input(smiles, form)
+def render_svg_inner(smiles, font=FONT_NAME, form='structural', angles='comb', dative=False):
+    """Render inner SVG elements for one SMILES input; dative as in render_svg."""
+    mol = J.validate_input(smiles, form, dative)
     if form == 'stereo':
         raise J.UnsupportedStereochemistryError(
             "Stereo wedge/dash rendering is not supported by the SVG backend; "
