@@ -78,9 +78,15 @@ class ValidationBoundaryTests(unittest.TestCase):
             draw.render("CC(O)C.[Na+]", form="stereo")
 
     def test_unsupported_fragment_error_names_the_fragment(self):
-        smiles = "[Na+].c1ccc2ccccc2c1"
-        with self.assertRaisesRegex(draw.UnsupportedTopologyError, r"Fragment 2 'c1ccc2ccccc2c1'"):
-            draw.render(smiles)
+        cases = (
+            ("[CH3].[Na+]", draw.UnsupportedRadicalError, r"Fragment 1 '\[CH3\]'"),
+            ("[Na+].c1ccc2ccccc2c1", draw.UnsupportedTopologyError,
+             r"Fragment 2 'c1ccc2ccccc2c1'"),
+        )
+        for smiles, error_type, message in cases:
+            with self.subTest(smiles=smiles):
+                with self.assertRaisesRegex(error_type, message):
+                    draw.render(smiles)
 
     def test_radical_is_rejected_until_the_electron_dot_is_supported(self):
         with self.assertRaisesRegex(draw.UnsupportedRadicalError, "unpaired-electron dots"):
@@ -288,6 +294,11 @@ class MultiFragmentRenderingTests(unittest.TestCase):
                     ))
                 bounds.sort(key=lambda bound: bound[0])
                 self.assertGreaterEqual(bounds[1][0] - bounds[0][1], draw.FRAGMENT_GAP - 1e-9)
+                image = draw.render("CC(=O)[O-].[Na+]", form=form)
+                self.assertGreater(image.width, 0)
+                self.assertGreater(image.height, 0)
+                white = Image.new(image.mode, image.size, "white")
+                self.assertIsNotNone(ImageChops.difference(image, white).getbbox())
 
     def test_monatomic_ion_labels_and_charges_are_preserved(self):
         structural = draw.layout("[NH4+].[Cl-]", "structural")

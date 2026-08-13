@@ -52,7 +52,7 @@ from embed_docx import build_doc
 build_doc([("ethanoic acid", "CC(=O)O"), ("benzene", "c1ccccc1")], "structures.docx")
 ```
 
-In a reaction, most species are SMILES. Ionic compounds may use dot-disconnected SMILES such as `CC(=O)[O-].[Na+]`. A species that is not structural SMILES, an inorganic reagent, a radical, or a coefficient, is written as a literal token with a leading `$`, for example `$H2O`, `$2[O]`, `$Na^+`, `$conc. HCl`. Digits after a letter auto-subscript, so `$H2SO4` prints as H₂SO₄. The `$` marks the token and is not drawn. Reagent and condition text are plain formula text and take no `$`.
+In a reaction, most species are SMILES. Ionic compounds may use dot-disconnected SMILES such as `CC(=O)[O-].[Na+]`. Single-atom fragment tokens such as `[Na+]`, `[Cl-]`, and `[NH4+]` retain their labels and formal charges. A species that is not structural SMILES, an inorganic reagent, a radical, or a coefficient, is written as a literal token with a leading `$`, for example `$H2O`, `$2[O]`, `$Na^+`, `$conc. HCl`. Digits after a letter auto-subscript, so `$H2SO4` prints as H₂SO₄. The `$` marks the token and is not drawn. Reagent and condition text are plain formula text and take no `$`.
 
 ## Input validation
 
@@ -70,7 +70,7 @@ All of these inherit from `KekuleInputError`, so callers may catch either the sp
 
 ## Scope
 
-The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Dot-disconnected compounds are rendered fragment by fragment from left to right with a clear gap when every fragment has a visible primitive in the selected representation. Each fragment retains the same scope checks, so fused, bridged, spiro, and other multi-ring fragments are rejected before layout.
+The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Dot-disconnected compounds are rendered fragment by fragment from left to right with a clear gap in displayed, structural, and skeletal forms when every fragment has a visible primitive. Each fragment retains the same scope checks, so fused, bridged, spiro, radical, and other unsupported fragments are rejected before layout and identified in the error.
 
 ## Readiness gate
 
