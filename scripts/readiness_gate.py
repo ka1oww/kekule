@@ -11,7 +11,7 @@ COMMANDS = (
     ("compile", [sys.executable, "-m", "compileall", "-q", "."]),
     ("66-case invariants", [sys.executable, "tests/invariants.py"]),
     (
-        "22 validation tests",
+        "27 validation tests",
         [
             sys.executable,
             "-m",

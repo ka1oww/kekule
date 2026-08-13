@@ -180,7 +180,7 @@
      ]
     },
     {
-     "name": "2-bromobutan-1-ol",
+     "name": "3-bromobutan-1-ol",
      "smiles": "CC(Br)CCO",
      "verdict": "match",
      "score": 88,
@@ -304,7 +304,7 @@
     },
     {
      "name": "3-chlorocyclohexanol",
-     "smiles": "OC1CCC(Cl)CC1",
+     "smiles": "OC1CC(Cl)CCC1",
      "verdict": "wrong",
      "score": 25,
      "discrepancies": [
@@ -807,8 +807,8 @@
      ]
     },
     {
-     "name": "1-methylcyclopenta-2,4-diene",
-     "smiles": "CC1C=CC=C1",
+     "name": "1-methylcyclopenta-1,3-diene",
+     "smiles": "CC1=CC=CC1",
      "verdict": "wrong",
      "score": 52,
      "discrepancies": [
@@ -1933,5 +1933,47 @@
     "fix": "Carry the exact acid spelling (COOH vs CO2H) from the source figure per compound rather than applying a single global default."
    }
   ]
+ },
+ "r2_rerun": {
+  "date": "2026-08-13",
+  "method": "Replayed every affected rule through the renderer and the repository test gate. The source PDFs and a visual adjudicator are not stored in this repository, so this is a rule-level rerun, not a new pixel or vision score.",
+  "baseline_visual": {
+   "match": 50,
+   "close": 40,
+   "wrong": 8,
+   "not_found": 2,
+   "average_score": 77.6
+  },
+  "rule_level_changes": {
+   "formerly_wrong_geometry_fixed": [
+    "trans-1,2-dichloroethene",
+    "trans-but-2-ene"
+   ],
+   "formerly_wrong_source_records_fixed": [
+    "3-chlorocyclohexanol",
+    "1-methylcyclopenta-1,3-diene"
+   ],
+   "formerly_wrong_form_selection_fixed": [
+    "Vanillin (4-hydroxy-3-methoxybenzaldehyde)"
+   ],
+   "formerly_wrong_scope_rejections": [
+    "Iodolactone (compound S)",
+    "Indan-1-one (tutorial cpd B)",
+    "Decahydronaphthalen-4a-ol (fused bicyclic 3 alcohol)"
+   ],
+   "close_classes_fixed": [
+    "directional alkene geometry in displayed form",
+    "skeletal carbocation charge visibility",
+    "displayed expansion of ring-attached amide, ester, aldehyde, methoxy, and benzyl branches",
+    "italic lowercase l in Cl",
+    "left-facing condensed aldehyde and acid label ordering"
+   ]
+  },
+  "automated_rerun": {
+   "invariants": "66/66 passed",
+   "validation_tests": "27/27 passed",
+   "preview_manifest": "21/21 passed",
+   "visual_verdicts": "not recomputed without the source-crop adjudicator"
+  }
  }
 }

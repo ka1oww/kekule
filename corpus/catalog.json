@@ -98,7 +98,7 @@
    "notes": "Drawn twice as a mirror-image pair. CH3 up (plain bond), H to left (plain), OH on hashed/dashed bond (into plane) and CO2H; wedge=out of plane, dash=into plane."
   },
   {
-   "name": "2-bromobutan-1-ol",
+   "name": "3-bromobutan-1-ol",
    "smiles": "OCCC(Br)C",
    "form": "skeletal",
    "source": "10 Introduction to Organic Chemistry.pdf",
@@ -211,7 +211,7 @@
   },
   {
    "name": "3-chlorocyclohexanol",
-   "smiles": "OC1CCC(Cl)CC1",
+   "smiles": "OC1CC(Cl)CCC1",
    "form": "skeletal",
    "source": "10 Introduction to Organic Chemistry.pdf",
    "page": 13,
@@ -498,8 +498,8 @@
    "notes": "Drawn HOOC-COOH with each C=O pointing UP (O on top, vertical double bond) and each OH written below. Carboxyl written as -C(=O)-OH in the picture but as CO2H / COOH in text."
   },
   {
-   "name": "1-methylcyclopenta-2,4-diene",
-   "smiles": "CC1C=CC=C1",
+   "name": "1-methylcyclopenta-1,3-diene",
+   "smiles": "CC1=CC=CC1",
    "form": "skeletal",
    "source": "13 Alkene 2022.pdf",
    "page": 16,

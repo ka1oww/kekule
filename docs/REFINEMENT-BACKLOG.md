@@ -97,3 +97,35 @@ Remaining, by category:
   catalog SMILES/names disagree (e.g. "3-chlorocyclohexanol" SMILES is the 1,4 isomer). Ring
   substituent *placement* itself is correct (1,2/1,3/1,4 verified distinct).
 - **Cosmetic house-convention**: pointy-top rings, italic `l` in Cl, `CO2H` spelling.
+
+## R2 diagnosis and rerun
+
+The eight `WRONG` records were diagnosed before rule changes and fall into four classes. The
+classification distinguishes form selection from geometry, and does not treat an unsupported
+topology as a reason to widen the renderer.
+
+| Class | Examples | Form-selection or geometry | Decision |
+|---|---|---|---|
+| Displayed form lost directional alkene geometry | trans-1,2-dichloroethene; trans-but-2-ene | Form-selection plus geometry. The displayed path ignored SMILES E/Z and made both isomers look cis. | Fixed by seating the C=C horizontally and placing substituents on source-backed trigonal sides. |
+| Source record encoded a different compound | 3-chlorocyclohexanol; 1-methylcyclopenta-1,3-diene | Neither. The catalog SMILES disagreed with the named/source structure. | Fixed the catalog and audit records to `OC1CC(Cl)CCC1` and `CC1=CC=CC1`. |
+| Ring-attached branch was collapsed in the selected form | Vanillin | Form-selection. Methoxy, aldehyde, and the mixed displayed branch were not expanded together. | Fixed displayed ring branches while retaining the one-ring scope. |
+| Fused or bicyclic topology was linearised | Iodolactone, indan-1-one, decahydronaphthalen-4a-ol | Neither. These are outside the accepted single-ring scope. | Kept typed `UnsupportedTopologyError`; no fallback drawing and no scope expansion. |
+
+Representative `CLOSE` records showed the same form-selection class in paracetamol, propyl
+benzoate, benzaldehyde, styrene, and benzyl alcohol. Other close records were geometry or
+typography details: skeletal carbocation charges, cis geometry, chlorine typography, and left-facing
+acid/aldehyde label ordering. The rule fixes cover those classes where the backlog has evidence
+support. Resonance pairs, source-specific acid spelling, ring orientation, missing contextual
+annotations, and mixed-form source disagreements remain findings rather than forced conventions.
+
+The repository does not contain the source-PDF crops or a visual adjudicator, so the original
+100-compound `MATCH` / `CLOSE` / `WRONG` / `NOT FOUND` score cannot be honestly recomputed here.
+The stored baseline remains **50 / 40 / 8 / 2, average 77.6**. The R2 rule-level replay is recorded
+in `corpus/batch_audit.json`: it names the four formerly wrong records fixed by rules or corrected
+source data, the one formerly wrong record fixed by form selection, and the three formerly wrong
+records now rejected at the typed scope boundary. It reports no invented visual score. The
+automated rerun passed **66/66 invariants, 27/27 validation tests, and 21/21 preview cases**.
+
+No regressions were observed in the tracked example artifacts or in the typed rejection path. The
+remaining visual score is an explicit follow-up for the source-backed adjudication environment,
+not evidence to be replaced with a model or training step.

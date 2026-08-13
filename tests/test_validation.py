@@ -80,6 +80,50 @@ class ValidationBoundaryTests(unittest.TestCase):
                 self.assertGreater(image.width, 0)
                 self.assertGreater(image.height, 0)
 
+    def test_directional_alkene_stereo_changes_displayed_geometry(self):
+        def reference_side(smiles):
+            mol = draw.validate_input(smiles, "displayed")
+            double = next(b for b in mol.GetBonds() if b.GetBondType() == draw.Chem.BondType.DOUBLE)
+            c1, c2 = double.GetBeginAtomIdx(), double.GetEndAtomIdx()
+            ref1, ref2 = double.GetStereoAtoms()
+            atoms, _, _, _ = draw.layout(smiles, "displayed")
+            ax = atoms[c2][1] - atoms[c1][1]
+            ay = atoms[c2][2] - atoms[c1][2]
+            def side(c, ref):
+                vx = atoms[ref][1] - atoms[c][1]
+                vy = atoms[ref][2] - atoms[c][2]
+                return 1 if ax * vy - ay * vx > 0 else -1
+            return side(c1, ref1), side(c2, ref2)
+
+        self.assertEqual(reference_side("C/C=C\\C")[0], reference_side("C/C=C\\C")[1])
+        self.assertNotEqual(reference_side("C/C=C/C")[0], reference_side("C/C=C/C")[1])
+
+    def test_skeletal_form_keeps_formal_charge_on_carbon(self):
+        for smiles in ("[CH2+]CBr", "C[CH+]CC"):
+            atoms, _, _, _ = draw.layout(smiles, "skeletal")
+            self.assertTrue(any(label.startswith("C^") for label, _, _ in atoms.values()))
+
+    def test_displayed_ring_branches_expand_functional_groups(self):
+        for smiles, required in (
+            ("CC(=O)Nc1ccc(O)cc1", {"N", "C", "O"}),
+            ("CCOC(=O)c1ccccc1", {"C", "O"}),
+            ("COc1cc(C=O)ccc1O", {"C", "O"}),
+        ):
+            structural, _, _, _ = draw.layout(smiles, "structural")
+            displayed, bonds, _, _ = draw.layout(smiles, "displayed")
+            self.assertGreater(len(displayed), len(structural))
+            self.assertTrue(required.issubset({label for label, _, _ in displayed.values()}))
+            self.assertTrue(bonds)
+
+    def test_chlorine_lowercase_l_is_italic_in_svg(self):
+        markup, _, _ = svg.render_svg("Clc1ccccc1")
+        self.assertIn('font-style="italic">l</tspan>', markup)
+
+    def test_left_facing_condensed_labels_reverse_the_non_anchor_atoms(self):
+        self.assertEqual(draw._suffix_for_side("C", "HO", "left"), "OH")
+        self.assertEqual(draw._suffix_for_side("C", "OOH", "left"), "HOO")
+        self.assertEqual(draw._suffix_for_side("N", "H2", "left"), "H2")
+
     def test_non_stereogenic_pair_requests_have_typed_errors(self):
         with self.assertRaises(draw.UnsupportedStereochemistryError):
             draw.render_stereo_pair("CC")

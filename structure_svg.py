@@ -2,7 +2,7 @@
 import math, collections
 import structure_draw as J
 from structure_draw import (_parse_label, _txt_w, _suffix_w, _label_parts, _label_runs,
-                      U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
+                      _suffix_for_side, _anchor_w, _inline_w, U, STROKE, DBL, TRP, _BASE_H, FONT, SUBFONT, FONT_NAME)
 
 FS = 34        # main glyph px (Arial)
 SUBFS = 23     # subscript px
@@ -22,9 +22,11 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
     for i, (label, x, y) in atoms.items():
         if not label:
             continue
-        a, s = _parse_label(label); parsed[i] = (a, s)
+        a, s = _parse_label(label)
         has_r = any(dx > 0.3 for dx in nbx[i]); has_l = any(dx < -0.3 for dx in nbx[i])
         sd = 'left' if (i in reversible and has_r and not has_l) else 'right'
+        s = _suffix_for_side(a, s, sd)
+        parsed[i] = (a, s)
         side[i] = sd
         aw = _txt_w(a, FONT); sw = _suffix_w(s)
         ext[i] = (aw / 2 + (sw if sd == 'left' else 0),
@@ -64,10 +66,15 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
     for i in parsed:
         cx, cy = px(i); anchor, suffix = parsed[i]; sd = side[i]
         by = cy + BASE
-        out.append(f'<text x="{cx:.1f}" y="{by:.1f}" font-family="{font}" font-size="{FS}" '
-                   f'text-anchor="middle">{_esc(anchor)}</text>')
+        aw = _anchor_w(anchor)
+        if anchor == "Cl":
+            x0 = cx - aw / 2
+            out.append(f'<text x="{x0:.1f}" y="{by:.1f}" font-family="{font}" '
+                       f'font-size="{FS}" text-anchor="start">C<tspan font-style="italic">l</tspan></text>')
+        else:
+            out.append(f'<text x="{cx:.1f}" y="{by:.1f}" font-family="{font}" font-size="{FS}" '
+                       f'text-anchor="middle">{_esc(anchor)}</text>')
         if suffix:
-            aw = _txt_w(anchor, FONT)
             x = cx + aw / 2 if sd == 'right' else cx - aw / 2 - _suffix_w(suffix)
             for s, kind in _label_runs(suffix):
                 if kind == 'sub':
@@ -79,9 +86,21 @@ def _geom_and_elems(atoms, bonds, circles, reversible, font):
                                f'font-size="{SUBFS}" text-anchor="start">{_esc(s)}</text>')
                     x += _txt_w(s, SUBFONT)
                 else:
+                    if "Cl" in s:
+                        chunks = []
+                        k = 0
+                        while k < len(s):
+                            if s[k:k + 2] == "Cl":
+                                chunks.append("C<tspan font-style=\"italic\">l</tspan>")
+                                k += 2
+                            else:
+                                chunks.append(_esc(s[k])); k += 1
+                        body = ''.join(chunks)
+                    else:
+                        body = _esc(s)
                     out.append(f'<text x="{x:.1f}" y="{by:.1f}" font-family="{font}" '
-                               f'font-size="{FS}" text-anchor="start">{_esc(s)}</text>')
-                    x += _txt_w(s, FONT)
+                               f'font-size="{FS}" text-anchor="start">{body}</text>')
+                    x += _inline_w(s, FONT)
     return out, W, H, pxc
 
 def draw_svg(atoms, bonds, circles=None, reversible=None, font=FONT_NAME):
