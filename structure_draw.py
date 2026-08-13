@@ -325,18 +325,11 @@ def _ring_layout(mol, form='structural'):
         atoms[o_idx] = ("O", (R + 1.05) * math.cos(th), (R + 1.05) * math.sin(th))
         bonds.append((ri_atom, o_idx, 2))
     pid = 10000
-    hid = -1
     reversible = set()
     for ri_atom, root in subs:
         th = angles[ri_atom]
-        ra = mol.GetAtomWithIdx(root)
-        rx, ry = math.cos(th), math.sin(th); pxr, pyr = -ry, rx
+        rx, ry = math.cos(th), math.sin(th)
         vx, vy = R * rx, R * ry
-        dO = next((nb for nb in ra.GetNeighbors() if nb.GetAtomicNum() == 8 and
-                   mol.GetBondBetweenAtoms(root, nb.GetIdx()).GetBondType() == Chem.BondType.DOUBLE), None)
-        nN = next((nb for nb in ra.GetNeighbors() if nb.GetAtomicNum() == 7 and nb.GetIdx() not in ringset), None)
-        Z, nHr = ra.GetAtomicNum(), ra.GetTotalNumHs()
-        heavy_out = [nb.GetIdx() for nb in ra.GetNeighbors() if nb.GetAtomicNum() > 1 and nb.GetIdx() not in ringset]
         if form == 'displayed':
             branch_atoms, branch_bonds = _ring_display_branch(
                 mol, ringset, ri_atom, root, vx, vy, rx, ry
@@ -344,6 +337,12 @@ def _ring_layout(mol, form='structural'):
             atoms.update(branch_atoms)
             bonds.extend(branch_bonds)
             continue
+        ra = mol.GetAtomWithIdx(root)
+        pxr, pyr = -ry, rx
+        dO = next((nb for nb in ra.GetNeighbors() if nb.GetAtomicNum() == 8 and
+                   mol.GetBondBetweenAtoms(root, nb.GetIdx()).GetBondType() == Chem.BondType.DOUBLE), None)
+        nN = next((nb for nb in ra.GetNeighbors() if nb.GetAtomicNum() == 7 and nb.GetIdx() not in ringset), None)
+        Z = ra.GetAtomicNum()
         # amide substituent → draw out as ring–C(=O)–NH2 (carbonyl explicit)
         if Z == 6 and dO is not None and nN is not None:
             fcx, fcy = vx + rx * 1.4, vy + ry * 1.4
@@ -354,42 +353,6 @@ def _ring_layout(mol, form='structural'):
             atoms[nN.GetIdx()] = (nlab, fcx + rx * 1.5, fcy + ry * 1.5); bonds.append((root, nN.GetIdx(), 1))
             if rx < -0.3:
                 reversible.add(nN.GetIdx())
-        elif form == 'displayed' and Z == 6 and dO is not None:
-            # carbonyl substituent drawn OUT like the acyclic displayed does (benzaldehyde -CHO,
-            # benzoic acid -COOH, acyl chloride -COCl): ring-C(=O)-X, trigonal splay pointing outward
-            aR = math.atan2(ry, rx)
-            fcx, fcy = vx + rx * 1.4, vy + ry * 1.4
-            atoms[root] = ("C", fcx, fcy); bonds.append((ri_atom, root, 1))
-            dOx, dOy = math.cos(aR + math.radians(60)), math.sin(aR + math.radians(60))   # =O biased UP (house carbonyl-up)
-            dXx, dXy = math.cos(aR - math.radians(60)), math.sin(aR - math.radians(60))   # other bond, splayed down
-            atoms[dO.GetIdx()] = ("O", fcx + dOx * 1.3, fcy + dOy * 1.3); bonds.append((root, dO.GetIdx(), 2))
-            ex, ey = fcx + dXx * 1.3, fcy + dXy * 1.3
-            others = [nb for nb in ra.GetNeighbors() if nb.GetIdx() != dO.GetIdx() and nb.GetIdx() not in ringset]
-            if others and others[0].GetAtomicNum() == 8 and others[0].GetTotalNumHs() >= 1:
-                o2 = others[0]                                # -OH (acid): O drawn, then the H bent off it
-                atoms[o2.GetIdx()] = ("O", ex, ey); bonds.append((root, o2.GetIdx(), 1))
-                hx = ex + math.cos(aR - math.radians(115)) * 1.15
-                hy = ey + math.sin(aR - math.radians(115)) * 1.15
-                atoms[hid] = ("H", hx, hy); bonds.append((o2.GetIdx(), hid, 1)); hid -= 1
-            elif others:                                      # -Cl / ester -O-CH3: condensed label on the outer bond
-                atoms[pid] = (_sub_label(molH, ringset | {root}, others[0].GetIdx()), ex, ey)
-                bonds.append((root, pid, 1)); pid += 1
-            elif nHr >= 1:                                    # aldehyde -CHO: the H drawn explicitly
-                atoms[hid] = ("H", ex, ey); bonds.append((root, hid, 1)); hid -= 1
-        elif form == 'displayed' and not heavy_out and Z in (6, 7, 8):
-            # terminal substituent (-CH3 / -OH / -NH2) expanded to explicit atoms + H, radially outward
-            cx, cy = vx + rx * 1.4, vy + ry * 1.4
-            atoms[root] = (_elem(ra) + _charge_suffix(ra.GetFormalCharge()), cx, cy)
-            bonds.append((ri_atom, root, 1))
-            if Z == 6:                                    # methyl comb: outward + two perpendicular
-                dirs = [(rx, ry), (pxr, pyr), (-pxr, -pyr)]
-            else:                                         # O/N: H's BEND off to the sides (never collinear with the ring bond)
-                a0 = math.atan2(ry, rx)
-                dirs = [(math.cos(a0 + math.radians(60)), math.sin(a0 + math.radians(60))),
-                        (math.cos(a0 - math.radians(60)), math.sin(a0 - math.radians(60)))]
-            for k in range(min(nHr, len(dirs))):
-                dx, dy = dirs[k]
-                atoms[hid] = ("H", cx + dx * 1.25, cy + dy * 1.25); bonds.append((root, hid, 1)); hid -= 1
         elif form == 'skeletal' and Z == 6 and _alkyl_branch(mol, ringset, root):
             # alkyl stub: bare skeletal vertices zig-zagging outward (implicit C/H), no labels
             prev, pdir, k = ri_atom, (rx, ry), 0
