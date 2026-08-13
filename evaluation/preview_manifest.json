@@ -265,6 +265,17 @@
         "error_type": "UnsupportedStereochemistryError",
         "message_contains": "two different groups"
       }
+    },
+    {
+      "id": "reject-dative-bond-without-opt-in",
+      "input": "[NH3]->[BH3]",
+      "entry_point": "structure_draw.render",
+      "representation": "structural",
+      "expected": {
+        "outcome": "rejected",
+        "error_type": "UnsupportedDativeBondError",
+        "message_contains": "coordinate (dative) bond N(atom 0)->B(atom 1)"
+      }
     }
   ]
 }

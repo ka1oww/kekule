@@ -41,6 +41,7 @@ markup, width, height = svg.render_svg("CC(=O)O")     # ethanoic acid, returns a
 
 import structure_draw as draw
 draw.render("CC(=O)O", "ethanoic-acid.png")           # write a PNG instead
+draw.render("[NH3]->[BH3]", "ammonia-borane.png", dative=True)   # coordinate bond as an arrow
 
 import reaction_render as rxn
 markup, width, height = rxn.render_reaction_svg(
@@ -65,12 +66,15 @@ Invalid or unsupported input raises a typed `ValueError` subclass from `structur
 - `UnsupportedTopologyError` for multi-ring, fused, bridged, or spiro structures.
 - `UnsupportedRadicalError` while structural radical-dot rendering is unsupported. Radicals may still be typeset explicitly as reaction literals such as `$•CH3`.
 - `UnsupportedStereochemistryError` when a specialised stereo request cannot be represented faithfully. The raster stereo-pair helper supports exactly one tetrahedral stereocentre and draws both enantiomers; it does not select one configuration from `@` or `@@`. Multi-centre stereo is rejected, and wedge/dash stereo SVG is outside the supported scope.
+- `UnsupportedDativeBondError` when SMILES dative notation is used without the `dative=True` opt-in, or when a dative arrow is requested outside the structural, displayed, and skeletal forms, or together with a ring. The message identifies the offending bond as donor and acceptor.
 
 All of these inherit from `KekuleInputError`, so callers may catch either the specific condition or the shared base class.
 
 ## Scope
 
 The layout engine targets acyclic molecules (chains with one functional group and simple branches) and simple single-ring structures, including single-benzene-ring derivatives. Dot-disconnected compounds are rendered fragment by fragment from left to right with a clear gap in displayed, structural, and skeletal forms when every fragment has a visible primitive. Each fragment retains the same scope checks, so fused, bridged, spiro, radical, and other unsupported fragments are rejected before layout and identified in the error.
+
+A coordinate (dative) bond written with SMILES dative notation, such as the adduct `[NH3]->[BH3]`, is drawn as a single-headed arrow from the donor to the acceptor in the structural, displayed, and skeletal forms when the caller opts in with `dative=True` on `layout`, `render`, `render_svg`, or `render_svg_inner`. The default refuses dative input rather than drawing a plain line, so existing output is unchanged unless the option is requested. Formal charges are never reinterpreted as coordinate bonds: `[NH4+]` keeps its charged label, and an arrow appears only where the input actually expresses a dative bond.
 
 ## Readiness gate
 
